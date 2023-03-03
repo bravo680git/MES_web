@@ -12,11 +12,11 @@
 
 html {
     font-family: "Inter", sans-serif;
-    font-size: 62.5%;
+    font-size: 16px;
 }
 
 body {
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: 500;
 }
 
@@ -38,37 +38,47 @@ h4 {
 
 @layer components {
     .title-32 {
-        font-size: 3.2rem;
+        font-size: 2rem;
         font-weight: 700;
     }
 
     .title-24 {
-        font-size: 2.4rem;
+        font-size: 1.5rem;
         font-weight: 700;
     }
 
     .heading-20-b {
-        font-size: 2rem;
+        font-size: 1.25rem;
         font-weight: 700;
     }
 
     .heading-20-s {
-        font-size: 2rem;
+        font-size: 1.25rem;
         font-weight: 600;
     }
 
     .text-16-b {
-        font-size: 1.6rem;
+        font-size: 1rem;
         font-weight: 700;
     }
 
     .text-16-m {
-        font-size: 1.6rem;
+        font-size: 1rem;
         font-weight: 500;
     }
 
     .text-14 {
-        font-size: 1.4rem;
+        font-size: 0.875rem;
         font-weight: 300;
+    }
+
+    .hover {
+        position: relative;
+    }
+
+    .hover::after {
+        @apply absolute top-0 left-0 h-full w-full bg-hoverBg;
+        border-radius: inherit;
+        content: "";
     }
 }

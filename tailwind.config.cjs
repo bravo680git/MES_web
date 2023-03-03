@@ -10,6 +10,7 @@ module.exports = {
             lineHeight: 1.5,
         },
         colors: {
+            transparent: "transparent",
             primary: {
                 1: "#263F59",
                 2: "#4D7EB3",
@@ -25,6 +26,8 @@ module.exports = {
                 3: "#F6F6F6",
                 4: "#FFFFFF",
             },
+            warning: { 1: "#D83704" },
+            hoverBg: "rgba(0,0,0,0.08)",
         },
     },
     plugins: [],
