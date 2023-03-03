@@ -18,6 +18,7 @@ html {
 body {
     font-size: 1rem;
     font-weight: 500;
+    @apply bg-neutron-4 text-neutron-1;
 }
 
 h1 {
