@@ -15,7 +15,6 @@ function FormMenu({ items, value, setValue, path, setValidateRows }) {
                     disabled: item.disabled,
                     isError: item.isError,
                     list: item.list,
-                    required: item.required,
                     setValidateRows,
                 }
 

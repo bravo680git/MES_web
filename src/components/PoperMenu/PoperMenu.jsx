@@ -3,9 +3,9 @@ import { createPortal } from "react-dom"
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdOutlineCheck } from "react-icons/md"
 
 import Button from "@/components/Button"
+import Card from "@/components/Card"
 import FormMenu from "./FormMenu"
 import TableMenu from "./TableMenu"
-import Card from "@/components/Card"
 import { getUpdatedMenuValue as getNewValue } from "@/utils/functions"
 
 function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath = [] }) {
@@ -18,7 +18,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
     const [validateRows, setValidateRows] = useState(() => {
         let total = 0
         currentNavItem.items.forEach((item) => {
-            if (item.isError || item.required) {
+            if (item.isError) {
                 total++
             }
         })
