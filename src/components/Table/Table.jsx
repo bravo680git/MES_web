@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useTable, useSortBy } from "react-table"
 import { HiPencil } from "react-icons/hi"
 import { BiSortDown, BiSortUp } from "react-icons/bi"
@@ -7,7 +7,11 @@ import cl from "classnames"
 function Table({ activable, onRowClick, onEdit, headers = [], body = [], className, primary }) {
     const [activeId, setActiveId] = useState(null)
 
-    const tableInstance = useTable({ columns: headers, data: body }, useSortBy)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const columns = useMemo(() => headers, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const data = useMemo(() => body, [body.length])
+    const tableInstance = useTable({ columns, data }, useSortBy)
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance
 
     const handleRowClick = (id) => {
