@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import cl from "classnames"
 import { BsArrowBarLeft, BsArrowBarRight } from "react-icons/bs"
 
@@ -7,6 +8,14 @@ import SidebarItem from "./SidebarItem"
 
 function Sidebar() {
     const [isExpand, setIsExpand] = useState(true)
+    const location = useLocation()
+    const navigate = useNavigate()
+    const [currentPath, setCurrentPath] = useState(location.pathname)
+
+    const handleClick = (route) => {
+        navigate(route)
+        setCurrentPath(route)
+    }
 
     return (
         <div
@@ -23,8 +32,9 @@ function Sidebar() {
                         key={index}
                         Icon={item.icon}
                         label={item.label}
-                        actived={index === 2}
+                        actived={currentPath.includes(item.route)}
                         isExpand={isExpand}
+                        onClick={() => handleClick(item.route)}
                     />
                 ))}
             </div>

@@ -1,6 +1,6 @@
 import cl from "classnames"
 
-function SidebarItem({ Icon, label, route, actived, isExpand }) {
+function SidebarItem({ Icon, label, actived, isExpand, onClick }) {
     return (
         <div
             data-component="SidebarItem"
@@ -8,6 +8,7 @@ function SidebarItem({ Icon, label, route, actived, isExpand }) {
                 "bg-neutron-4 text-primary-1": actived,
                 "hover:bg-neutron-2": !actived,
             })}
+            onClick={onClick}
         >
             <div className="w-[46px] text-5xl">
                 <Icon />

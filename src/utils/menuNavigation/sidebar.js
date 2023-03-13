@@ -1,41 +1,42 @@
 import { BsGear } from "react-icons/bs"
 import { OeeIcon, CommandIcon, DowntimeIcon, QuantityIcon, ResourceIcon, ScheduleIcon } from "@/components/Icons"
+import { paths } from "@/config"
 
 const SIDEBAR_ITEMS = [
     {
         label: "Chỉ số OEE",
         icon: OeeIcon,
-        route: "",
+        route: paths.oee,
     },
     {
         label: "Thời gian chết",
         icon: DowntimeIcon,
-        route: "",
+        route: paths.downtime,
     },
     {
         label: "Sản lượng",
         icon: QuantityIcon,
-        route: "",
+        route: paths.quantity,
     },
     {
         label: "Lệnh sản xuất",
         icon: CommandIcon,
-        route: "",
+        route: paths.command,
     },
     {
         label: "Kế hoạch sản xuất",
         icon: ScheduleIcon,
-        route: "",
+        route: paths.schedule,
     },
     {
         label: "Nguồn lực",
         icon: ResourceIcon,
-        route: "",
+        route: paths.resource,
     },
     {
         label: "Thiết lập",
         icon: BsGear,
-        route: "",
+        route: paths.setting,
     },
 ]
 
