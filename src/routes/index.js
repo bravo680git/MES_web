@@ -53,7 +53,7 @@ const routes = [
     {
         path: paths.equipment,
         title: "Quản lý thiết bị",
-        component: "div",
+        component: Pages.EquipmentPage,
         layout: "main",
     },
     {

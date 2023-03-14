@@ -77,3 +77,27 @@ export const WORKER_INFO_TABLE_COLUMNS = [
         disableSortBy: true,
     },
 ]
+
+//equipment
+export const EQUIPMENT_INFO_TABLE_COLUMNS = [
+    {
+        Header: "ID",
+        accessor: "id",
+        disableSortBy: false,
+    },
+    {
+        Header: "Tên thiết bị",
+        accessor: "name",
+        disableSortBy: false,
+    },
+    {
+        Header: "Loại thiết bị",
+        accessor: "type",
+        disableSortBy: true,
+    },
+    {
+        Header: "Mô tả",
+        accessor: "description",
+        disableSortBy: true,
+    },
+]
