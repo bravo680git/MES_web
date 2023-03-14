@@ -59,7 +59,7 @@ const routes = [
     {
         path: paths.material,
         title: "Quản lý vật tư",
-        component: "div",
+        component: Pages.MaterialPage,
         layout: "main",
     },
     {
