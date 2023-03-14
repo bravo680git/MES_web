@@ -4,7 +4,7 @@ import { HiPencil } from "react-icons/hi"
 import { BiSortDown, BiSortUp } from "react-icons/bi"
 import cl from "classnames"
 
-function Table({ activable, onRowClick, onEdit, headers = [], body = [], className, primary }) {
+function Table({ activable, onRowClick, onEdit, headers = [], body = [], className, primary, sticky }) {
     const [activeId, setActiveId] = useState(null)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -14,15 +14,20 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
     const tableInstance = useTable({ columns, data }, useSortBy)
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance
 
-    const handleRowClick = (id) => {
+    const handleRowClick = (row) => {
         if (!onRowClick) return
 
-        setActiveId(id)
-        onRowClick(id)
+        setActiveId(row.id)
+        onRowClick(row.original.id ?? row.id)
+    }
+
+    const handleEdit = (e, row) => {
+        e.stopPropagation()
+        onEdit(row.original.id ?? row.id)
     }
 
     return (
-        <div data-component="Table" className={cl("relative px-2", className)}>
+        <div data-component="Table" className={cl(className)}>
             <table
                 {...getTableProps()}
                 className={cl("w-full table-auto", {
@@ -32,15 +37,15 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
             >
                 {activable ? (
                     <>
-                        <thead className="sticky top-0">
+                        <thead
+                            className={cl({
+                                "sticky top-0 z-10": sticky,
+                                "bg-primary-1": primary,
+                                "bg-primary-2": !primary,
+                            })}
+                        >
                             {headerGroups.map((headerGroup) => (
-                                <tr
-                                    {...headerGroup.getHeaderGroupProps()}
-                                    className={cl("text-16-b text-neutron-4", {
-                                        "bg-primary-1": primary,
-                                        "bg-primary-2": !primary,
-                                    })}
-                                >
+                                <tr {...headerGroup.getHeaderGroupProps()} className={cl("text-16-b text-neutron-4")}>
                                     {headerGroup.headers.map((column) => (
                                         <th
                                             {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -76,7 +81,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                             "cursor-pointer hover:bg-hoverBg": onRowClick && activeId !== row.id,
                                             "bg-primary-2 text-neutron-4": activeId === row.id,
                                         })}
-                                        onClick={() => handleRowClick(row.id)}
+                                        onClick={() => handleRowClick(row)}
                                     >
                                         {row.cells.map((cell, index) => (
                                             <td
@@ -89,9 +94,9 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                                         className={cl(
                                                             "absolute right-3 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
                                                             "flex items-center justify-center rounded-full bg-accent-1 text-neutron-4",
-                                                            "heading-20-b",
+                                                            "heading-20-b cursor-pointer",
                                                         )}
-                                                        onClick={() => onEdit(row.id)}
+                                                        onClick={(e) => handleEdit(e, row)}
                                                     >
                                                         <HiPencil />
                                                     </i>
@@ -105,7 +110,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                     </>
                 ) : (
                     <>
-                        <thead className="sticky top-0 bg-neutron-4">
+                        <thead className={cl({ "sticky top-0 z-10 bg-neutron-4": sticky })}>
                             {headerGroups.map((headerGroup) => (
                                 <tr className="text-16-b text-left " {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map((column) => (
@@ -138,7 +143,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                         className={cl(" rounded-md bg-neutron-4", {
                                             "cursor-pointer hover:bg-hoverBg": onRowClick,
                                         })}
-                                        onClick={() => handleRowClick(row.id)}
+                                        onClick={() => handleRowClick(row)}
                                     >
                                         {row.cells.map((cell) => (
                                             <td

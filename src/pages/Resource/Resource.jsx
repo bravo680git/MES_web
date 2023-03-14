@@ -33,8 +33,8 @@ function Resource() {
     }
 
     return (
-        <div data-component="Resource" className="container flex">
-            <div className="w-1/3 pr-[30px]">
+        <div data-component="Resource" className="container flex h-full flex-wrap">
+            <div className="h-full w-1/3 pr-[30px] xl:mb-4 xl:h-full xl:w-full xl:pr-0">
                 <ResourceItem
                     label="Nhân viên"
                     headers={WORKER_TABLE_COLUMNS}
@@ -43,7 +43,7 @@ function Resource() {
                     onBtnClick={(e) => handleCreateBtnCLick(e, "worker")}
                 />
             </div>
-            <div className="w-1/3 pr-[30px]">
+            <div className="h-full w-1/3 pr-[30px] xl:mb-2 xl:h-full xl:w-full xl:pr-0">
                 <ResourceItem
                     label="Thiết bị"
                     headers={EQUIPMENT_TABLE_COLUMNS}
@@ -52,7 +52,7 @@ function Resource() {
                     onBtnClick={(e) => handleCreateBtnCLick(e, "equipment")}
                 />
             </div>
-            <div className="w-1/3">
+            <div className="h-full w-1/3 xl:h-full xl:w-full">
                 <ResourceItem
                     label="Vật tư"
                     headers={MATERIAL_TABLE_COLUMNS}

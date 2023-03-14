@@ -47,7 +47,7 @@ const routes = [
     {
         path: paths.worker,
         title: "Quản lý nhân viên",
-        component: "div",
+        component: Pages.WorkerPage,
         layout: "main",
     },
     {

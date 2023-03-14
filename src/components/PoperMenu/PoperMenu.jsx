@@ -63,7 +63,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
     }, [validateRows.valid.length, validateRows.total])
 
     return createPortal(
-        <div data-component="PoperMenu" className="fixed top-0 left-0 right-0 bottom-0 bg-hoverBg">
+        <div data-component="PoperMenu" className="fixed top-0 left-0 right-0 bottom-0 z-10 bg-hoverBg">
             <Card className="fixed" style={{ ...position, width, minWidth: "400px" }}>
                 <div className="flex items-center">
                     <Button small transparent onClick={handleBack}>
