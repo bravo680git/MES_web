@@ -1,5 +1,5 @@
 import { paths } from "@/config"
-import NotFoundPage from "@/pages/NotFound"
+import * as Pages from "@/pages"
 
 const routes = [
     {
@@ -41,7 +41,7 @@ const routes = [
     {
         path: paths.resource,
         title: "Quản lý nguồn lực",
-        component: "div",
+        component: Pages.ResourcePage,
         layout: "main",
     },
     {
@@ -70,7 +70,7 @@ const routes = [
     },
     {
         path: "*",
-        component: NotFoundPage,
+        component: Pages.NotFoundPage,
         layout: null,
     },
 ]

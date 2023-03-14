@@ -22,7 +22,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
     }
 
     return (
-        <div data-component="Table" className={cl("p-2", className)}>
+        <div data-component="Table" className={cl("relative px-2", className)}>
             <table
                 {...getTableProps()}
                 className={cl("w-full table-auto", {
@@ -32,7 +32,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
             >
                 {activable ? (
                     <>
-                        <thead>
+                        <thead className="sticky top-0">
                             {headerGroups.map((headerGroup) => (
                                 <tr
                                     {...headerGroup.getHeaderGroupProps()}
@@ -105,7 +105,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                     </>
                 ) : (
                     <>
-                        <thead className="">
+                        <thead className="sticky top-0 bg-neutron-4">
                             {headerGroups.map((headerGroup) => (
                                 <tr className="text-16-b text-left " {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map((column) => (

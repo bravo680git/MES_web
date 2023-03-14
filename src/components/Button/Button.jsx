@@ -15,7 +15,7 @@ function Button({ children, small, large, className, transparent, onClick, disab
                     "bg-accent-1 text-neutron-4": !transparent,
                     "text-16-b h-[30px] bg-primary-2": small,
                     "title-24 h-[50px]": large,
-                    "heading-20 h-10": !(small || large),
+                    "heading-20-b h-10": !(small || large),
                     "hover hover:cursor-not-allowed": disabled,
                     "hover:hover": !disabled,
                 },
