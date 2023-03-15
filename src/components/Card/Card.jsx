@@ -4,7 +4,7 @@ function Card({ children, onCLick, className, ...props }) {
     return (
         <div
             data-component="Card"
-            className={cl("rounded-xl bg-neutron-4 p-[30px] shadow-main", className)}
+            className={cl("rounded-xl bg-neutron-4 p-5 shadow-main", className)}
             onClick={onCLick}
             {...props}
         >

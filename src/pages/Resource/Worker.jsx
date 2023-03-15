@@ -50,7 +50,7 @@ function Worker() {
                 )}
             </div>
 
-            <div className="scroll-y h-full  w-[640px] pb-4 pl-[30px] xl:mt-4 xl:pl-0">
+            <div className="scroll-y h-full  w-[640px] pb-4 pl-5 xl:mt-4 xl:pl-0">
                 <div className="">
                     <h3 className="ml-1 mb-1">Thuộc tính nhân viên</h3>
                     <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={PROPERTIES_MOCK_DATA} />

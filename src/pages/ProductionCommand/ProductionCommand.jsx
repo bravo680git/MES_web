@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 
 import Card from "@/components/Card"
 import Button from "@/components/Button"
@@ -8,6 +9,7 @@ import PoperMenu from "@/components/PoperMenu"
 import { usePoperMenu } from "@/hooks"
 import { PRODUCTION_COMMAND_TABLE_COLUMNS, PRODUCT_LIST_TABLE_COLUMNS } from "@/utils/tableColumns"
 import { getProductionCommandMenuNav, getProductMenuNav } from "@/utils/menuNavigation"
+import { paths } from "@/config"
 import {
     PRODUCTION_COMMAND_MOCK_DATA,
     PRODUCT_LIST_MOCK_DATA,
@@ -19,6 +21,7 @@ import {
 function ProductionCommand() {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
     const [menuNav, setMenuNav] = useState()
+    const navigate = useNavigate()
 
     const handler = useMemo(
         () => ({
@@ -43,9 +46,13 @@ function ProductionCommand() {
         console.log(value)
     }
 
+    const handleShowProduct = (row) => {
+        navigate(paths.command + "/products/" + row.id)
+    }
+
     return (
         <div data-component="ProductionCommand" className="container flex h-full">
-            <Card className="mr-[30px] h-full grow">
+            <Card className="mr-5 h-full grow">
                 <div className="mb-5 flex items-center justify-between">
                     <h3>Danh sách lệnh sản xuất</h3>
                     <Button large>Lên kế hoạch sx</Button>
@@ -61,7 +68,12 @@ function ProductionCommand() {
             <Card className="h-full w-[480px]">
                 <h3 className="mb-5">Danh sách sản phẩm</h3>
                 <div className="scroll-y h-[calc(100%-60px)]">
-                    <Table headers={PRODUCT_LIST_TABLE_COLUMNS} body={PRODUCT_LIST_MOCK_DATA} sticky />
+                    <Table
+                        headers={PRODUCT_LIST_TABLE_COLUMNS}
+                        body={PRODUCT_LIST_MOCK_DATA}
+                        sticky
+                        onRowClick={handleShowProduct}
+                    />
                     <Button className="mt-4" onClick={(e) => handleOpenPoperMenu(e, "product")}>
                         Sản phẩm mới
                     </Button>

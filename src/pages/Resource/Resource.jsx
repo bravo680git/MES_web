@@ -34,7 +34,7 @@ function Resource() {
 
     return (
         <div data-component="Resource" className="container flex h-full flex-wrap">
-            <div className="h-full w-1/3 pr-[30px] xl:mb-4 xl:h-full xl:w-full xl:pr-0">
+            <div className="h-full w-1/3 pr-5 xl:mb-4 xl:h-full xl:w-full xl:pr-0">
                 <ResourceItem
                     label="Nhân viên"
                     headers={WORKER_TABLE_COLUMNS}
@@ -43,7 +43,7 @@ function Resource() {
                     onBtnClick={(e) => handleCreateBtnCLick(e, "worker")}
                 />
             </div>
-            <div className="h-full w-1/3 pr-[30px] xl:mb-2 xl:h-full xl:w-full xl:pr-0">
+            <div className="h-full w-1/3 pr-5 xl:mb-2 xl:h-full xl:w-full xl:pr-0">
                 <ResourceItem
                     label="Thiết bị"
                     headers={EQUIPMENT_TABLE_COLUMNS}

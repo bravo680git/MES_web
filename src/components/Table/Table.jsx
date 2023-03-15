@@ -10,12 +10,12 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
         if (!onRowClick) return
 
         setActiveId(row.id)
-        onRowClick(row.original.id ?? row.id)
+        onRowClick(row)
     }
 
     const handleEdit = (e, row) => {
         e.stopPropagation()
-        onEdit(row.original.id ?? row.id)
+        onEdit(row)
     }
 
     return (
