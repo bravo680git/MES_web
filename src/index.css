@@ -82,6 +82,21 @@ h4 {
         border-radius: inherit;
         content: "";
     }
+
+    .overlay-x {
+        overflow-x: overlay;
+    }
+
+    .overlay-y {
+        overflow-y: overlay;
+    }
+
+    .scroll-x {
+        @apply hover:overlay-x overflow-x-hidden pr-1;
+    }
+    .scroll-y {
+        @apply hover:overlay-y overflow-y-hidden pr-1;
+    }
 }
 
 /* width */

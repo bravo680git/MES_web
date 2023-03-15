@@ -25,7 +25,7 @@ function Material() {
     return (
         <div data-component="Material" className="container flex h-full xl:flex-wrap">
             <div className="relative h-full grow xl:w-full">
-                <div className="h-[calc(100%-60px)] overflow-y-hidden hover:overflow-y-scroll">
+                <div className="scroll-y h-[calc(100%-60px)]">
                     <Table
                         activable
                         primary
@@ -50,7 +50,7 @@ function Material() {
                 )}
             </div>
 
-            <div className="h-full w-[640px] overflow-y-hidden pb-4 pl-[30px] hover:overflow-y-scroll xl:mt-4 xl:pl-0">
+            <div className="scroll-y h-full w-[640px] pb-4 pl-[30px] xl:mt-4 xl:pl-0">
                 <div className="">
                     <h3 className="ml-1 mb-1">Thuộc tính vật tư</h3>
                     <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={PROPERTIES_MOCK_DATA} />

@@ -7,9 +7,7 @@ function MainLayout({ children, title }) {
             </aside>
             <div className="grow p-[30px]">
                 <h1>{title}</h1>
-                <main className="mt-[30px] h-[calc(100vh-138px)] xl:overflow-y-hidden xl:hover:overflow-y-scroll">
-                    {children}
-                </main>
+                <main className="xl:scroll-y mt-[30px] h-[calc(100vh-138px)]">{children}</main>
             </div>
         </div>
     )

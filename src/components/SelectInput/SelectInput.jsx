@@ -128,7 +128,7 @@ function SelectInput({
                 <div
                     className={cl(
                         "absolute left-[60%] top-[110%] min-w-[100px] origin-top-left rounded-l",
-                        "max-h-[300px] overflow-y-hidden bg-neutron-4 py-4 shadow-sub hover:overflow-y-scroll",
+                        "scroll-y  max-h-[300px] bg-neutron-4 py-4 shadow-sub",
                         {
                             block: focus,
                             hidden: !focus,

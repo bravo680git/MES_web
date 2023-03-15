@@ -23,12 +23,7 @@ function ResourceItem({ label, quantiy, headers, body, onLabelClick, onBtnClick 
                 </div>
             </div>
 
-            <Table
-                headers={headers}
-                body={body}
-                className="h-[calc(100%-138px)] overflow-y-hidden hover:overflow-y-scroll"
-                sticky
-            />
+            <Table headers={headers} body={body} className="scroll-y h-[calc(100%-138px)]" sticky />
         </Card>
     )
 }
