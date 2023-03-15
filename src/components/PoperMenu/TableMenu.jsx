@@ -8,6 +8,7 @@ import { getMenuItemValue as getValue, getMenuTableData } from "@/utils/function
 
 function TableMenu({ headers, subNav, value, setValue, path }) {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
+    const tableBody = getMenuTableData(getValue(value, path), subNav[0].id)
 
     const handleClick = (v) => {
         if (getValue(value, path)) {
@@ -19,7 +20,7 @@ function TableMenu({ headers, subNav, value, setValue, path }) {
 
     return (
         <div data-component="TableMenu">
-            <Table headers={headers} body={getMenuTableData(getValue(value, path), subNav[0].id)} />
+            <Table headers={headers} body={tableBody} />
             <Button small className="mt-4 text-2xl" onClick={handleOpen}>
                 <AiOutlinePlus />
             </Button>

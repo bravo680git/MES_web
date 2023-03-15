@@ -4,6 +4,7 @@ const paths = {
     downtime: "/downtime",
     quantity: "/product-quantity",
     command: "/production-command",
+    product: "/production-command/products/:productId",
     schedule: "/production-schedule",
 
     resource: "/resource",

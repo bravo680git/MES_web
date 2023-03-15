@@ -1,6 +1,6 @@
 import { PROPERTIES_TABLE_COLUMNS } from "@/utils/tableColumns"
 
-export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialList, segmentList, relationList) => [
+export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialList, relationList) => [
     {
         id: "productInfo",
         title: "Thông tin sản phẩm",
@@ -64,21 +64,6 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
                 disableSortBy: false,
             },
             {
-                Header: "Bộ phận",
-                accessor: "workerType",
-                disableSortBy: false,
-            },
-            {
-                Header: "Loại thiết bị",
-                accessor: "equipmentType",
-                disableSortBy: false,
-            },
-            {
-                Header: "Vật tư",
-                accessor: "material",
-                disableSortBy: false,
-            },
-            {
                 Header: "Thời gian(giờ)",
                 accessor: "duration",
                 disableSortBy: false,
@@ -119,7 +104,7 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
                     },
                     {
                         id: "material",
-                        type: "text",
+                        type: "selectMutils",
                         label: "Vật tư",
                         list: materialList,
                     },
@@ -179,7 +164,7 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
         type: "table",
         headers: [
             {
-                Header: "Công đoạn A",
+                Header: "ID công đoạn A",
                 accessor: "segmentA",
                 disableSortBy: false,
             },
@@ -189,7 +174,7 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
                 disableSortBy: false,
             },
             {
-                Header: "Công đoạn B",
+                Header: "ID công đoạn B",
                 accessor: "segmentB",
                 disableSortBy: false,
             },
@@ -207,21 +192,19 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
                 items: [
                     {
                         id: "segmentA",
-                        type: "select",
-                        label: "Công đoạn A",
-                        list: segmentList,
+                        type: "text",
+                        label: "ID công đoạn A",
                     },
                     {
                         id: "relation",
                         type: "select",
-                        label: "Công đoạn B",
+                        label: "Ràng buộc",
                         list: relationList,
                     },
                     {
                         id: "segmentB",
-                        type: "select",
-                        label: "Công đoạn B",
-                        list: segmentList,
+                        type: "text",
+                        label: "ID công đoạn B",
                     },
                     {
                         id: "duration",

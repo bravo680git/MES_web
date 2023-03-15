@@ -610,3 +610,76 @@ export const SUB_SLOT_MOCK_DATA = [
         unit: "Đơn vị 5",
     },
 ]
+
+export const WORKER_TYPE_LIST = [
+    {
+        key: "Đứng máy",
+        value: "dungmay",
+    },
+    {
+        key: "Giao hàng",
+        value: "giaohang",
+    },
+    {
+        key: "Kho",
+        value: "kho",
+    },
+]
+
+export const EQUIPMENT_TYPE_LIST = [
+    {
+        key: "Máy ép nhựa",
+        value: "epnhua",
+    },
+    {
+        key: "Máy ép cao su",
+        value: "epcaosu",
+    },
+    {
+        key: "Máy ép lagging",
+        value: "lagging",
+    },
+]
+
+export const MATERIAL_LIST = [
+    {
+        key: "Nylon",
+        value: "abc123",
+    },
+    {
+        key: "Polyester",
+        value: "def456",
+    },
+    {
+        key: "Polypropylene",
+        value: "ghi789",
+    },
+    {
+        key: "Acrylic",
+        value: "jkl012",
+    },
+    {
+        key: "Rubber",
+        value: "mno345",
+    },
+    {
+        key: "Silicone",
+        value: "pqr678",
+    },
+    {
+        key: "PVC",
+        value: "stu901",
+    },
+    {
+        key: "Neoprene",
+        value: "vwx234",
+    },
+    {
+        key: "Latex",
+        value: "yzab56",
+    },
+    {
+        key: "Elastane",
+        value: "cdef78",
+    },
+]

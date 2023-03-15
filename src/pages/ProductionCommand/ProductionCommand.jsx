@@ -8,7 +8,13 @@ import PoperMenu from "@/components/PoperMenu"
 import { usePoperMenu } from "@/hooks"
 import { PRODUCTION_COMMAND_TABLE_COLUMNS, PRODUCT_LIST_TABLE_COLUMNS } from "@/utils/tableColumns"
 import { getProductionCommandMenuNav, getProductMenuNav } from "@/utils/menuNavigation"
-import { PRODUCTION_COMMAND_MOCK_DATA, PRODUCT_LIST_MOCK_DATA } from "@/utils/mockData"
+import {
+    PRODUCTION_COMMAND_MOCK_DATA,
+    PRODUCT_LIST_MOCK_DATA,
+    WORKER_TYPE_LIST,
+    MATERIAL_LIST,
+    EQUIPMENT_TYPE_LIST,
+} from "@/utils/mockData"
 
 function ProductionCommand() {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
@@ -21,7 +27,7 @@ function ProductionCommand() {
                     setMenuNav(getProductionCommandMenuNav([]))
                 },
                 product() {
-                    setMenuNav(getProductMenuNav([], [], [], [], []))
+                    setMenuNav(getProductMenuNav(WORKER_TYPE_LIST, EQUIPMENT_TYPE_LIST, MATERIAL_LIST, []))
                 },
             },
         }),
