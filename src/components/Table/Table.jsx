@@ -8,7 +8,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
     const [activeId, setActiveId] = useState(null)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const columns = useMemo(() => headers, [headers.length])
+    const columns = useMemo(() => headers)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const data = useMemo(() => body, [body.length])
     const tableInstance = useTable({ columns, data }, useSortBy)

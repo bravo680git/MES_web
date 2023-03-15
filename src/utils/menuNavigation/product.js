@@ -80,7 +80,7 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
             },
             {
                 Header: "Thời gian(giờ)",
-                accessor: "duration ",
+                accessor: "duration",
                 disableSortBy: false,
             },
         ],
@@ -132,17 +132,17 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
                 headers: [
                     {
                         Header: "Yêu cầu",
-                        accsessor: "description",
+                        accessor: "description",
                         disableSortBy: false,
                     },
                     {
                         Header: "Giá trị",
-                        accsessor: "value",
+                        accessor: "value",
                         disableSortBy: false,
                     },
                     {
                         Header: "Đơn vị",
-                        accsessor: "unit ",
+                        accessor: "unit",
                         disableSortBy: false,
                     },
                 ],
@@ -180,22 +180,22 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
         headers: [
             {
                 Header: "Công đoạn A",
-                id: "segmentA",
+                accessor: "segmentA",
                 disableSortBy: false,
             },
             {
                 Header: "Ràng buộc",
-                id: "relation",
+                accessor: "relation",
                 disableSortBy: false,
             },
             {
                 Header: "Công đoạn B",
-                id: "segmentB",
+                accessor: "segmentB",
                 disableSortBy: false,
             },
             {
                 Header: "Thời gian(giờ)",
-                id: "duration",
+                accessor: "duration",
                 disableSortBy: false,
             },
         ],
