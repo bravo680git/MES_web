@@ -3,8 +3,8 @@ const paths = {
     oee: "/oee",
     downtime: "/downtime",
     quantity: "/product-quantity",
-    command: "/manifacturing-command",
-    schedule: "/manifacturing-schedule",
+    command: "/production-command",
+    schedule: "/production-schedule",
 
     resource: "/resource",
     worker: "/resource/worker",

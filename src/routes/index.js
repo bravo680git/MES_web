@@ -29,7 +29,7 @@ const routes = [
     {
         path: paths.command,
         title: "Lệnh sản xuất",
-        component: "div",
+        component: Pages.ProductionCommand,
         layout: "main",
     },
     {
