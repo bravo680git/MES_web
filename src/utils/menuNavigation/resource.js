@@ -1,3 +1,6 @@
+import { validateRequiredField } from "@/utils/functions/validate"
+import { PROPERTIES_TABLE_COLUMNS } from "@/utils/tableColumns"
+
 export const getWorkerMenuNav = (workerTypeList) => [
     {
         id: "workerInfo",
@@ -8,11 +11,13 @@ export const getWorkerMenuNav = (workerTypeList) => [
                 id: "id",
                 type: "text",
                 label: "ID nhân viên",
+                isError: validateRequiredField,
             },
             {
                 id: "name",
                 type: "text",
                 label: "Tên nhân viên",
+                isError: validateRequiredField,
             },
             {
                 id: "description",
@@ -24,6 +29,7 @@ export const getWorkerMenuNav = (workerTypeList) => [
                 type: "selectMutils",
                 label: "Bộ phận",
                 list: workerTypeList ?? [],
+                isError: validateRequiredField,
             },
         ],
     },
@@ -31,17 +37,7 @@ export const getWorkerMenuNav = (workerTypeList) => [
         id: "workerProperties",
         title: "Thuộc tính nhân viên",
         type: "table",
-        headers: [
-            { Header: "Thuộc tính", accessor: "description" },
-            {
-                Header: "Đơn vị",
-                accessor: "unit",
-            },
-            {
-                Header: "Giá trị",
-                accessor: "value",
-            },
-        ],
+        headers: PROPERTIES_TABLE_COLUMNS,
         subNav: [
             {
                 id: "property",
@@ -52,16 +48,19 @@ export const getWorkerMenuNav = (workerTypeList) => [
                         id: "description",
                         type: "text",
                         label: "Mô tả",
+                        isError: validateRequiredField,
                     },
                     {
                         id: "unit",
                         type: "text",
                         label: "Đơn vị",
+                        isError: validateRequiredField,
                     },
                     {
                         id: "value",
                         type: "text",
                         label: "Giá trị",
+                        isError: validateRequiredField,
                     },
                 ],
             },
@@ -79,11 +78,13 @@ export const getEquipmentMenuNav = (equipmentTypeList) => [
                 id: "id",
                 type: "text",
                 label: "ID thiết bị",
+                isError: validateRequiredField,
             },
             {
                 id: "name",
                 type: "text",
                 label: "Tên thiết bị",
+                isError: validateRequiredField,
             },
             {
                 id: "description",
@@ -95,6 +96,7 @@ export const getEquipmentMenuNav = (equipmentTypeList) => [
                 type: "selectMutils",
                 label: "Loại thiết bị",
                 list: equipmentTypeList ?? [],
+                isError: validateRequiredField,
             },
         ],
     },
@@ -102,17 +104,7 @@ export const getEquipmentMenuNav = (equipmentTypeList) => [
         id: "equipmentProperties",
         title: "Thuộc tính thiết bị",
         type: "table",
-        headers: [
-            { Header: "Thuộc tính", accessor: "description" },
-            {
-                Header: "Đơn vị",
-                accessor: "unit",
-            },
-            {
-                Header: "Giá trị",
-                accessor: "value",
-            },
-        ],
+        headers: PROPERTIES_TABLE_COLUMNS,
         subNav: [
             {
                 id: "property",
@@ -123,16 +115,19 @@ export const getEquipmentMenuNav = (equipmentTypeList) => [
                         id: "description",
                         type: "text",
                         label: "Mô tả",
+                        isError: validateRequiredField,
                     },
                     {
                         id: "unit",
                         type: "text",
                         label: "Đơn vị",
+                        isError: validateRequiredField,
                     },
                     {
                         id: "value",
                         type: "text",
                         label: "Giá trị",
+                        isError: validateRequiredField,
                     },
                 ],
             },
@@ -150,6 +145,7 @@ export const getMaterialMenuNav = (materialTypeList, materialSlotList) => [
                 id: "id",
                 type: "text",
                 label: "ID vật tư",
+                isError: validateRequiredField,
             },
             {
                 id: "description",
@@ -161,12 +157,14 @@ export const getMaterialMenuNav = (materialTypeList, materialSlotList) => [
                 type: "selectMutils",
                 label: "Loại vật tư",
                 list: materialTypeList ?? [],
+                isError: validateRequiredField,
             },
             {
                 id: "slot",
                 type: "select",
                 label: "Lô vật tư",
                 list: materialSlotList ?? [],
+                isError: validateRequiredField,
             },
         ],
     },
@@ -174,17 +172,7 @@ export const getMaterialMenuNav = (materialTypeList, materialSlotList) => [
         id: "materialProperties",
         title: "Thuộc tính vật tư",
         type: "table",
-        headers: [
-            { Header: "Thuộc tính", accessor: "description" },
-            {
-                Header: "Đơn vị",
-                accessor: "unit",
-            },
-            {
-                Header: "Giá trị",
-                accessor: "value",
-            },
-        ],
+        headers: PROPERTIES_TABLE_COLUMNS,
         subNav: [
             {
                 id: "property",
@@ -195,16 +183,19 @@ export const getMaterialMenuNav = (materialTypeList, materialSlotList) => [
                         id: "description",
                         type: "text",
                         label: "Mô tả",
+                        isError: validateRequiredField,
                     },
                     {
                         id: "unit",
                         type: "text",
                         label: "Đơn vị",
+                        isError: validateRequiredField,
                     },
                     {
                         id: "value",
                         type: "text",
                         label: "Giá trị",
+                        isError: validateRequiredField,
                     },
                 ],
             },

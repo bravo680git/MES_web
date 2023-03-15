@@ -25,3 +25,19 @@ export const handleValidateSelectInput = (length, isError, setError, setValidate
         }
     }
 }
+
+export const validateRequiredField = (value) => {
+    if (value && value.length > 0) {
+        return false
+    } else {
+        return "Vui lòng không để trống trường này"
+    }
+}
+
+export const validateNumberField = (value) => {
+    if (value && typeof Number(value) === "number") {
+        return false
+    } else {
+        return "Vui lòng nhập một số hợp lệ"
+    }
+}

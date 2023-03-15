@@ -114,7 +114,7 @@ function SelectInput({
                     </div>
                     <input
                         type="text"
-                        className="block h-5 grow pl-2 focus:outline-none"
+                        className="text-14 block h-5 grow pl-2 focus:outline-none"
                         placeholder="Nhập để tìm kiếm..."
                         onFocus={handleFocus}
                         onBlur={handleBlur}
@@ -122,7 +122,7 @@ function SelectInput({
                         value={searchInput}
                     />
                 </div>
-                <i className="absolute right-3 bottom-1" onClick={handleFocus}>
+                <i className="absolute right-3 bottom-1" onClick={() => setFocus(!focus)}>
                     <MdOutlineKeyboardArrowDown className="text-2xl" />
                 </i>
                 <div
