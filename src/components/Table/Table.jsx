@@ -70,10 +70,13 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                     >
                                         {headers.map((column, i) => (
                                             <td
-                                                className="h-11 p-2 group-last:first:rounded-bl-lg group-last:last:rounded-br-lg"
+                                                className="min-h-11 p-2 group-last:first:rounded-bl-lg group-last:last:rounded-br-lg"
                                                 key={i}
                                             >
-                                                {row[column.accessor]}
+                                                {Array.isArray(row[column.accessor])
+                                                    ? row[column.accessor].join(", ")
+                                                    : row[column.accessor]}
+
                                                 {onEdit && i === headers.length - 1 && activeId === row.id && (
                                                     <i
                                                         className={cl(
@@ -129,13 +132,15 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                         {headers.map((column, i) => (
                                             <td
                                                 className={cl(
-                                                    "h-11 border-t-[1px] border-b-[1px] border-primary-2 p-2 ",
+                                                    "min-h-11 border-t-[1px] border-b-[1px] border-primary-2 p-2 ",
                                                     "first:rounded-bl-lg first:rounded-tl-lg first:border-l-[1px]",
                                                     "last:rounded-br-lg last:rounded-tr-lg last:border-r-[1px]",
                                                 )}
                                                 key={i}
                                             >
-                                                {row[column.accessor]}
+                                                {Array.isArray(row[column.accessor])
+                                                    ? row[column.accessor].join(", ")
+                                                    : row[column.accessor]}
                                             </td>
                                         ))}
                                     </tr>

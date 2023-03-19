@@ -102,11 +102,52 @@ export const getProductMenuNav = (workerTypeList, equipmentTypeList, materialLis
                         label: "Loại thiết bị",
                         list: equipmentTypeList,
                     },
+                ],
+            },
+            {
+                id: "materials",
+                title: "Danh sách vật tư",
+                type: "table",
+                headers: [
                     {
-                        id: "material",
-                        type: "selectMutils",
-                        label: "Vật tư",
-                        list: materialList,
+                        Header: "Vật tư",
+                        accessor: "materialId",
+                        disableSortBy: false,
+                    },
+                    {
+                        Header: "Số lượng",
+                        accessor: "quantity",
+                        disableSortBy: false,
+                    },
+                    {
+                        Header: "Đơn vị",
+                        accessor: "unit",
+                        disableSortBy: false,
+                    },
+                ],
+                subNav: [
+                    {
+                        id: "material ",
+                        title: "Thêm vật tư",
+                        type: "form",
+                        items: [
+                            {
+                                id: "materialId",
+                                type: "select",
+                                label: "ID vật tư",
+                                list: materialList,
+                            },
+                            {
+                                id: "unit",
+                                type: "text",
+                                label: "Đơn vị",
+                            },
+                            {
+                                id: "quantity",
+                                type: "text",
+                                label: "Số lượng",
+                            },
+                        ],
                     },
                 ],
             },
