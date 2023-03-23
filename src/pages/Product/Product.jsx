@@ -1,4 +1,5 @@
-import cl from "classnames"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AiOutlineUnorderedList } from "react-icons/ai"
 import { BsBarChartSteps } from "react-icons/bs"
@@ -7,6 +8,7 @@ import Card from "@/components/Card"
 import Table from "@/components/Table"
 import Button from "@/components/Button"
 
+import { commonStoreActions } from "@/store"
 import {
     PROPERTIES_TABLE_COLUMNS,
     PRODUCT_SEGMENTS_TABLE_COLUMNS,
@@ -26,10 +28,15 @@ import {
 
 function Product() {
     const params = useParams()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(commonStoreActions.setPageTitle(`Chi tiết sản phẩm ${params.productId}`))
+    }, [dispatch, params.productId])
 
     return (
         <div data-component="Product" className="container h-full">
-            <h2 className="mb-4 ml-2">[{params.productId}] Sản phẩm 1</h2>
+            <h2 className="mb-4 ml-2">Sản phẩm 1</h2>
 
             <div className="h-[calc(100%-52px)]">
                 <div className="flex h-1/2 w-full pb-5">

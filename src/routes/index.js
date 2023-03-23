@@ -40,7 +40,7 @@ const routes = [
     },
     {
         path: paths.product,
-        title: "Chi tiết sản phẩm",
+        title: null,
         component: Pages.Product,
         layout: "main",
     },
