@@ -3,8 +3,8 @@ import Button from "@/components/Button"
 import PoperMenu from "@/components/PoperMenu"
 
 import { usePoperMenu } from "@/hooks"
-import { MATERIAL_INFO_TABLE_COLUMNS, PROPERTIES_TABLE_COLUMNS, SUB_SLOT_TABLE_COLUMNS } from "@/utils/tableColumns"
-import { PROPERTIES_MOCK_DATA, MATERIAL_INFO_MOCK_DATA, SUB_SLOT_MOCK_DATA } from "@/utils/mockData"
+import { MATERIAL_INFO_TABLE_COLUMNS, PROPERTIES_TABLE_COLUMNS } from "@/utils/tableColumns"
+import { PROPERTIES_MOCK_DATA, MATERIAL_INFO_MOCK_DATA } from "@/utils/mockData"
 import { getMaterialMenuNav } from "@/utils/menuNavigation"
 
 function Material() {
@@ -50,7 +50,7 @@ function Material() {
                 )}
             </div>
 
-            <div className="scroll-y h-full w-[640px] pb-4 pl-5 xl:mt-4 xl:pl-0">
+            <div className="scroll-y h-full w-[700px] pb-4 pl-5 xl:mt-4 xl:pl-0">
                 <div className="">
                     <h3 className="ml-1 mb-1">Thuộc tính vật tư</h3>
                     <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={PROPERTIES_MOCK_DATA} />
@@ -62,22 +62,6 @@ function Material() {
                 <div className="mt-4">
                     <h3 className="ml-1 mb-1">Thuộc tính loại vật tư 2</h3>
                     <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={PROPERTIES_MOCK_DATA} />
-                </div>
-                <div className="mt-4">
-                    <h3 className="ml-1 mb-1">Thuộc tính lô vật tư 1</h3>
-                    <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={PROPERTIES_MOCK_DATA} />
-                </div>
-                <div className="mt-4">
-                    <h3 className="ml-1 mb-1">Thuộc tính lô vật tư 2</h3>
-                    <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={PROPERTIES_MOCK_DATA} />
-                </div>
-                <div className="mt-4">
-                    <h3 className="ml-1 mb-1">Phân lô vật tư 1</h3>
-                    <Table activable headers={SUB_SLOT_TABLE_COLUMNS} body={SUB_SLOT_MOCK_DATA} />
-                </div>
-                <div className="mt-4">
-                    <h3 className="ml-1 mb-1">Phân lô vật tư 2</h3>
-                    <Table activable headers={SUB_SLOT_TABLE_COLUMNS} body={SUB_SLOT_MOCK_DATA} />
                 </div>
             </div>
         </div>

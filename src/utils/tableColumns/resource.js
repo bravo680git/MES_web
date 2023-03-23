@@ -119,16 +119,6 @@ export const MATERIAL_INFO_TABLE_COLUMNS = [
         accessor: "type",
         disableSortBy: true,
     },
-    {
-        Header: "Lô vật tư",
-        accessor: "slot",
-        disableSortBy: true,
-    },
-    {
-        Header: "Trạng thái lô vật tư",
-        accessor: "slotStatus",
-        disableSortBy: true,
-    },
 ]
 
 export const SUB_SLOT_TABLE_COLUMNS = [
