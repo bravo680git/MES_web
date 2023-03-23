@@ -33,6 +33,12 @@ const routes = [
         layout: "main",
     },
     {
+        path: paths.newProduct,
+        title: "Sản phẩm mới",
+        component: Pages.NewProduct,
+        layout: "main",
+    },
+    {
         path: paths.product,
         title: "Chi tiết sản phẩm",
         component: Pages.Product,

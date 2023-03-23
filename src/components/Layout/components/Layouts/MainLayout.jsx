@@ -5,9 +5,9 @@ function MainLayout({ children, title }) {
             <aside className="min-h-full">
                 <Sidebar />
             </aside>
-            <div className="grow p-5">
-                <h1>{title}</h1>
-                <main className="xl:scroll-y mt-5 h-[calc(100vh-108px)]">{children}</main>
+            <div className="grow pt-5">
+                <h1 className="px-5">{title}</h1>
+                <main className="scroll-y h-[calc(100vh-68px)] p-5">{children}</main>
             </div>
         </div>
     )

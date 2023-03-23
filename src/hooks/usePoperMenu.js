@@ -11,11 +11,11 @@ const usePoperMenu = () => {
             left = x,
             right = null,
             bottom = null
-        if (x > (window.innerWidth * 2) / 3) {
+        if (x > window.innerWidth / 2) {
             right = window.innerWidth - x
             left = null
         }
-        if (y > (window.innerHeight * 2) / 3) {
+        if (y > window.innerHeight / 2) {
             bottom = window.innerHeight - y
             top = null
         }

@@ -1,4 +1,3 @@
-import { useState, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 
 import Card from "@/components/Card"
@@ -8,39 +7,13 @@ import PoperMenu from "@/components/PoperMenu"
 
 import { usePoperMenu } from "@/hooks"
 import { PRODUCTION_COMMAND_TABLE_COLUMNS, PRODUCT_LIST_TABLE_COLUMNS } from "@/utils/tableColumns"
-import { getProductionCommandMenuNav, getProductMenuNav } from "@/utils/menuNavigation"
+import { getProductionCommandMenuNav } from "@/utils/menuNavigation"
 import { paths } from "@/config"
-import {
-    PRODUCTION_COMMAND_MOCK_DATA,
-    PRODUCT_LIST_MOCK_DATA,
-    WORKER_TYPE_LIST,
-    MATERIAL_LIST,
-    EQUIPMENT_TYPE_LIST,
-} from "@/utils/mockData"
+import { PRODUCTION_COMMAND_MOCK_DATA, PRODUCT_LIST_MOCK_DATA } from "@/utils/mockData"
 
 function ProductionCommand() {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
-    const [menuNav, setMenuNav] = useState()
     const navigate = useNavigate()
-
-    const handler = useMemo(
-        () => ({
-            openPoperMenu: {
-                productionCommand() {
-                    setMenuNav(getProductionCommandMenuNav([]))
-                },
-                product() {
-                    setMenuNav(getProductMenuNav(WORKER_TYPE_LIST, EQUIPMENT_TYPE_LIST, MATERIAL_LIST, []))
-                },
-            },
-        }),
-        [],
-    )
-
-    const handleOpenPoperMenu = (e, type) => {
-        handler.openPoperMenu[type]()
-        handleOpen(e)
-    }
 
     const handleSubmit = (value) => {
         console.log(value)
@@ -59,7 +32,7 @@ function ProductionCommand() {
                 </div>
                 <div className="scroll-y h-[calc(100%-60px)]">
                     <Table headers={PRODUCTION_COMMAND_TABLE_COLUMNS} body={PRODUCTION_COMMAND_MOCK_DATA} sticky />
-                    <Button large className="mt-2" onClick={(e) => handleOpenPoperMenu(e, "productionCommand")}>
+                    <Button large className="mt-2" onClick={handleOpen}>
                         Lệnh sản xuất mới
                     </Button>
                 </div>
@@ -74,14 +47,19 @@ function ProductionCommand() {
                         sticky
                         onRowClick={handleShowProduct}
                     />
-                    <Button className="mt-4" onClick={(e) => handleOpenPoperMenu(e, "product")}>
+                    <Button className="mt-4" onClick={() => navigate(paths.newProduct)}>
                         Sản phẩm mới
                     </Button>
                 </div>
             </Card>
 
-            {active && menuNav && (
-                <PoperMenu menuNavigaton={menuNav} position={position} onClose={handleClose} onClick={handleSubmit} />
+            {active && (
+                <PoperMenu
+                    menuNavigaton={getProductionCommandMenuNav([])}
+                    position={position}
+                    onClose={handleClose}
+                    onClick={handleSubmit}
+                />
             )}
         </div>
     )

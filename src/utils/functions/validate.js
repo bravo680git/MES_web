@@ -1,6 +1,8 @@
 export const handleValidateTextInput = (isError, setError, value, setValidateRows, rowId) => {
     if (isError) {
         setError(isError(value))
+
+        if (!setValidateRows) return
         if (isError(value)) {
             setValidateRows((prev) => ({ ...prev, valid: prev.valid.filter((v) => v !== rowId) }))
         } else {
@@ -15,6 +17,8 @@ export const handleValidateTextInput = (isError, setError, value, setValidateRow
 export const handleValidateSelectInput = (length, isError, setError, setValidateRows, rowId) => {
     if (isError) {
         setError(isError(length))
+
+        if (!setValidateRows) return
         if (!isError(length)) {
             setValidateRows((prev) => ({
                 ...prev,

@@ -32,3 +32,12 @@ export const getUpdatedMenuValue = (value, itemValue, path = [], id) => {
 export const getMenuTableData = (value, id) => {
     return value?.map((v) => v[id])
 }
+
+export const getSegmentOptionList = (segmentList) => {
+    const segments = segmentList.productSegments
+
+    return segments?.map((item) => ({
+        key: item.segment.name,
+        value: item.segment.id,
+    }))
+}
