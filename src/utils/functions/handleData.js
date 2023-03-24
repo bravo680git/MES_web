@@ -41,3 +41,22 @@ export const getSegmentOptionList = (segmentList) => {
         value: item.segment.id,
     }))
 }
+
+export const formatNumberValue = (value, format) => {
+    if (isNaN(value)) {
+        return value
+    } else {
+        value = Number(value)
+    }
+
+    switch (typeof format) {
+        case "boolean":
+            return Math.round(value)
+        case "number":
+            return value.toFixed(format)
+        case "function":
+            return format(value)
+        default:
+            return value
+    }
+}
