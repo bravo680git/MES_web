@@ -47,6 +47,10 @@ function ResourceClass() {
         [],
     )
 
+    const handleCLick = (value) => {
+        console.log(value)
+    }
+
     useEffect(() => {
         dispatch(commonStoreActions.setPageTitle(handler.title[params.type]))
     }, [dispatch, params.type, handler])
@@ -62,7 +66,12 @@ function ResourceClass() {
                 </Button>
 
                 {active && (
-                    <PoperMenu position={position} onClose={handleClose} menuNavigaton={handler.menuNav[params.type]} />
+                    <PoperMenu
+                        position={position}
+                        onClose={handleClose}
+                        menuNavigaton={handler.menuNav[params.type]}
+                        onClick={handleCLick}
+                    />
                 )}
             </div>
 

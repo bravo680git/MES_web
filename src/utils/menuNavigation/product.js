@@ -1,5 +1,10 @@
 import { PROPERTIES_TABLE_COLUMNS } from "@/utils/tableColumns"
-import { validateRequiredField, validateNumberField } from "@/utils/functions/validate"
+import {
+    validateRequiredField,
+    validateNumberField,
+    validateIdField,
+    validateDescField,
+} from "@/utils/functions/validate"
 
 export const productMenuNav = {
     getInfo: () => ({
@@ -11,13 +16,13 @@ export const productMenuNav = {
                 id: "id",
                 type: "text",
                 label: "ID sản phẩm",
-                isError: validateRequiredField,
+                isError: validateIdField,
             },
             {
                 id: "name",
                 type: "text",
                 label: "Tên sản phẩm",
-                isError: validateRequiredField,
+                isError: validateIdField,
             },
         ],
     }),
@@ -71,6 +76,21 @@ export const productMenuNav = {
                 disableSortBy: false,
             },
             {
+                Header: "Số loại nhân viên",
+                accessor: "workerTypeCount",
+                disableSortBy: false,
+            },
+            {
+                Header: "Số loại thiết bị",
+                accessor: "equipmentTypeCount",
+                disableSortBy: false,
+            },
+            {
+                Header: "Số vật tư",
+                accessor: "materialCount",
+                disableSortBy: false,
+            },
+            {
                 Header: "Thời gian(giờ)",
                 accessor: "duration",
                 disableSortBy: false,
@@ -86,13 +106,13 @@ export const productMenuNav = {
                         id: "id",
                         type: "text",
                         label: "ID",
-                        isError: validateRequiredField,
+                        isError: validateIdField,
                     },
                     {
                         id: "name",
                         type: "text",
                         label: "Tên công đoạn",
-                        isError: validateRequiredField,
+                        isError: validateIdField,
                     },
                     {
                         id: "duration",
@@ -104,16 +124,21 @@ export const productMenuNav = {
             },
             {
                 id: "workerTypes",
-                title: "Danh sách bộ phận liên quan",
+                title: "Danh sách loại nhân viên",
                 type: "table",
                 headers: [
                     {
-                        Header: "Bộ phận",
-                        accessor: "materialId",
+                        Header: "ID loại nhân viên",
+                        accessor: "id",
                         disableSortBy: false,
                     },
                     {
-                        Header: "Số lượng công nhân",
+                        Header: "Mô tả",
+                        accessor: "id",
+                        disableSortBy: false,
+                    },
+                    {
+                        Header: "Số lượng",
                         accessor: "quantity",
                         disableSortBy: false,
                     },
@@ -145,6 +170,7 @@ export const productMenuNav = {
                                 id: "quantity",
                                 type: "text",
                                 label: "Số lượng",
+                                isError: validateNumberField,
                             },
                         ],
                     },
@@ -156,8 +182,13 @@ export const productMenuNav = {
                 type: "table",
                 headers: [
                     {
-                        Header: "Loại thiết bị",
-                        accessor: "equipmentType",
+                        Header: "ID loại thiết bị",
+                        accessor: "id",
+                        disableSortBy: false,
+                    },
+                    {
+                        Header: "Mô tả",
+                        accessor: "description",
                         disableSortBy: false,
                     },
                     {
@@ -193,6 +224,7 @@ export const productMenuNav = {
                                 id: "quantity",
                                 type: "text",
                                 label: "Số lượng",
+                                isError: validateNumberField,
                             },
                         ],
                     },
@@ -204,8 +236,13 @@ export const productMenuNav = {
                 type: "table",
                 headers: [
                     {
-                        Header: "Vật tư",
-                        accessor: "materialId",
+                        Header: "ID vật tư",
+                        accessor: "id",
+                        disableSortBy: false,
+                    },
+                    {
+                        Header: "Mô tả",
+                        accessor: "description",
                         disableSortBy: false,
                     },
                     {
@@ -241,6 +278,7 @@ export const productMenuNav = {
                                 id: "quantity",
                                 type: "text",
                                 label: "Số lượng",
+                                isError: validateNumberField,
                             },
                         ],
                     },
@@ -283,7 +321,6 @@ export const productMenuNav = {
                                 id: "unit",
                                 type: "text",
                                 label: "Đơn vị",
-                                isError: validateRequiredField,
                             },
                             {
                                 id: "value",
@@ -354,6 +391,7 @@ export const productMenuNav = {
                         id: "duration",
                         type: "text",
                         label: "Thời gian(giờ)",
+                        isError: validateNumberField,
                     },
                 ],
             },

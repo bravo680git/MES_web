@@ -36,7 +36,7 @@ function SelectInput({
     const handleRemoveItem = (v) => {
         const newValue = value.filter((item) => item !== v)
         setValue(newValue, id)
-        handleValidateSelectInput(newValue.length, isError, setError, setValidateRows, id)
+        handleValidateSelectInput(newValue, isError, setError, setValidateRows, id)
     }
 
     const handleFocus = () => {
@@ -48,7 +48,7 @@ function SelectInput({
 
     const handleBlur = () => {
         setFocus(false)
-        handleValidateSelectInput(value.length, isError, setError, setValidateRows, id)
+        handleValidateSelectInput(value, isError, setError, setValidateRows, id)
     }
 
     useEffect(() => {
