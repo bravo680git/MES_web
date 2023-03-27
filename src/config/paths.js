@@ -13,6 +13,8 @@ const paths = {
     equipment: "/resource/equipment",
     material: "/resource/material",
 
+    class: "/resource/:type/class",
+
     setting: "/setting",
 }
 

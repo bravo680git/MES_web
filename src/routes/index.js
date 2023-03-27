@@ -57,6 +57,12 @@ const routes = [
         layout: "main",
     },
     {
+        path: paths.class,
+        title: null,
+        component: Pages.ResourceClassPage,
+        layout: "main",
+    },
+    {
         path: paths.worker,
         title: "Quản lý nhân viên",
         component: Pages.WorkerPage,

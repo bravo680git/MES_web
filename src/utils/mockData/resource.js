@@ -633,3 +633,26 @@ export const MATERIAL_LIST = [
         value: "cdef78",
     },
 ]
+
+export const CLASS_MOCK_DATA = [
+    { id: 1, description: "Loại 1" },
+    { id: 2, description: "Loại 2" },
+    { id: 3, description: "Loại 3" },
+    { id: 4, description: "Loại 4" },
+    { id: 5, description: "Loại 5" },
+    { id: 6, description: "Loại 6" },
+    { id: 7, description: "Loại 7" },
+    { id: 8, description: "Loại 8" },
+    { id: 9, description: "Loại 9" },
+    { id: 10, description: "Loại 10" },
+    { id: 11, description: "Loại 11" },
+    { id: 12, description: "Loại 12" },
+    { id: 13, description: "Loại 13" },
+    { id: 14, description: "Loại 14" },
+    { id: 15, description: "Loại 15" },
+    { id: 16, description: "Loại 16" },
+    { id: 17, description: "Loại 17" },
+    { id: 18, description: "Loại 18" },
+    { id: 19, description: "Loại 19" },
+    { id: 20, description: "Loại 20" },
+]
