@@ -13,9 +13,9 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
         onRowClick(row)
     }
 
-    const handleEdit = (e, row) => {
+    const handleEdit = (e, row, index) => {
         e.stopPropagation()
-        onEdit(row)
+        onEdit(e, row, index)
     }
 
     return (
@@ -132,7 +132,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                         {headers.map((column, i) => (
                                             <td
                                                 className={cl(
-                                                    "min-h-11 border-t-[1px] border-b-[1px] border-primary-2 p-2 ",
+                                                    "min-h-11 relative border-t-[1px] border-b-[1px] border-primary-2 p-2",
                                                     "first:rounded-bl-lg first:rounded-tl-lg first:border-l-[1px]",
                                                     "last:rounded-br-lg last:rounded-tr-lg last:border-r-[1px]",
                                                 )}
@@ -141,6 +141,19 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                                 {Array.isArray(row[column.accessor])
                                                     ? row[column.accessor].join(", ")
                                                     : row[column.accessor]}
+
+                                                {onEdit && i === headers.length - 1 && (
+                                                    <i
+                                                        className={cl(
+                                                            "absolute right-1 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
+                                                            "flex items-center justify-center rounded-full text-accent-1",
+                                                            "heading-20-b cursor-pointer hover:bg-hoverBg",
+                                                        )}
+                                                        onClick={(e) => handleEdit(e, row, index)}
+                                                    >
+                                                        <HiPencil />
+                                                    </i>
+                                                )}
                                             </td>
                                         ))}
                                     </tr>

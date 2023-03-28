@@ -134,7 +134,7 @@ export const productMenuNav = {
                     },
                     {
                         Header: "Mô tả",
-                        accessor: "id",
+                        accessor: "description",
                         disableSortBy: false,
                     },
                     {

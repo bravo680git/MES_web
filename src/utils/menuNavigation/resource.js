@@ -152,7 +152,7 @@ export const getMaterialMenuNav = (materialTypeList, materialSlotList) => [
 
 export const getWorkerClassMenuNav = () => [
     {
-        id: "id",
+        id: "info",
         title: "Thông tin loại nhân viên",
         type: "form",
         items: [
@@ -188,7 +188,7 @@ export const getWorkerClassMenuNav = () => [
 
 export const getEquipmentClassMenuNav = () => [
     {
-        id: "id",
+        id: "info",
         title: "Thông tin loại thiết bị",
         type: "form",
         items: [
@@ -224,7 +224,7 @@ export const getEquipmentClassMenuNav = () => [
 
 export const getMaterialClassMenuNav = (slotList) => [
     {
-        id: "id",
+        id: "info",
         title: "Thông tin loại vật tư",
         type: "form",
         items: [
