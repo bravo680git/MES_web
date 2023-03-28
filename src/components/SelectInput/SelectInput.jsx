@@ -61,6 +61,13 @@ function SelectInput({
         setOptionList(newOpList)
     }, [debounce])
 
+    //pass validate in first render if value is valid
+    useEffect(() => {
+        if (typeof isError === "function" && !isError(value)) {
+            handleValidateSelectInput(value, isError, setError, setValidateRows, id)
+        }
+    }, [])
+
     return (
         <>
             <div

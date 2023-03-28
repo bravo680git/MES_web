@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react"
 import cl from "classnames"
 import { useDebounce } from "@/hooks"
@@ -14,13 +15,20 @@ function TextInput({ id, label, value, setValue, disabled, className, isError, t
         handleValidateTextInput(isError, setError, inputValue, setValidateRows, id)
     }
 
+    //validate value each time debounce change
     useEffect(() => {
         setValue(debounce, id)
         if (focus) {
             handleValidateTextInput(isError, setError, debounce, setValidateRows, id)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounce, id])
+
+    //pass validate in first render if value is valid
+    useEffect(() => {
+        if (typeof isError === "function" && !isError(debounce)) {
+            handleValidateTextInput(isError, setError, debounce, setValidateRows, id)
+        }
+    }, [])
 
     return (
         <>
