@@ -78,3 +78,33 @@ export const validateDescField = (value) => {
     }
     return false
 }
+
+export const validateValueType = (value, type) => {
+    const valueTypes = ["boolean", "interger", "decimal", "string"]
+    if (!value) {
+        return "Trường này không được để trống"
+    }
+    switch (valueTypes[type]) {
+        case "boolean":
+        case "string":
+            return false
+        case "interger":
+            const intRegex = /^[+-]?[\d]+$/
+            if (intRegex.test(value)) {
+                return false
+            } else {
+                return "Vui lòng nhập một số nguyên"
+            }
+
+        case "decimal":
+            const decRegex = /^[-+]?[0-9]+\.?[0-9]+$/
+            if (decRegex.test(value)) {
+                return false
+            } else {
+                return "Vui lòng nhập một số thực"
+            }
+
+        default:
+            return "Kiểu dữ liệu không hợp lệ"
+    }
+}

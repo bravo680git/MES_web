@@ -21,7 +21,7 @@ import {
     PROPERTIES_MOCK_DATA,
     WORKER_INFO_MOCK_DATA,
 } from "@/utils/mockData"
-import { getWorkerMenuNav, getEquipmentMenuNav, getMaterialMenuNav } from "@/utils/menuNavigation"
+import { getCreateWorkerMenuNav, getCreateEquipmentMenuNav, getCreateMaterialMenuNav } from "@/utils/menuNavigation"
 
 function ResourceType() {
     const dispatch = useDispatch()
@@ -41,9 +41,9 @@ function ResourceType() {
                 material: "vật tư",
             },
             menuNav: {
-                worker: getWorkerMenuNav([]),
-                equipment: getEquipmentMenuNav([]),
-                material: getMaterialMenuNav([]),
+                worker: getCreateWorkerMenuNav([]),
+                equipment: getCreateEquipmentMenuNav([]),
+                material: getCreateMaterialMenuNav([]),
             },
             headers: {
                 worker: WORKER_INFO_TABLE_COLUMNS,

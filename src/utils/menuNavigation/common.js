@@ -9,7 +9,7 @@ const valueType = {
 
 export const PROPERTY_INPUTS_FORM = [
     {
-        id: "id",
+        id: "propertyId",
         type: "text",
         label: "ID thuộc tính",
         isError: validateIdField,
@@ -21,7 +21,7 @@ export const PROPERTY_INPUTS_FORM = [
         isError: validateDescField,
     },
     {
-        id: "unit",
+        id: "valueUnitOfMeasure",
         type: "text",
         label: "Đơn vị",
     },
@@ -50,9 +50,8 @@ export const PROPERTY_INPUTS_FORM = [
         isError: validateRequiredField,
     },
     {
-        id: "value",
+        id: "valueString",
         type: "text",
         label: "Giá trị mặc định",
-        isError: validateRequiredField,
     },
 ]

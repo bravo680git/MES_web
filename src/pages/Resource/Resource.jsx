@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import ResourceItem from "@/components/ResourceItem"
 import PoperMenu from "@/components/PoperMenu"
 import { usePoperMenu } from "@/hooks"
-import { getWorkerMenuNav, getEquipmentMenuNav, getMaterialMenuNav } from "@/utils/menuNavigation"
+import { getCreateWorkerMenuNav, getCreateEquipmentMenuNav, getCreateMaterialMenuNav } from "@/utils/menuNavigation"
 import { EQUIPMENT_TABLE_COLUMNS, MATERIAL_TABLE_COLUMNS, WORKER_TABLE_COLUMNS } from "@/utils/tableColumns"
 import { RESOURCE_MOCK_DATA } from "@/utils/mockData"
 import { paths } from "@/config"
@@ -33,15 +33,15 @@ function Resource() {
             },
             btnClick: {
                 worker(e) {
-                    setMenuNav(getWorkerMenuNav([]))
+                    setMenuNav(getCreateWorkerMenuNav([]))
                     handleOpen(e)
                 },
                 equipment(e) {
-                    setMenuNav(getEquipmentMenuNav([]))
+                    setMenuNav(getCreateEquipmentMenuNav([]))
                     handleOpen(e)
                 },
                 material(e) {
-                    setMenuNav(getMaterialMenuNav([]))
+                    setMenuNav(getCreateMaterialMenuNav([]))
                     handleOpen(e)
                 },
             },

@@ -6,12 +6,12 @@ export const PROPERTIES_TABLE_COLUMNS = [
     },
     {
         Header: "Giá trị",
-        accessor: "value",
+        accessor: "valueString",
         disableSortBy: false,
     },
     {
         Header: "Đơn vị",
-        accessor: "unit",
+        accessor: "valueUnitOfMeasure",
         disableSortBy: true,
     },
 ]
