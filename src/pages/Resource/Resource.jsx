@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 
 import ResourceItem from "@/components/ResourceItem"
@@ -13,54 +13,61 @@ function Resource() {
     const navigate = useNavigate()
     const { active, position, handleClose, handleOpen } = usePoperMenu()
     const [menuNav, setMenuNav] = useState()
-
-    const handleCreateBtnCLick = (e, type) => {
-        switch (type) {
-            case "worker":
-                setMenuNav(getWorkerMenuNav([]))
-                break
-            case "equipment":
-                setMenuNav(getEquipmentMenuNav([]))
-                break
-            case "material":
-                setMenuNav(getMaterialMenuNav([], []))
-                break
-
-            default:
-                break
-        }
-        handleOpen(e)
-    }
+    const RESOURCE_TYPES = ["worker", "equipment", "material"]
+    const handler = useMemo(
+        () => ({
+            label: {
+                worker: "Nhân viên",
+                equipment: "Thiết bị",
+                material: "Vật tư",
+            },
+            headers: {
+                worker: WORKER_TABLE_COLUMNS,
+                equipment: EQUIPMENT_TABLE_COLUMNS,
+                material: MATERIAL_TABLE_COLUMNS,
+            },
+            body: {
+                worker: RESOURCE_MOCK_DATA,
+                equipment: RESOURCE_MOCK_DATA,
+                material: RESOURCE_MOCK_DATA,
+            },
+            btnClick: {
+                worker(e) {
+                    setMenuNav(getWorkerMenuNav([]))
+                    handleOpen(e)
+                },
+                equipment(e) {
+                    setMenuNav(getEquipmentMenuNav([]))
+                    handleOpen(e)
+                },
+                material(e) {
+                    setMenuNav(getMaterialMenuNav([]))
+                    handleOpen(e)
+                },
+            },
+            navigate: {
+                worker: () => navigate(paths.resource + "/worker"),
+                equipment: () => navigate(paths.resource + "/equipment"),
+                material: () => navigate(paths.resource + "/material"),
+            },
+        }),
+        [navigate, handleOpen],
+    )
 
     return (
         <div data-component="Resource" className="container flex h-full flex-wrap">
-            <div className="h-full w-1/3 pr-5 xl:mb-4 xl:h-full xl:w-full xl:pr-0">
-                <ResourceItem
-                    label="Nhân viên"
-                    headers={WORKER_TABLE_COLUMNS}
-                    body={RESOURCE_MOCK_DATA}
-                    onLabelClick={() => navigate(paths.worker)}
-                    onBtnClick={(e) => handleCreateBtnCLick(e, "worker")}
-                />
-            </div>
-            <div className="h-full w-1/3 pr-5 xl:mb-2 xl:h-full xl:w-full xl:pr-0">
-                <ResourceItem
-                    label="Thiết bị"
-                    headers={EQUIPMENT_TABLE_COLUMNS}
-                    body={RESOURCE_MOCK_DATA}
-                    onLabelClick={() => navigate(paths.equipment)}
-                    onBtnClick={(e) => handleCreateBtnCLick(e, "equipment")}
-                />
-            </div>
-            <div className="h-full w-1/3 xl:h-full xl:w-full">
-                <ResourceItem
-                    label="Vật tư"
-                    headers={MATERIAL_TABLE_COLUMNS}
-                    body={RESOURCE_MOCK_DATA}
-                    onLabelClick={() => navigate(paths.material)}
-                    onBtnClick={(e) => handleCreateBtnCLick(e, "material")}
-                />
-            </div>
+            {RESOURCE_TYPES.map((type) => (
+                <div className="h-full w-1/3 pr-5 last:pr-0 xl:mb-4 xl:h-full xl:w-full xl:pr-0" key={type}>
+                    <ResourceItem
+                        label={handler.label[type]}
+                        headers={handler.headers[type]}
+                        body={handler.body[type]}
+                        onLabelClick={handler.navigate[type]}
+                        onBtnClick={handler.btnClick[type]}
+                    />
+                </div>
+            ))}
+
             {active && menuNav && <PoperMenu position={position} onClose={handleClose} menuNavigaton={menuNav} />}
         </div>
     )

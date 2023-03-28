@@ -57,27 +57,15 @@ const routes = [
         layout: "main",
     },
     {
+        path: paths.resourceType,
+        title: null,
+        component: Pages.ResourceTypesPage,
+        layout: "main",
+    },
+    {
         path: paths.class,
         title: null,
         component: Pages.ResourceClassPage,
-        layout: "main",
-    },
-    {
-        path: paths.worker,
-        title: "Quản lý nhân viên",
-        component: Pages.WorkerPage,
-        layout: "main",
-    },
-    {
-        path: paths.equipment,
-        title: "Quản lý thiết bị",
-        component: Pages.EquipmentPage,
-        layout: "main",
-    },
-    {
-        path: paths.material,
-        title: "Quản lý vật tư",
-        component: Pages.MaterialPage,
         layout: "main",
     },
     {

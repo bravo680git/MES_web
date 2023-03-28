@@ -9,10 +9,7 @@ const paths = {
     schedule: "/production-schedule",
 
     resource: "/resource",
-    worker: "/resource/worker",
-    equipment: "/resource/equipment",
-    material: "/resource/material",
-
+    resourceType: "/resource/:type",
     class: "/resource/:type/class",
 
     setting: "/setting",
