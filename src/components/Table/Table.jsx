@@ -4,13 +4,13 @@ import { BiSortDown, BiSortUp } from "react-icons/bi"
 import cl from "classnames"
 
 function Table({ activable, onRowClick, onEdit, headers = [], body = [], className, primary, sticky }) {
-    const [activeId, setActiveId] = useState(null)
+    const [activeIndex, setActiveIndex] = useState(null)
 
-    const handleRowClick = (row) => {
+    const handleRowClick = (row, index) => {
         if (!onRowClick) return
 
-        setActiveId(row.id)
-        onRowClick(row)
+        setActiveIndex(index)
+        onRowClick(row, index)
     }
 
     const handleEdit = (e, row, index) => {
@@ -61,11 +61,11 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                 return (
                                     <tr
                                         className={cl("group relative", {
-                                            "even:bg-neutron-3": activeId !== row.id,
-                                            "cursor-pointer hover:bg-hoverBg": onRowClick && activeId !== row.id,
-                                            "bg-primary-2 text-neutron-4": activeId === row.id,
+                                            "even:bg-neutron-3": activeIndex !== index,
+                                            "cursor-pointer hover:bg-hoverBg": onRowClick && activeIndex !== index,
+                                            "bg-primary-2 text-neutron-4": activeIndex === index,
                                         })}
-                                        onClick={() => handleRowClick(row)}
+                                        onClick={() => handleRowClick(row, index)}
                                         key={index}
                                     >
                                         {headers.map((column, i) => (
@@ -77,14 +77,14 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                                     ? row[column.accessor].join(", ")
                                                     : row[column.accessor]}
 
-                                                {onEdit && i === headers.length - 1 && activeId === row.id && (
+                                                {onEdit && i === headers.length - 1 && activeIndex === index && (
                                                     <i
                                                         className={cl(
                                                             "absolute right-3 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
                                                             "flex items-center justify-center rounded-full bg-accent-1 text-neutron-4",
                                                             "heading-20-b cursor-pointer",
                                                         )}
-                                                        onClick={(e) => handleEdit(e, row)}
+                                                        onClick={(e) => handleEdit(e, row, index)}
                                                     >
                                                         <HiPencil />
                                                     </i>
@@ -123,7 +123,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                             {body.map((row, index) => {
                                 return (
                                     <tr
-                                        className={cl(" rounded-md bg-neutron-4", {
+                                        className={cl(" group rounded-md bg-neutron-4", {
                                             "cursor-pointer hover:bg-hoverBg": onRowClick,
                                         })}
                                         onClick={() => handleRowClick(row)}
@@ -147,7 +147,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                                         className={cl(
                                                             "absolute right-1 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
                                                             "flex items-center justify-center rounded-full text-accent-1",
-                                                            "heading-20-b cursor-pointer hover:bg-hoverBg",
+                                                            "heading-20-b invisible cursor-pointer hover:bg-hoverBg group-hover:visible",
                                                         )}
                                                         onClick={(e) => handleEdit(e, row, index)}
                                                     >

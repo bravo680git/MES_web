@@ -1,17 +1,18 @@
 export const PROPERTIES_TABLE_COLUMNS = [
     {
-        Header: "Thuộc tính",
+        Header: "ID thuộc tính",
+        accessor: "propertyId",
+    },
+    {
+        Header: "Mô tả",
         accessor: "description",
-        disableSortBy: false,
     },
     {
         Header: "Giá trị",
         accessor: "valueString",
-        disableSortBy: false,
     },
     {
         Header: "Đơn vị",
         accessor: "valueUnitOfMeasure",
-        disableSortBy: true,
     },
 ]

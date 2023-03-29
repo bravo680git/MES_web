@@ -151,7 +151,7 @@ export const getEquipmentClassMenuNav = () => [
         type: "form",
         items: [
             {
-                id: "id",
+                id: "equipmentClassId",
                 type: "text",
                 label: "ID loại thiết bị",
                 isError: validateIdField,

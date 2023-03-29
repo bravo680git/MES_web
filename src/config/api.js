@@ -1,5 +1,5 @@
 const axiosClientConfig = {
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: import.meta.env.VITE_SERVER_ADDRESS + "/api",
     headers: {
         "Content-Type": "application/json",
     },
