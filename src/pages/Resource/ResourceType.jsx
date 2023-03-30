@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useDispatch } from "react-redux"
 import { Link, useParams } from "react-router-dom"
 
@@ -7,8 +7,10 @@ import Button from "@/components/Button"
 import PoperMenu from "@/components/PoperMenu"
 
 import { usePoperMenu } from "@/hooks"
+import { resourceApi } from "@/services/api"
 import { commonStoreActions } from "@/store"
 import { paths } from "@/config"
+import { resourceMapper } from "@/utils/functions"
 import {
     WORKER_INFO_TABLE_COLUMNS,
     PROPERTIES_TABLE_COLUMNS,
@@ -16,103 +18,187 @@ import {
     MATERIAL_INFO_TABLE_COLUMNS,
 } from "@/utils/tableColumns"
 import {
-    EQUIPMENT_INFO_MOCK_DATA,
-    MATERIAL_INFO_MOCK_DATA,
-    PROPERTIES_MOCK_DATA,
-    WORKER_INFO_MOCK_DATA,
-} from "@/utils/mockData"
-import { getCreateWorkerMenuNav, getCreateEquipmentMenuNav, getCreateMaterialMenuNav } from "@/utils/menuNavigation"
+    getCreateWorkerMenuNav,
+    getCreateEquipmentMenuNav,
+    getCreateMaterialMenuNav,
+    getEditWorkerMenuNav,
+} from "@/utils/menuNavigation"
+
+const handler = {
+    label: {
+        worker: "nhân viên",
+        equipment: "thiết bị",
+        material: "vật tư",
+    },
+    createMenuNav: {
+        worker: (list) => getCreateWorkerMenuNav(list),
+        equipment: (list) => getCreateEquipmentMenuNav(list),
+        material: (list) => getCreateMaterialMenuNav(list),
+    },
+    editMenuNav: {
+        worker: (list) => getEditWorkerMenuNav(list),
+        equipment: null,
+        material: null,
+    },
+    headers: {
+        worker: WORKER_INFO_TABLE_COLUMNS,
+        equipment: EQUIPMENT_INFO_TABLE_COLUMNS,
+        material: MATERIAL_INFO_TABLE_COLUMNS,
+    },
+    fetchData: {
+        worker: resourceApi.worker.getWorkers,
+        equipment: null,
+        material: null,
+    },
+    fetchClasses: {
+        worker: resourceApi.worker.getWorkerClasses,
+        equipment: null,
+        material: null,
+    },
+    classesList: {
+        worker: (items) => items.map((item) => ({ value: item.personnelClassId, key: item.description })),
+        equipment: (items) => items.map((item) => ({ value: item.equipmentClassId, key: item.description })),
+        material: null,
+    },
+    create: {
+        worker: (data) => resourceApi.worker.createWorker(data),
+        equipment: null,
+        material: null,
+    },
+    edit: {
+        worker: (data, item) => resourceApi.worker.updateWorker(data, item.personId),
+        equipment: null,
+        material: null,
+    },
+}
 
 function ResourceType() {
     const dispatch = useDispatch()
     const params = useParams()
     const resourceType = params.type
     const { active, position, handleClose, handleOpen } = usePoperMenu()
-    const handler = useMemo(
-        () => ({
-            title: {
-                worker: "Quản lý nhân viên",
-                equipment: "Quản lý thiết bị",
-                material: "Quản lý vật tư",
-            },
-            label: {
-                worker: "nhân viên",
-                equipment: "thiết bị",
-                material: "vật tư",
-            },
-            menuNav: {
-                worker: getCreateWorkerMenuNav([]),
-                equipment: getCreateEquipmentMenuNav([]),
-                material: getCreateMaterialMenuNav([]),
-            },
-            headers: {
-                worker: WORKER_INFO_TABLE_COLUMNS,
-                equipment: EQUIPMENT_INFO_TABLE_COLUMNS,
-                material: MATERIAL_INFO_TABLE_COLUMNS,
-            },
-            mockData: {
-                worker: WORKER_INFO_MOCK_DATA,
-                equipment: EQUIPMENT_INFO_MOCK_DATA,
-                material: MATERIAL_INFO_MOCK_DATA,
-            },
-        }),
-        [],
-    )
+    const [resData, setResData] = useState()
+    const [activedItem, setActivedItem] = useState()
+    const [classes, setClasses] = useState([])
+    const [initValue, setInitValue] = useState()
 
-    const handleRowClick = (id) => {
-        console.log(id)
+    const fetchData = useCallback(() => {
+        handler.fetchData[resourceType]
+            ?.call()
+            .then((res) => {
+                setResData(res.items)
+                setActivedItem(null)
+            })
+            .catch((err) => console.log(err))
+    }, [resourceType])
+
+    const handleRowClick = (row, index) => {
+        const activedRow = resData[index]
+        setActivedItem(activedRow)
     }
 
-    const handleEdit = (id) => {
-        console.log(id)
+    const handleAddWorker = (e) => {
+        setInitValue(null)
+        handleOpen(e)
+    }
+
+    const handleEditWorker = (e, row, index) => {
+        setInitValue(resourceMapper.resource.apiToClient(activedItem))
+        handleOpen(e)
     }
 
     const handleSubmit = (value) => {
-        console.log(value)
+        if (!initValue) {
+            //create new worker
+            const data = value.info
+            handler.create[resourceType]
+                ?.call(this, data)
+                .then((res) => {
+                    console.log("created")
+                    fetchData()
+                })
+                .catch((err) => console.log(err))
+        } else {
+            //edit worker
+            const data = resourceMapper.resource.clientToApi(value)
+            handler.edit[resourceType]
+                ?.call(this, data, activedItem)
+                .then((res) => {
+                    console.log("updated")
+                    fetchData()
+                })
+                .catch((err) => console.log(err))
+        }
     }
 
     useEffect(() => {
-        dispatch(commonStoreActions.setPageTitle(handler.title[resourceType]))
-    }, [dispatch, handler, resourceType])
+        handler.fetchClasses[resourceType]
+            ?.call()
+            .then((res) => setClasses(handler.classesList[resourceType].call(this, res.items)))
+            .catch((err) => console.log(err))
+    }, [resourceType])
+
+    useEffect(() => {
+        fetchData()
+    }, [fetchData])
+
+    useEffect(() => {
+        dispatch(commonStoreActions.setPageTitle("Quản lý " + handler.label[resourceType]))
+    }, [dispatch, resourceType])
 
     return (
         <div data-component="ResourceType" className="container flex h-full flex-wrap">
             <div className="relative h-full grow xl:w-full">
-                <div className="scroll-y h-[calc(100%-60px)] pb-2">
-                    <Table
-                        activable
-                        primary
-                        headers={handler.headers[resourceType]}
-                        body={handler.mockData[resourceType]}
-                        onRowClick={handleRowClick}
-                        onEdit={handleEdit}
-                        sticky
-                    />
+                <h3 className="ml-1 mb-1">Danh sách {handler.label[resourceType]}</h3>
+                {resData && (
+                    <div className="scroll-y h-[calc(100%-90px)] p-1 pt-0">
+                        <Table
+                            activable
+                            primary
+                            headers={handler.headers[resourceType]}
+                            body={resData}
+                            onRowClick={handleRowClick}
+                            onEdit={handleEditWorker}
+                            sticky
+                        />
+                    </div>
+                )}
+                <div className="flex items-end">
+                    <Button onClick={handleAddWorker} className="mt-5 mr-5">
+                        {`Thêm ${handler.label[resourceType]}`}
+                    </Button>
+                    <Link to={`${paths.resource}/${resourceType}/class`}>
+                        <h4 className="underline hover:text-primary-1">Quản lý loại {handler.label[resourceType]}</h4>
+                    </Link>
                 </div>
-                <Button onClick={handleOpen} className="mt-5">
-                    {`Thêm ${handler.label[resourceType]}`}
-                </Button>
 
                 {active && (
                     <PoperMenu
                         position={position}
                         onClose={handleClose}
-                        menuNavigaton={handler.menuNav[resourceType]}
+                        menuNavigaton={
+                            initValue
+                                ? handler.editMenuNav[resourceType](classes)
+                                : handler.createMenuNav[resourceType](classes)
+                        }
                         onClick={handleSubmit}
+                        initValue={initValue ? initValue : undefined}
                     />
                 )}
             </div>
 
-            <div className="scroll-y h-full w-[640px] pb-4 pl-5 xl:mt-4 xl:pl-0">
-                <div className="">
-                    <h3 className="ml-1 mb-1">Thuộc tính {handler.label[resourceType]}</h3>
-                    <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={PROPERTIES_MOCK_DATA} />
+            {activedItem && (
+                <div className="h-full w-[640px] pb-4 pl-5 xl:mt-4 xl:pl-0">
+                    <div className="">
+                        <h3 className="ml-1 mb-1">
+                            Thuộc tính {handler.label[resourceType]} {activedItem.description}
+                        </h3>
+                        <div className="h-[calc(100%-30px] scroll-y p-1 pt-0">
+                            <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={activedItem.properties} />
+                        </div>
+                    </div>
                 </div>
-
-                <Link to={`${paths.resource}/${resourceType}/class`}>
-                    <h4 className="mt-4 underline hover:text-primary-1">Quản lý loại {handler.label[resourceType]}</h4>
-                </Link>
-            </div>
+            )}
         </div>
     )
 }

@@ -7,7 +7,7 @@ const valueType = {
     string: 3,
 }
 
-export const PROPERTY_INPUTS_FORM = [
+export const CLASS_PROPERTY_INPUTS_FORM = [
     {
         id: "propertyId",
         type: "text",
@@ -53,5 +53,30 @@ export const PROPERTY_INPUTS_FORM = [
         id: "valueString",
         type: "text",
         label: "Giá trị mặc định",
+    },
+]
+
+export const EDIT_PROPERTY_FORM = [
+    {
+        id: "propertyId",
+        type: "text",
+        label: "ID thuộc tính",
+        isError: validateIdField,
+    },
+    {
+        id: "description",
+        type: "text",
+        label: "Mô tả",
+        isError: validateDescField,
+    },
+    {
+        id: "valueUnitOfMeasure",
+        type: "text",
+        label: "Đơn vị",
+    },
+    {
+        id: "valueString",
+        type: "text",
+        label: "Giá trị",
     },
 ]

@@ -1,33 +1,27 @@
 import { validateRequiredField, validateIdField, validateDescField } from "@/utils/functions/validate"
 import { PROPERTIES_TABLE_COLUMNS } from "@/utils/tableColumns"
-import { PROPERTY_INPUTS_FORM } from "./common"
+import { CLASS_PROPERTY_INPUTS_FORM, EDIT_PROPERTY_FORM } from "./common"
 
 export const getCreateWorkerMenuNav = (workerTypeList) => [
     {
-        id: "workerInfo",
+        id: "info",
         title: "Thông tin nhân viên",
         type: "form",
         items: [
             {
-                id: "id",
+                id: "personId",
                 type: "text",
                 label: "ID nhân viên",
                 isError: validateIdField,
             },
             {
-                id: "name",
+                id: "description",
                 type: "text",
                 label: "Tên nhân viên",
                 isError: validateIdField,
             },
             {
-                id: "description",
-                type: "text",
-                label: "Mô tả",
-                isError: validateDescField,
-            },
-            {
-                id: "type",
+                id: "personnelClasses",
                 type: "selectMutils",
                 label: "Loại nhân viên",
                 list: workerTypeList ?? [],
@@ -37,9 +31,52 @@ export const getCreateWorkerMenuNav = (workerTypeList) => [
     },
 ]
 
+export const getEditWorkerMenuNav = (workerTypeList) => [
+    {
+        id: "info",
+        title: "Thông tin nhân viên",
+        type: "form",
+        items: [
+            {
+                id: "personId",
+                type: "text",
+                label: "ID nhân viên",
+                isError: validateIdField,
+            },
+            {
+                id: "description",
+                type: "text",
+                label: "Tên nhân viên",
+                isError: validateIdField,
+            },
+            {
+                id: "personnelClasses",
+                type: "selectMutils",
+                label: "Loại nhân viên",
+                list: workerTypeList ?? [],
+                isError: validateRequiredField,
+            },
+        ],
+    },
+    {
+        id: "properties",
+        title: "Thuộc tính nhân viên",
+        type: "table",
+        headers: PROPERTIES_TABLE_COLUMNS,
+        subNav: [
+            {
+                id: "property",
+                title: "Thêm thuộc tính mới",
+                type: "form",
+                items: EDIT_PROPERTY_FORM,
+            },
+        ],
+    },
+]
+
 export const getCreateEquipmentMenuNav = (equipmentTypeList) => [
     {
-        id: "equipmentInfo",
+        id: "info",
         title: "Thông tin thiết bị",
         type: "form",
         items: [
@@ -74,7 +111,7 @@ export const getCreateEquipmentMenuNav = (equipmentTypeList) => [
 
 export const getCreateMaterialMenuNav = (materialTypeList, materialSlotList) => [
     {
-        id: "materialInfo",
+        id: "info",
         title: "Thông tin vật tư",
         type: "form",
         items: [
@@ -138,7 +175,7 @@ export const getWorkerClassMenuNav = () => [
                 id: "property",
                 title: "Thêm thuộc tính mới",
                 type: "form",
-                items: PROPERTY_INPUTS_FORM,
+                items: CLASS_PROPERTY_INPUTS_FORM,
             },
         ],
     },
@@ -174,7 +211,7 @@ export const getEquipmentClassMenuNav = () => [
                 id: "property",
                 title: "Thêm thuộc tính mới",
                 type: "form",
-                items: PROPERTY_INPUTS_FORM,
+                items: CLASS_PROPERTY_INPUTS_FORM,
             },
         ],
     },
@@ -210,7 +247,7 @@ export const getMaterialClassMenuNav = () => [
                 id: "property",
                 title: "Thêm thuộc tính mới",
                 type: "form",
-                items: PROPERTY_INPUTS_FORM,
+                items: CLASS_PROPERTY_INPUTS_FORM,
             },
         ],
     },

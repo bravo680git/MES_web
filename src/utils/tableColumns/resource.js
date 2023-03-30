@@ -58,22 +58,17 @@ export const MATERIAL_TABLE_COLUMNS = [
 export const WORKER_INFO_TABLE_COLUMNS = [
     {
         Header: "ID",
-        accessor: "id",
+        accessor: "personId",
         disableSortBy: false,
     },
     {
         Header: "Tên nhân viên",
-        accessor: "name",
+        accessor: "description",
         disableSortBy: false,
     },
     {
-        Header: "Bộ phận",
-        accessor: "type",
-        disableSortBy: true,
-    },
-    {
-        Header: "Mô tả",
-        accessor: "description",
+        Header: "Loại nhân viên",
+        accessor: "personnelClasses",
         disableSortBy: true,
     },
 ]
