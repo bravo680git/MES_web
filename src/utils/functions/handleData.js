@@ -61,22 +61,42 @@ export const formatNumberValue = (value, format) => {
     }
 }
 
-export const updateValidateRuleForSubnav = (valueType, subNav, validateValueType) => {
+export function cloneDeep(obj) {
+    let newObj = {}
+
+    if (Array.isArray(obj)) {
+        newObj = []
+    }
+
+    for (let key in obj) {
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+            newObj[key] = cloneDeep(obj[key])
+        } else {
+            newObj[key] = obj[key]
+        }
+    }
+
+    return newObj
+}
+
+export const updateValidateRuleForSubnav = (valueType, subNav = [], validateValueType) => {
     if (valueType !== undefined) {
-        subNav.forEach((nav) => {
+        const newNav = cloneDeep(subNav)
+        newNav.forEach((nav) => {
             if (nav.type === "form") {
                 nav.items.forEach((item) => {
                     if (item.id === "valueString") {
                         if (valueType === 0) {
                             item.type = "checkbox"
-                            item.isError = undefined
                         } else {
-                            item.type = "text"
                             item.isError = (value) => validateValueType(value, valueType)
                         }
                     }
                 })
             }
         })
+
+        return newNav
     }
+    return subNav
 }

@@ -10,6 +10,7 @@ import {
     getMenuTableData,
     updateValidateRuleForSubnav,
     validateValueType,
+    cloneDeep,
 } from "@/utils/functions"
 
 function TableMenu({ headers, subNav, value, setValue, path }) {
@@ -32,16 +33,15 @@ function TableMenu({ headers, subNav, value, setValue, path }) {
 
     const handleEditing = (e, row, index) => {
         const rowValue = getValue(value, path)[index]
-
-        updateValidateRuleForSubnav(row.valueType?.[0], subNav, validateValueType)
+        const newSubnav = updateValidateRuleForSubnav(row.valueType?.[0], subNav, validateValueType)
 
         setPoperMenuHandler({
             //clone new value object to avoid change value via reference
-
-            initValue: JSON.parse(JSON.stringify(rowValue)),
+            initValue: cloneDeep(rowValue),
             handleClick(v) {
                 setValue(getValue(value, path).map((item, _index) => (_index === index ? v : item)))
             },
+            subNav: newSubnav,
         })
         handleOpen(e)
     }
@@ -55,7 +55,7 @@ function TableMenu({ headers, subNav, value, setValue, path }) {
 
             {active && poperMenuHandler && (
                 <PoperMenu
-                    menuNavigaton={subNav}
+                    menuNavigaton={poperMenuHandler.subNav ?? subNav}
                     position={position}
                     onClose={handleClose}
                     onClick={poperMenuHandler.handleClick}
