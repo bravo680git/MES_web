@@ -7,7 +7,7 @@ import Button from "@/components/Button"
 import PoperMenu from "@/components/PoperMenu"
 
 import { resourceApi } from "@/services/api"
-import { usePoperMenu } from "@/hooks"
+import { usePoperMenu, useCallApi } from "@/hooks"
 import { commonStoreActions } from "@/store"
 import { resourceMapper } from "@/utils/functions"
 import { getEquipmentClassMenuNav, getMaterialClassMenuNav, getWorkerClassMenuNav } from "@/utils/menuNavigation"
@@ -57,19 +57,21 @@ function ResourceClass() {
     const resourceType = params.type
     const dispatch = useDispatch()
     const { active, position, handleClose, handleOpen } = usePoperMenu()
+    const callApi = useCallApi()
+
     const [resData, setResData] = useState()
     const [activedItem, setActivedItem] = useState(null)
     const [initValue, setInitValue] = useState()
 
     const fetchData = useCallback(() => {
-        return handler.fetchData[resourceType]
-            ?.call()
-            .then((res) => setResData(res.items))
-            .catch((err) => console.log(err))
-    }, [resourceType])
+        return callApi(handler.fetchData[resourceType], (res) => {
+            setResData(res.items)
+            setActivedItem(null)
+        })
+    }, [resourceType, callApi])
 
     const handleTableRowClick = (row, index) => {
-        const activedRow = resData?.[index]
+        const activedRow = resData[index]
         setActivedItem(activedRow)
     }
 
@@ -86,22 +88,18 @@ function ResourceClass() {
     const handleSubmit = (value) => {
         if (!initValue) {
             const data = resourceMapper.resourceClass.clientToApi(value)
-            handler.addClass[resourceType]
-                ?.call(this, data)
-                .then((res) => {
-                    console.log(res)
-                    fetchData()
-                })
-                .catch((err) => console.log(err))
+            callApi(
+                () => handler.addClass[resourceType](data),
+                fetchData,
+                `Tạo loại ${handler.displayText[resourceType]} thành công`,
+            )
         } else {
             const data = resourceMapper.resourceClass.clientToApi(value)
-            handler.editClass[resourceType]
-                ?.call(this, data, activedItem)
-                .then((res) => {
-                    console.log(res)
-                    fetchData()
-                })
-                .catch((err) => console.log(err))
+            callApi(
+                () => handler.editClass[resourceType](data, activedItem),
+                fetchData,
+                `Chỉnh sửa loại ${handler.displayText[resourceType]} thành công`,
+            )
         }
     }
 

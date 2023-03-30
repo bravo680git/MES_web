@@ -6,7 +6,7 @@ import Table from "@/components/Table"
 import Button from "@/components/Button"
 import PoperMenu from "@/components/PoperMenu"
 
-import { usePoperMenu } from "@/hooks"
+import { usePoperMenu, useCallApi } from "@/hooks"
 import { resourceApi } from "@/services/api"
 import { commonStoreActions } from "@/store"
 import { paths } from "@/config"
@@ -77,20 +77,19 @@ function ResourceType() {
     const params = useParams()
     const resourceType = params.type
     const { active, position, handleClose, handleOpen } = usePoperMenu()
+    const callAPi = useCallApi()
+
     const [resData, setResData] = useState()
     const [activedItem, setActivedItem] = useState()
     const [classes, setClasses] = useState([])
     const [initValue, setInitValue] = useState()
 
     const fetchData = useCallback(() => {
-        handler.fetchData[resourceType]
-            ?.call()
-            .then((res) => {
-                setResData(res.items)
-                setActivedItem(null)
-            })
-            .catch((err) => console.log(err))
-    }, [resourceType])
+        callAPi(handler.fetchData[resourceType], (res) => {
+            setResData(res.items)
+            setActivedItem(null)
+        })
+    }, [resourceType, callAPi])
 
     const handleRowClick = (row, index) => {
         const activedRow = resData[index]
@@ -111,32 +110,25 @@ function ResourceType() {
         if (!initValue) {
             //create new worker
             const data = value.info
-            handler.create[resourceType]
-                ?.call(this, data)
-                .then((res) => {
-                    console.log("created")
-                    fetchData()
-                })
-                .catch((err) => console.log(err))
+            callAPi(
+                () => handler.create[resourceType](data),
+                fetchData,
+                `Tạo ${handler.label[resourceType]} mới thành công`,
+            )
         } else {
             //edit worker
             const data = resourceMapper.resource.clientToApi(value)
-            handler.edit[resourceType]
-                ?.call(this, data, activedItem)
-                .then((res) => {
-                    console.log("updated")
-                    fetchData()
-                })
-                .catch((err) => console.log(err))
+            callAPi(
+                () => handler.create[resourceType](data, activedItem),
+                fetchData,
+                `Cập nhật ${handler.label[resourceType]} thành công`,
+            )
         }
     }
 
     useEffect(() => {
-        handler.fetchClasses[resourceType]
-            ?.call()
-            .then((res) => setClasses(handler.classesList[resourceType].call(this, res.items)))
-            .catch((err) => console.log(err))
-    }, [resourceType])
+        callAPi(handler.fetchClasses[resourceType], (res) => setClasses(handler.classesList[resourceType](res.items)))
+    }, [resourceType, callAPi])
 
     useEffect(() => {
         fetchData()
