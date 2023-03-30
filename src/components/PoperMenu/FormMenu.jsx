@@ -1,5 +1,6 @@
 import TextInput from "@/components/TextInput"
 import SelectInput from "@/components/SelectInput"
+import Checkbox from "@/components/Checkbox"
 
 import { getMenuItemValue as getValue } from "@/utils/functions"
 
@@ -22,6 +23,8 @@ function FormMenu({ items, value, setValue, path, setValidateRows }) {
                     <div className="mb-5" key={item.id}>
                         {item.type === "text" ? (
                             <TextInput {...props} />
+                        ) : item.type === "checkbox" ? (
+                            <Checkbox {...props} />
                         ) : item.type === "selectMutils" ? (
                             <SelectInput {...props} mutilChoises />
                         ) : (

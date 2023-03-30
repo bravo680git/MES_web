@@ -18,8 +18,8 @@ function Checkbox({ id, label, value, setValue }) {
                 type="checkbox"
                 id={id}
                 className="h-5 w-5"
-                checked={value}
-                onChange={(e) => setValue(e.target.checked, id)}
+                checked={value === "true" || value === true || value === 1 || value === "1"}
+                onChange={(e) => setValue(e.target.checked.toString(), id)}
                 onClick={(e) => e.stopPropagation()}
             />
             <label

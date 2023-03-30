@@ -5,7 +5,12 @@ import PoperMenu from "@/components/PoperMenu"
 import Table from "@/components/Table"
 import Button from "@/components/Button"
 import { usePoperMenu } from "@/hooks"
-import { getMenuItemValue as getValue, getMenuTableData } from "@/utils/functions"
+import {
+    getMenuItemValue as getValue,
+    getMenuTableData,
+    updateValidateRuleForSubnav,
+    validateValueType,
+} from "@/utils/functions"
 
 function TableMenu({ headers, subNav, value, setValue, path }) {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
@@ -27,6 +32,8 @@ function TableMenu({ headers, subNav, value, setValue, path }) {
 
     const handleEditing = (e, row, index) => {
         const rowValue = getValue(value, path)[index]
+
+        updateValidateRuleForSubnav(row.valueType?.[0], subNav, validateValueType)
 
         setPoperMenuHandler({
             //clone new value object to avoid change value via reference

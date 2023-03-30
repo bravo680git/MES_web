@@ -60,3 +60,23 @@ export const formatNumberValue = (value, format) => {
             return value
     }
 }
+
+export const updateValidateRuleForSubnav = (valueType, subNav, validateValueType) => {
+    if (valueType !== undefined) {
+        subNav.forEach((nav) => {
+            if (nav.type === "form") {
+                nav.items.forEach((item) => {
+                    if (item.id === "valueString") {
+                        if (valueType === 0) {
+                            item.type = "checkbox"
+                            item.isError = undefined
+                        } else {
+                            item.type = "text"
+                            item.isError = (value) => validateValueType(value, valueType)
+                        }
+                    }
+                })
+            }
+        })
+    }
+}
