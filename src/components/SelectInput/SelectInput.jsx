@@ -130,11 +130,11 @@ function SelectInput({
                     />
                 </div>
                 <i className="absolute right-3 bottom-1" onClick={() => setFocus(!focus)}>
-                    <MdOutlineKeyboardArrowDown className="text-2xl" />
+                    <MdOutlineKeyboardArrowDown className={cl("text-2xl transition-all", { "rotate-180": focus })} />
                 </i>
                 <div
                     className={cl(
-                        "absolute left-[60%] top-[110%] min-w-[100px] origin-top-left rounded-l",
+                        "absolute left-[60%] bottom-[40px] min-w-[100px] origin-top-left rounded-l",
                         "scroll-y  z-10 max-h-[300px] bg-neutron-4 py-4 shadow-sub",
                         {
                             block: focus,
