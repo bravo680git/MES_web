@@ -1,8 +1,11 @@
 import { useSelector } from "react-redux"
+import { ToastContainer } from "react-toastify"
+import Loading from "../Loading"
+import "react-toastify/dist/ReactToastify.css"
 
 import Sidebar from "../Sidebar"
 function MainLayout({ children, title }) {
-    const { pageTitle } = useSelector((state) => state.common)
+    const { pageTitle, loading } = useSelector((state) => state.common)
 
     return (
         <div data-component="MainLayout" className="container flex h-screen overflow-hidden">
@@ -13,6 +16,8 @@ function MainLayout({ children, title }) {
                 <h1 className="px-5">{title ? title : pageTitle}</h1>
                 <main className="scroll-y h-[calc(100vh-68px)] p-5">{children}</main>
             </div>
+            {loading && <Loading />}
+            <ToastContainer />
         </div>
     )
 }
