@@ -1,82 +1,90 @@
 import { validateRequiredField, validateDescField, validateIdField } from "@/utils/functions"
+import { VALUE_TYPE } from "@/utils/constants"
 
-const valueType = {
-    boolean: 0,
-    interger: 1,
-    decimal: 2,
-    string: 3,
-}
-
-export const CLASS_PROPERTY_INPUTS_FORM = [
+export const CREATE_PROPERTY_SUB_NAV = [
     {
-        id: "propertyId",
-        type: "text",
-        label: "ID thuộc tính",
-        isError: validateIdField,
-    },
-    {
-        id: "description",
-        type: "text",
-        label: "Mô tả",
-        isError: validateDescField,
-    },
-    {
-        id: "valueUnitOfMeasure",
-        type: "text",
-        label: "Đơn vị",
-    },
-    {
-        id: "valueType",
-        type: "select",
-        label: "Kiểu dữ liệu",
-        list: [
+        id: "property",
+        title: "Thêm thuộc tính mới",
+        type: "form",
+        items: [
             {
-                key: "Đúng/Sai",
-                value: valueType.boolean,
+                id: "propertyId",
+                type: "text",
+                label: "ID thuộc tính",
+                isError: validateIdField,
             },
             {
-                key: "Số nguyên",
-                value: valueType.interger,
+                id: "description",
+                type: "text",
+                label: "Mô tả",
+                isError: validateDescField,
             },
             {
-                key: "Số thập phân",
-                value: valueType.decimal,
+                id: "valueUnitOfMeasure",
+                type: "text",
+                label: "Đơn vị",
             },
             {
-                key: "Chuỗi ký tự",
-                value: valueType.string,
+                id: "valueType",
+                type: "select",
+                label: "Kiểu dữ liệu",
+                list: [
+                    {
+                        key: "Đúng/Sai",
+                        value: VALUE_TYPE.boolean,
+                    },
+                    {
+                        key: "Số nguyên",
+                        value: VALUE_TYPE.interger,
+                    },
+                    {
+                        key: "Số thập phân",
+                        value: VALUE_TYPE.decimal,
+                    },
+                    {
+                        key: "Chuỗi ký tự",
+                        value: VALUE_TYPE.string,
+                    },
+                ],
+                isError: validateRequiredField,
+            },
+            {
+                id: "valueString",
+                type: "text",
+                label: "Giá trị mặc định",
             },
         ],
-        isError: validateRequiredField,
-    },
-    {
-        id: "valueString",
-        type: "text",
-        label: "Giá trị mặc định",
     },
 ]
 
-export const EDIT_PROPERTY_FORM = [
+export const EDIT_PROPERTY_SUB_NAV = [
     {
-        id: "propertyId",
-        type: "text",
-        label: "ID thuộc tính",
-        isError: validateIdField,
-    },
-    {
-        id: "description",
-        type: "text",
-        label: "Mô tả",
-        isError: validateDescField,
-    },
-    {
-        id: "valueUnitOfMeasure",
-        type: "text",
-        label: "Đơn vị",
-    },
-    {
-        id: "valueString",
-        type: "text",
-        label: "Giá trị",
+        id: "property",
+        title: "Thêm thuộc tính mới",
+        type: "form",
+        items: [
+            {
+                id: "propertyId",
+                type: "text",
+                label: "ID thuộc tính",
+                isError: validateIdField,
+            },
+            {
+                id: "description",
+                type: "text",
+                label: "Mô tả",
+                isError: validateDescField,
+            },
+            {
+                id: "valueUnitOfMeasure",
+                type: "text",
+                label: "Đơn vị",
+            },
+            {
+                id: "valueString",
+                type: "text",
+                label: "Giá trị",
+            },
+        ],
     },
 ]

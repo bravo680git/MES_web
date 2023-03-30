@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { HiPencil } from "react-icons/hi"
 import { BiSortDown, BiSortUp } from "react-icons/bi"
 import cl from "classnames"
 
-function Table({ activable, onRowClick, onEdit, headers = [], body = [], className, primary, sticky }) {
+function Table({ activable, onRowClick, onEdit, headers = [], body = [], className, primary, sticky, unActive }) {
     const [activeIndex, setActiveIndex] = useState(null)
 
     const handleRowClick = (row, index) => {
@@ -17,6 +17,12 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
         e.stopPropagation()
         onEdit(e, row, index)
     }
+
+    useEffect(() => {
+        if (unActive) {
+            setActiveIndex(null)
+        }
+    }, [unActive])
 
     return (
         <div data-component="Table" className={cl(className)}>

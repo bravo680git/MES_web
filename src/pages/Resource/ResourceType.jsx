@@ -152,6 +152,7 @@ function ResourceType() {
                             onRowClick={handleRowClick}
                             onEdit={handleEditWorker}
                             sticky
+                            unActive={!activedItem}
                         />
                     </div>
                 )}

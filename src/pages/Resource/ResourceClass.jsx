@@ -91,14 +91,14 @@ function ResourceClass() {
             callApi(
                 () => handler.addClass[resourceType](data),
                 fetchData,
-                `Tạo loại ${handler.displayText[resourceType]} thành công`,
+                `Tạo loại ${handler.displayText[resourceType]} mới thành công`,
             )
         } else {
             const data = resourceMapper.resourceClass.clientToApi(value)
             callApi(
                 () => handler.editClass[resourceType](data, activedItem),
                 fetchData,
-                `Chỉnh sửa loại ${handler.displayText[resourceType]} thành công`,
+                `Cập nhật loại ${handler.displayText[resourceType]} thành công`,
             )
         }
     }
@@ -125,6 +125,7 @@ function ResourceClass() {
                             sticky
                             onRowClick={handleTableRowClick}
                             onEdit={handleEditClass}
+                            unActive={!activedItem}
                         />
                     </div>
                 )}

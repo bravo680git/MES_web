@@ -13,7 +13,7 @@ import {
     cloneDeep,
 } from "@/utils/functions"
 
-function TableMenu({ headers, subNav, value, setValue, path }) {
+function TableMenu({ headers, subNav, value, setValue, path, canAddRecord = true }) {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
     const [poperMenuHandler, setPoperMenuHandler] = useState()
     const tableBody = getMenuTableData(getValue(value, path), subNav[0].id)
@@ -49,9 +49,11 @@ function TableMenu({ headers, subNav, value, setValue, path }) {
     return (
         <div data-component="TableMenu">
             <Table headers={headers} body={tableBody} onEdit={handleEditing} />
-            <Button small className="mt-4 text-2xl" onClick={handleAdding}>
-                <AiOutlinePlus />
-            </Button>
+            {canAddRecord && (
+                <Button small className="mt-4 text-2xl" onClick={handleAdding}>
+                    <AiOutlinePlus />
+                </Button>
+            )}
 
             {active && poperMenuHandler && (
                 <PoperMenu

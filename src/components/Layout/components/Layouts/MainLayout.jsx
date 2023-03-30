@@ -17,7 +17,7 @@ function MainLayout({ children, title }) {
                 <main className="scroll-y h-[calc(100vh-68px)] p-5">{children}</main>
             </div>
             {loading && <Loading />}
-            <ToastContainer />
+            <ToastContainer pauseOnFocusLoss={false} autoClose={2000} />
         </div>
     )
 }

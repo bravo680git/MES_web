@@ -1,3 +1,5 @@
+import { VALUE_TYPE } from "@/utils/constants"
+
 export const getMenuItemValue = (value, path = [], id) => {
     let crrValue = value
     for (let i = 0; i < path.length; i++) {
@@ -86,7 +88,7 @@ export const updateValidateRuleForSubnav = (valueType, subNav = [], validateValu
             if (nav.type === "form") {
                 nav.items.forEach((item) => {
                     if (item.id === "valueString") {
-                        if (valueType === 0) {
+                        if (valueType === VALUE_TYPE.boolean) {
                             item.type = "checkbox"
                         } else {
                             item.isError = (value) => validateValueType(value, valueType)
