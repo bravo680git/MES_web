@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import cl from "classnames"
 import { MdOutlineKeyboardArrowDown, MdOutlineClose } from "react-icons/md"
 
@@ -18,11 +18,18 @@ function SelectInput({
     isError,
     setValidateRows,
 }) {
+    const containerRef = useRef()
+
     const [focus, setFocus] = useState(false)
     const [optionList, setOptionList] = useState(list)
     const [searchInput, setSearchInput] = useState("")
     const [error, setError] = useState(false)
     const debounce = useDebounce(searchInput, 200)
+
+    const optionListPosition = useMemo(() => {
+        const y = containerRef.current?.getBoundingClientRect()?.top
+        return y && y < window.innerHeight / 2 ? "bottom" : "top"
+    }, [focus])
 
     const handleSelect = (v) => {
         if (mutilChoises) {
@@ -71,6 +78,7 @@ function SelectInput({
     return (
         <>
             <div
+                ref={containerRef}
                 data-component="SelectInput"
                 className={cl(
                     "relative min-h-[64px] border-b-2  bg-neutron-4 pb-1",
@@ -129,16 +137,18 @@ function SelectInput({
                         value={searchInput}
                     />
                 </div>
-                <i className="absolute right-3 bottom-1" onClick={() => setFocus(!focus)}>
+                <i className="absolute right-3 bottom-1">
                     <MdOutlineKeyboardArrowDown className={cl("text-2xl transition-all", { "rotate-180": focus })} />
                 </i>
                 <div
                     className={cl(
-                        "absolute left-[60%] bottom-[40px] min-w-[100px] origin-top-left rounded-l",
+                        "absolute left-[60%] min-w-[100px] origin-top-left rounded-l",
                         "scroll-y  z-10 max-h-[300px] bg-neutron-4 py-4 shadow-sub",
                         {
                             block: focus,
                             hidden: !focus,
+                            "bottom-[40px]": optionListPosition === "top",
+                            "top-[110%]": optionListPosition === "bottom",
                         },
                     )}
                 >

@@ -21,9 +21,9 @@ const routes = [
         layout: "main",
     },
     {
-        path: paths.quantity,
-        title: "Sản lượng",
-        component: "div",
+        path: paths.progress,
+        title: "Tiến độ sản xuất",
+        component: Pages.ProductionProgress,
         layout: "main",
     },
     {

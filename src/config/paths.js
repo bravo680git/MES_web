@@ -2,7 +2,7 @@ const paths = {
     dashboard: "/",
     oee: "/oee",
     downtime: "/downtime",
-    quantity: "/product-quantity",
+    progress: "/production-progress",
     command: "/work-order",
     newProduct: "/work-order/new-product",
     product: "/work-order/products/:productId",
