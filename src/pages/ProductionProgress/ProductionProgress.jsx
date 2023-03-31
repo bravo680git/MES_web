@@ -34,21 +34,21 @@ function ProductionProgress() {
                         <h3>Tiến độ chung</h3>
                         <div className="flex items-center">
                             <div className="grow">
-                                <div>
+                                <div className="mb-1">
                                     <span className="text-16-b inline-block w-40">Tổng số</span>
                                     <span>100</span>
                                 </div>
-                                <div>
+                                <div className="mb-1">
                                     <span className="text-16-b inline-block w-40">Đã hoàn thành</span>
                                     <span>20</span>
                                 </div>
-                                <div>
+                                <div className="mb-1">
                                     <span className="text-16-b inline-block w-40">Ngày lên lịch</span>
-                                    <span>100</span>
+                                    <span>12/03/2022</span>
                                 </div>
-                                <div>
+                                <div className="mb-1">
                                     <span className="text-16-b inline-block w-40">Dự kiến hoàn thành</span>
-                                    <span>100</span>
+                                    <span>01/04/2022</span>
                                 </div>
                             </div>
                             <Radialbar value={20} width={300} fontSize={24} />

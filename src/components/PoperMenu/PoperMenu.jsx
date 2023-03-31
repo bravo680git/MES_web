@@ -87,6 +87,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
                         subNav={currentNavItem.subNav}
                         value={value}
                         setValue={handleSetValue}
+                        canAddRecord={currentNavItem.canAddRecord}
                     />
                 )}
                 <Button onClick={handleClick} className="mx-auto mt-4 text-center text-3xl" disabled={invalid}>

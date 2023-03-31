@@ -119,7 +119,7 @@ function ResourceType() {
             //edit worker
             const data = resourceMapper.resource.clientToApi(value)
             callAPi(
-                () => handler.create[resourceType](data, activedItem),
+                () => handler.edit[resourceType](data, activedItem),
                 fetchData,
                 `Cập nhật ${handler.label[resourceType]} thành công`,
             )
