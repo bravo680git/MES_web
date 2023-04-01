@@ -1,11 +1,19 @@
-import { useRef } from "react"
+import { useRef, useEffect } from "react"
 
-function Checkbox({ id, label, value, setValue }) {
+function Checkbox({ id, label, value, setValue, setValidateRows }) {
     const cbRef = useRef()
 
     const handleClick = (e) => {
         cbRef.current.click()
     }
+
+    useEffect(() => {
+        setValidateRows((prev) => ({
+            ...prev,
+            valid: prev.valid.includes(id) ? prev.valid : [...prev.valid, id],
+        }))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <div

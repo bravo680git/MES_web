@@ -1,4 +1,5 @@
 import { VALUE_TYPE } from "@/utils/constants"
+import { validateValueType } from "./validate"
 
 export const getMenuItemValue = (value, path = [], id) => {
     let crrValue = value
@@ -81,7 +82,7 @@ export function cloneDeep(obj) {
     return newObj
 }
 
-export const updateValidateRuleForSubnav = (valueType, subNav = [], validateValueType) => {
+export const updateValidateRuleForSubnav = (valueType, subNav = []) => {
     if (valueType !== undefined) {
         const newNav = cloneDeep(subNav)
         newNav.forEach((nav) => {
@@ -101,4 +102,22 @@ export const updateValidateRuleForSubnav = (valueType, subNav = [], validateValu
         return newNav
     }
     return subNav
+}
+
+export const updateValidateRuleForFormMenuItems = (valueType, items = []) => {
+    if (valueType !== undefined) {
+        const newItems = cloneDeep(items)
+        newItems.forEach((item) => {
+            if (item.id === "valueString") {
+                if (valueType === VALUE_TYPE.boolean) {
+                    item.type = "checkbox"
+                } else {
+                    item.type = "text"
+                    item.isError = (value) => validateValueType(value, valueType)
+                }
+            }
+        })
+        return newItems
+    }
+    return items
 }
