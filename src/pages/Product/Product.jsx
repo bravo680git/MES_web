@@ -1,6 +1,8 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useParams } from "react-router-dom"
+import cl from "classnames"
+import ApexChart from "react-apexcharts"
 import { AiOutlineUnorderedList } from "react-icons/ai"
 import { BsBarChartSteps } from "react-icons/bs"
 
@@ -8,6 +10,7 @@ import Card from "@/components/Card"
 import Table from "@/components/Table"
 import Button from "@/components/Button"
 
+import { singleRangBarChartConfig } from "@/config"
 import { commonStoreActions } from "@/store"
 import {
     PROPERTIES_TABLE_COLUMNS,
@@ -24,15 +27,23 @@ import {
     SEGMENT_WORKER_MOCK_DATA,
     SEGMENT_MATERIAL_MOCK_DATA,
     SEGMENT_PARAMS_MOCK_DATA,
+    SEGMENT_RELATIONSHIP_MOCK_DATA,
 } from "@/utils/mockData"
 
 function Product() {
     const params = useParams()
     const dispatch = useDispatch()
+    const [showGanttChart, setShowGanttChart] = useState(false)
 
     useEffect(() => {
         dispatch(commonStoreActions.setPageTitle(`Chi tiết sản phẩm ${params.productId}`))
     }, [dispatch, params.productId])
+
+    const data = SEGMENT_RELATIONSHIP_MOCK_DATA.map((item) => ({
+        x: item.id,
+        y: [item.begin, item.end],
+        name: item.description,
+    }))
 
     return (
         <div data-component="Product" className="container h-full">
@@ -44,22 +55,39 @@ function Product() {
                         <div className="mb-2 flex items-center">
                             <h3>Quy trình</h3>
                             <div className="ml-10 flex items-center">
-                                <Button transparent>
+                                <Button
+                                    transparent={showGanttChart}
+                                    onClick={() => setShowGanttChart(false)}
+                                    className={cl({ "bg-primary-2 text-neutron-4": !showGanttChart })}
+                                >
                                     <AiOutlineUnorderedList />
                                 </Button>
-                                <Button transparent>
+                                <Button
+                                    transparent={!showGanttChart}
+                                    onClick={() => setShowGanttChart(true)}
+                                    className={cl({ "bg-primary-2 text-neutron-4": showGanttChart })}
+                                >
                                     <BsBarChartSteps />
                                 </Button>
                             </div>
                         </div>
                         <div className="scroll-y  h-[calc(100%-46px)]">
-                            <Table
-                                headers={PRODUCT_SEGMENTS_TABLE_COLUMNS}
-                                body={PRODUCT_SEGMENTS_MOCK_DATA}
-                                activable
-                                primary
-                                sticky
-                            />
+                            {showGanttChart ? (
+                                <ApexChart
+                                    type="rangeBar"
+                                    options={singleRangBarChartConfig}
+                                    series={[{ data }]}
+                                    height="100%"
+                                />
+                            ) : (
+                                <Table
+                                    headers={PRODUCT_SEGMENTS_TABLE_COLUMNS}
+                                    body={PRODUCT_SEGMENTS_MOCK_DATA}
+                                    activable
+                                    primary
+                                    sticky
+                                />
+                            )}
                         </div>
                     </Card>
 
