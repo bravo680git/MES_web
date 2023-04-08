@@ -20,6 +20,21 @@ function NewProduct() {
     }
 
     useEffect(() => {
+        const _segments = segments.productSegments?.map((item) => ({
+            ...item,
+            segment: {
+                ...item.segment,
+                workerTypeCount: item.workerTypes?.length ?? 0,
+                equipmentTypeCount: item.equipmentTypes?.length ?? 0,
+                materialCount: item.materials?.length ?? 0,
+            },
+        }))
+        setSegments((prev) => ({
+            productSegments: _segments,
+        }))
+    }, [segments.productSegments?.length])
+
+    useEffect(() => {
         if (
             info.productInfo?.id?.length > 0 &&
             info.productInfo?.name?.length > 0 &&
