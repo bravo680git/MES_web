@@ -61,7 +61,7 @@ function NewProduct() {
                     />
                 </div>
 
-                <Button className="mt-5" onClick={handleSubmit} disabled={invalid}>
+                <Button className="mt-5" onClick={handleSubmit} disabled={false}>
                     Xác nhận
                 </Button>
             </div>

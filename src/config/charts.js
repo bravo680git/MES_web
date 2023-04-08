@@ -22,7 +22,7 @@ export const singleRangBarChartConfig = {
     dataLabels: {
         enabled: true,
         formatter: function (val, opts) {
-            return val[1] - val[0] + " hours"
+            return val[1] - val[0] + " h"
         },
         style: {
             colors: ["#f3f4f5", "#fff"],

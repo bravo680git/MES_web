@@ -289,67 +289,73 @@ export const productMenuNav = {
             },
         ],
     }),
-    getSegMentRelationship: (segments = [], relationList = []) => ({
-        id: "segmentRelationships",
-        title: "Ràng buộc giữa các công đoạn",
-        type: "table",
-        headers: [
-            {
-                Header: "ID công đoạn A",
-                accessor: "segmentA",
-                disableSortBy: false,
-            },
-            {
-                Header: "Ràng buộc",
-                accessor: "relation",
-                disableSortBy: false,
-            },
-            {
-                Header: "ID công đoạn B",
-                accessor: "segmentB",
-                disableSortBy: false,
-            },
-            {
-                Header: "Thời gian(giờ)",
-                accessor: "duration",
-                disableSortBy: false,
-            },
-        ],
-        subNav: [
-            {
-                id: "relationship",
-                title: "Thêm ràng buộc",
-                type: "form",
-                items: [
-                    {
-                        id: "segmentA",
-                        type: "select",
-                        label: "ID công đoạn A",
-                        list: segments,
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "relation",
-                        type: "select",
-                        label: "Ràng buộc",
-                        list: relationList,
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "segmentB",
-                        type: "select",
-                        label: "ID công đoạn B",
-                        list: segments,
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "duration",
-                        type: "text",
-                        label: "Thời gian(giờ)",
-                        isError: validateNumberField,
-                    },
-                ],
-            },
-        ],
-    }),
+    getSegMentRelationship: (segments = [], relationList = []) => {
+        const startList = [...segments]
+        segments.shift()
+        const endList = segments
+
+        return {
+            id: "segmentRelationships",
+            title: "Ràng buộc giữa các công đoạn",
+            type: "table",
+            headers: [
+                {
+                    Header: "ID công đoạn A",
+                    accessor: "segmentA",
+                    disableSortBy: false,
+                },
+                {
+                    Header: "Ràng buộc",
+                    accessor: "relation",
+                    disableSortBy: false,
+                },
+                {
+                    Header: "ID công đoạn B",
+                    accessor: "segmentB",
+                    disableSortBy: false,
+                },
+                {
+                    Header: "Thời gian(giờ)",
+                    accessor: "duration",
+                    disableSortBy: false,
+                },
+            ],
+            subNav: [
+                {
+                    id: "relationship",
+                    title: "Thêm ràng buộc",
+                    type: "form",
+                    items: [
+                        {
+                            id: "segmentA",
+                            type: "select",
+                            label: "ID công đoạn A",
+                            list: startList,
+                            isError: validateRequiredField,
+                        },
+                        {
+                            id: "relation",
+                            type: "select",
+                            label: "Ràng buộc",
+                            list: relationList,
+                            isError: validateRequiredField,
+                        },
+                        {
+                            id: "segmentB",
+                            type: "select",
+                            label: "ID công đoạn B",
+                            list: endList,
+                            isError: validateRequiredField,
+                        },
+                        {
+                            id: "duration",
+                            type: "text",
+                            label: "Thời gian(giờ)",
+                            isError: validateNumberField,
+                        },
+                    ],
+                },
+            ],
+        }
+    },
 }
