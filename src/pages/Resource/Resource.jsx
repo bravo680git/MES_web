@@ -36,7 +36,7 @@ function Resource() {
     const handleLabelClick = (index) => navigate(handler.navigateLinks[index])
 
     useEffect(() => {
-        callApi([resourceApi.worker.getWorkers()], (res) => setResData(res))
+        callApi([resourceApi.worker.getWorkers(), resourceApi.equipment.getEquipments()], (res) => setResData(res))
     }, [callApi])
 
     return (

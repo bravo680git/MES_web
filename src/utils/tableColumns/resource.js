@@ -90,22 +90,17 @@ export const WORKER_CLASS_TABLE_COLUMNS = [
 export const EQUIPMENT_INFO_TABLE_COLUMNS = [
     {
         Header: "ID",
-        accessor: "id",
+        accessor: "equipmentId",
         disableSortBy: false,
     },
     {
         Header: "Tên thiết bị",
-        accessor: "name",
+        accessor: "description",
         disableSortBy: false,
     },
     {
         Header: "Loại thiết bị",
-        accessor: "type",
-        disableSortBy: true,
-    },
-    {
-        Header: "Mô tả",
-        accessor: "description",
+        accessor: "equipmentClasses",
         disableSortBy: true,
     },
 ]
