@@ -21,9 +21,9 @@ const routes = [
         layout: "main",
     },
     {
-        path: paths.quantity,
-        title: "Sản lượng",
-        component: "div",
+        path: paths.progress,
+        title: "Tiến độ sản xuất",
+        component: Pages.ProductionProgress,
         layout: "main",
     },
     {
@@ -57,21 +57,15 @@ const routes = [
         layout: "main",
     },
     {
-        path: paths.worker,
-        title: "Quản lý nhân viên",
-        component: Pages.WorkerPage,
+        path: paths.resourceType,
+        title: null,
+        component: Pages.ResourceTypesPage,
         layout: "main",
     },
     {
-        path: paths.equipment,
-        title: "Quản lý thiết bị",
-        component: Pages.EquipmentPage,
-        layout: "main",
-    },
-    {
-        path: paths.material,
-        title: "Quản lý vật tư",
-        component: Pages.MaterialPage,
+        path: paths.class,
+        title: null,
+        component: Pages.ResourceClassPage,
         layout: "main",
     },
     {

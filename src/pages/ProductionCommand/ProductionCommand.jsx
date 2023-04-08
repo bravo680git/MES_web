@@ -30,7 +30,7 @@ function ProductionCommand() {
                     <h3>Danh sách lệnh sản xuất</h3>
                     <Button large>Lên kế hoạch sx</Button>
                 </div>
-                <div className="scroll-y h-[calc(100%-60px)]">
+                <div className="scroll-y h-[calc(100%-70px)]">
                     <Table headers={PRODUCTION_COMMAND_TABLE_COLUMNS} body={PRODUCTION_COMMAND_MOCK_DATA} sticky />
                     <Button large className="mt-2" onClick={handleOpen}>
                         Lệnh sản xuất mới

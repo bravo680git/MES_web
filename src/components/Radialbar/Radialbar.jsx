@@ -11,7 +11,7 @@ function Radialbar({ width = 300, value, color = "#4D7EB3", fontSize = 20 }) {
             radialBar: {
                 hollow: {
                     margin: 15,
-                    size: "70%",
+                    size: "60%",
                 },
                 dataLabels: {
                     enabled: true,

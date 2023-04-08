@@ -14,9 +14,9 @@ const SIDEBAR_ITEMS = [
         route: paths.downtime,
     },
     {
-        label: "Sản lượng",
+        label: "Tiến độ sản xuất",
         icon: QuantityIcon,
-        route: paths.quantity,
+        route: paths.progress,
     },
     {
         label: "Lệnh sản xuất",

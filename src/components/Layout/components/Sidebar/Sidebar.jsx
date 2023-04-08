@@ -20,13 +20,13 @@ function Sidebar() {
     return (
         <div
             data-component="Sidebar"
-            className={cl("relative h-full bg-primary-1 py-5 text-neutron-4 transition-all", {
+            className={cl("relative h-full bg-primary-1 py-5 text-neutron-4 transition-all xl:overflow-y-scroll", {
                 "visible w-[340px] px-5 sm:w-screen": isExpand,
                 "w-[80px] px-2 sm:invisible sm:w-0": !isExpand,
             })}
         >
             <div className="mx-auto aspect-square w-full rounded-xl bg-neutron-4 sm:w-1/2"></div>
-            <div className="sticky top-1/3 sm:top-0">
+            <div className={cl("sticky top-1/3 xxl:top-0")}>
                 {SIDEBAR_ITEMS.map((item, index) => (
                     <SidebarItem
                         key={index}
@@ -44,6 +44,7 @@ function Sidebar() {
                     "items-center justify-center rounded-full text-4xl hover:bg-hoverBg",
                     {
                         "sm:visible sm:fixed sm:left-0 sm:text-accent-1": !isExpand,
+                        "xl:static xl:float-right": isExpand,
                     },
                 )}
             >

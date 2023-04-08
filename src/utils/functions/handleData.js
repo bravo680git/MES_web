@@ -1,3 +1,6 @@
+import { VALUE_TYPE } from "@/utils/constants"
+import { validateValueType } from "./validate"
+
 export const getMenuItemValue = (value, path = [], id) => {
     let crrValue = value
     for (let i = 0; i < path.length; i++) {
@@ -59,4 +62,62 @@ export const formatNumberValue = (value, format) => {
         default:
             return value
     }
+}
+
+export function cloneDeep(obj) {
+    let newObj = {}
+
+    if (Array.isArray(obj)) {
+        newObj = []
+    }
+
+    for (let key in obj) {
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+            newObj[key] = cloneDeep(obj[key])
+        } else {
+            newObj[key] = obj[key]
+        }
+    }
+
+    return newObj
+}
+
+export const updateValidateRuleForSubnav = (valueType, subNav = []) => {
+    if (valueType !== undefined) {
+        const newNav = cloneDeep(subNav)
+        newNav.forEach((nav) => {
+            if (nav.type === "form") {
+                nav.items.forEach((item) => {
+                    if (item.id === "valueString") {
+                        if (valueType === VALUE_TYPE.boolean) {
+                            item.type = "checkbox"
+                        } else {
+                            item.isError = (value) => validateValueType(value, valueType)
+                        }
+                    }
+                })
+            }
+        })
+
+        return newNav
+    }
+    return subNav
+}
+
+export const updateValidateRuleForFormMenuItems = (valueType, items = []) => {
+    if (valueType !== undefined) {
+        const newItems = cloneDeep(items)
+        newItems.forEach((item) => {
+            if (item.id === "valueString") {
+                if (valueType === VALUE_TYPE.boolean) {
+                    item.type = "checkbox"
+                } else {
+                    item.type = "text"
+                    item.isError = (value) => validateValueType(value, valueType)
+                }
+            }
+        })
+        return newItems
+    }
+    return items
 }

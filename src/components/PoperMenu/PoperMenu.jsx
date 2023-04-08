@@ -8,12 +8,12 @@ import FormMenu from "./FormMenu"
 import TableMenu from "./TableMenu"
 import { getUpdatedMenuValue as getNewValue } from "@/utils/functions"
 
-function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath = [] }) {
+function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath = [], initValue = {} }) {
     const [navItems, setNavItems] = useState([menuNavigaton[0]])
     const currentNavItem = navItems[navItems.length - 1]
 
     const [menuIndex, setMenuIndex] = useState(0)
-    const [value, setValue] = useState({})
+    const [value, setValue] = useState(initValue)
     const [invalid, setInvalid] = useState(true)
     const [validateRows, setValidateRows] = useState(() => {
         let total = 0
@@ -87,6 +87,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
                         subNav={currentNavItem.subNav}
                         value={value}
                         setValue={handleSetValue}
+                        canAddRecord={currentNavItem.canAddRecord}
                     />
                 )}
                 <Button onClick={handleClick} className="mx-auto mt-4 text-center text-3xl" disabled={invalid}>

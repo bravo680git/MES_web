@@ -56,3 +56,55 @@ export const validateDateInput = (value) => {
         return "Vui lòng nhập đúng định dạng ngày/tháng/năm"
     }
 }
+
+export const validateIdField = (value) => {
+    const regex = /[/+&]/
+    const length = value ? value.length : 0
+    if (length === 0) {
+        return "Vui lòng không để trống trường này"
+    }
+    if (length > 50) {
+        return "Độ dài tối đa là 50 kí tự"
+    }
+    if (regex.test(value)) {
+        return "Vui lòng không nhập các ki tự / + &"
+    }
+    return false
+}
+
+export const validateDescField = (value) => {
+    if (value && value.length > 500) {
+        return "Độ dài tối đa là 500 kí tự"
+    }
+    return false
+}
+
+export const validateValueType = (value, type) => {
+    const valueTypes = ["boolean", "interger", "decimal", "string"]
+    if (!value) {
+        return "Trường này không được để trống"
+    }
+    switch (valueTypes[type]) {
+        case "boolean":
+        case "string":
+            return false
+        case "interger":
+            const intRegex = /^[+-]?[\d]+$/
+            if (intRegex.test(value)) {
+                return false
+            } else {
+                return "Vui lòng nhập một số nguyên"
+            }
+
+        case "decimal":
+            const decRegex = /^[-+]?[0-9]+\.?[0-9]+$/
+            if (decRegex.test(value)) {
+                return false
+            } else {
+                return "Vui lòng nhập một số thực"
+            }
+
+        default:
+            return "Kiểu dữ liệu không hợp lệ"
+    }
+}

@@ -3,17 +3,17 @@
 export const WORKER_TABLE_COLUMNS = [
     {
         Header: "ID",
-        accessor: "id",
+        accessor: "personId",
         disableSortBy: false,
     },
     {
         Header: "Tên nhân viên",
-        accessor: "name",
+        accessor: "description",
         disableSortBy: false,
     },
     {
-        Header: "Bộ phận",
-        accessor: "type",
+        Header: "Loại nhân viên",
+        accessor: "personnelClasses",
         disableSortBy: true,
     },
 ]
@@ -21,17 +21,17 @@ export const WORKER_TABLE_COLUMNS = [
 export const EQUIPMENT_TABLE_COLUMNS = [
     {
         Header: "ID",
-        accessor: "id",
+        accessor: "equipmentId",
         disableSortBy: false,
     },
     {
         Header: "Tên thiết bị",
-        accessor: "name",
+        accessor: "description",
         disableSortBy: false,
     },
     {
         Header: "Loại thiết bị",
-        accessor: "type",
+        accessor: "equipmentClasses",
         disableSortBy: true,
     },
 ]
@@ -39,17 +39,17 @@ export const EQUIPMENT_TABLE_COLUMNS = [
 export const MATERIAL_TABLE_COLUMNS = [
     {
         Header: "ID",
-        accessor: "id",
+        accessor: "materialId",
         disableSortBy: false,
     },
     {
         Header: "Tên vật tư",
-        accessor: "name",
+        accessor: "description",
         disableSortBy: false,
     },
     {
         Header: "Loại vật tư",
-        accessor: "type",
+        accessor: "materialClasses",
         disableSortBy: true,
     },
 ]
@@ -58,23 +58,31 @@ export const MATERIAL_TABLE_COLUMNS = [
 export const WORKER_INFO_TABLE_COLUMNS = [
     {
         Header: "ID",
-        accessor: "id",
+        accessor: "personId",
         disableSortBy: false,
     },
     {
         Header: "Tên nhân viên",
-        accessor: "name",
+        accessor: "description",
         disableSortBy: false,
     },
     {
-        Header: "Bộ phận",
-        accessor: "type",
+        Header: "Loại nhân viên",
+        accessor: "personnelClasses",
         disableSortBy: true,
+    },
+]
+
+export const WORKER_CLASS_TABLE_COLUMNS = [
+    {
+        Header: "ID loại nhân viên",
+        accessor: "personnelClassId",
+        disableSortBy: false,
     },
     {
         Header: "Mô tả",
         accessor: "description",
-        disableSortBy: true,
+        disableSortBy: false,
     },
 ]
 
@@ -102,6 +110,19 @@ export const EQUIPMENT_INFO_TABLE_COLUMNS = [
     },
 ]
 
+export const EQUIPMENT_CLASS_TABLE_COLUMNS = [
+    {
+        Header: "ID loại thiết bị",
+        accessor: "equipmentClassId",
+        disableSortBy: false,
+    },
+    {
+        Header: "Mô tả",
+        accessor: "description",
+        disableSortBy: false,
+    },
+]
+
 //material
 export const MATERIAL_INFO_TABLE_COLUMNS = [
     {
@@ -118,6 +139,19 @@ export const MATERIAL_INFO_TABLE_COLUMNS = [
         Header: "Loại vật tư",
         accessor: "type",
         disableSortBy: true,
+    },
+]
+
+export const MATERIAL_CLASS_TABLE_COLUMNS = [
+    {
+        Header: "ID loại vật tư",
+        accessor: "id",
+        disableSortBy: false,
+    },
+    {
+        Header: "Mô tả",
+        accessor: "description",
+        disableSortBy: false,
     },
 ]
 

@@ -123,3 +123,36 @@ export const SEGMENT_PARAMS_MOCK_DATA = [
         unit: "kg",
     },
 ]
+
+export const SEGMENT_RELATIONSHIP_MOCK_DATA = [
+    {
+        id: "seg-1",
+        description: "Segment-1",
+        begin: 0,
+        end: 2,
+    },
+    {
+        id: "seg-2",
+        description: "Segment-2",
+        begin: 0,
+        end: 3,
+    },
+    {
+        id: "seg-3",
+        description: "Segment-3",
+        begin: 2,
+        end: 5,
+    },
+    {
+        id: "seg-4",
+        description: "Segment-4",
+        begin: 5,
+        end: 10,
+    },
+    {
+        id: "seg-5",
+        description: "Segment-5",
+        begin: 3,
+        end: 7,
+    },
+]
