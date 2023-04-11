@@ -22,6 +22,7 @@ import {
     getCreateEquipmentMenuNav,
     getCreateMaterialMenuNav,
     getEditWorkerMenuNav,
+    getEditEquipmentMenuNav,
 } from "@/utils/menuNavigation"
 
 const handler = {
@@ -37,7 +38,7 @@ const handler = {
     },
     editMenuNav: {
         worker: (list) => getEditWorkerMenuNav(list),
-        equipment: null,
+        equipment: (list) => getEditEquipmentMenuNav(list),
         material: null,
     },
     headers: {
@@ -47,12 +48,12 @@ const handler = {
     },
     fetchData: {
         worker: resourceApi.worker.getWorkers,
-        equipment: null,
+        equipment: resourceApi.equipment.getEquipments,
         material: null,
     },
     fetchClasses: {
         worker: resourceApi.worker.getWorkerClasses,
-        equipment: null,
+        equipment: resourceApi.equipment.getEquipmentClasses,
         material: null,
     },
     classesList: {
@@ -62,12 +63,12 @@ const handler = {
     },
     create: {
         worker: (data) => resourceApi.worker.createWorker(data),
-        equipment: null,
+        equipment: (data) => resourceApi.equipment.createEquipment(data),
         material: null,
     },
     edit: {
         worker: (data, item) => resourceApi.worker.updateWorker(data, item.personId),
-        equipment: null,
+        equipment: (data, item) => resourceApi.equipment.updateEquipment(data, item.equipmentId),
         material: null,
     },
 }

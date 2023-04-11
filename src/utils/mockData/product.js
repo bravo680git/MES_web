@@ -1,76 +1,3 @@
-export const PRODUCT_SEGMENTS_MOCK_DATA = [
-    {
-        segmentId: "công đoạn 3",
-        workerType: ["giao hàng", "kho"],
-        equipmentType: ["Máy ép nhựa"],
-        material: ["Nhựa PVC"],
-        duration: 15,
-    },
-    {
-        segmentId: "công đoạn 5",
-        workerType: ["đứng máy"],
-        equipmentType: ["Máy ép cao su", "Máy ép lagging"],
-        material: ["Cao su lưu hóa"],
-        duration: 8,
-    },
-    {
-        segmentId: "công đoạn 7",
-        workerType: ["giao hàng"],
-        equipmentType: ["Máy ép lagging"],
-        material: ["Cao su non"],
-        duration: 10,
-    },
-    {
-        segmentId: "công đoạn 2",
-        workerType: ["đứng máy", "kho"],
-        equipmentType: ["Máy ép nhựa", "Máy ép cao su"],
-        material: ["Nhựa PVC", "Cao su lưu hóa"],
-        duration: 7,
-    },
-    {
-        segmentId: "công đoạn 8",
-        workerType: ["đứng máy"],
-        equipmentType: ["Máy ép cao su"],
-        material: ["Cao su lưu hóa", "Nhựa PVC"],
-        duration: 3,
-    },
-    {
-        segmentId: "công đoạn 10",
-        workerType: ["giao hàng", "kho"],
-        equipmentType: ["Máy ép nhựa", "Máy ép lagging"],
-        material: ["Nhựa PVC", "Cao su lưu hóa", "Cao su non"],
-        duration: 12,
-    },
-    {
-        segmentId: "công đoạn 4",
-        workerType: ["giao hàng"],
-        equipmentType: ["Máy ép lagging"],
-        material: ["Cao su lưu hóa", "Cao su non"],
-        duration: 5,
-    },
-    {
-        segmentId: "công đoạn 9",
-        workerType: ["đứng máy", "kho"],
-        equipmentType: ["Máy ép cao su"],
-        material: ["Cao su non"],
-        duration: 17,
-    },
-    {
-        segmentId: "công đoạn 1",
-        workerType: ["đứng máy"],
-        equipmentType: ["Máy ép nhựa", "Máy ép cao su", "Máy ép lagging"],
-        material: ["Cao su non", "Nhựa PVC"],
-        duration: 20,
-    },
-    {
-        segmentId: "công đoạn 6",
-        workerType: ["kho"],
-        equipmentType: ["Máy ép nhựa", "Máy ép cao su", "Máy ép lagging"],
-        material: ["Cao su lưu hóa", "Nhựa PVC", "Cao su non"],
-        duration: 2,
-    },
-]
-
 export const SEGMENT_WORKER_MOCK_DATA = [
     {
         type: "Đứng máy",
@@ -124,35 +51,53 @@ export const SEGMENT_PARAMS_MOCK_DATA = [
     },
 ]
 
+export const PRODUCT_SEGMENTS_MOCK_DATA = [
+    {
+        segmentId: "3",
+        description: "công đoạn 3",
+        workerType: ["giao hàng", "kho"],
+        equipmentType: ["Máy ép nhựa"],
+        material: ["Nhựa PVC"],
+        duration: 15,
+    },
+    {
+        segmentId: "5",
+        description: "công đoạn 5",
+        workerType: ["đứng máy"],
+        equipmentType: ["Máy ép cao su", "Máy ép lagging"],
+        material: ["Cao su lưu hóa"],
+        duration: 8,
+    },
+    {
+        segmentId: "7",
+        description: "công đoạn 7",
+        workerType: ["giao hàng"],
+        equipmentType: ["Máy ép lagging"],
+        material: ["Cao su non"],
+        duration: 10,
+    },
+]
+
 export const SEGMENT_RELATIONSHIP_MOCK_DATA = [
     {
-        id: "seg-1",
-        description: "Segment-1",
-        begin: 0,
-        end: 2,
+        segmentA: "start-segment",
+        relation: 1,
+        segmentB: "3",
     },
     {
-        id: "seg-2",
-        description: "Segment-2",
-        begin: 0,
-        end: 3,
+        segmentA: "3",
+        relation: 0,
+        segmentB: "5",
+        duration: 4,
     },
     {
-        id: "seg-3",
-        description: "Segment-3",
-        begin: 2,
-        end: 5,
+        segmentA: "5",
+        relation: 2,
+        segmentB: "7",
     },
     {
-        id: "seg-4",
-        description: "Segment-4",
-        begin: 5,
-        end: 10,
-    },
-    {
-        id: "seg-5",
-        description: "Segment-5",
-        begin: 3,
-        end: 7,
+        segmentA: "3",
+        relation: 2,
+        segmentB: "7",
     },
 ]

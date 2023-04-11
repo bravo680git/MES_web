@@ -106,31 +106,62 @@ export const getCreateEquipmentMenuNav = (equipmentTypeList) => [
         type: "form",
         items: [
             {
-                id: "id",
+                id: "equipmentId",
                 type: "text",
                 label: "ID thiết bị",
                 isError: validateIdField,
             },
             {
-                id: "name",
-                type: "text",
-                label: "Tên thiết bị",
-                isError: validateIdField,
-            },
-            {
                 id: "description",
                 type: "text",
-                label: "Mô tả",
+                label: "Tên thiết bị",
                 isError: validateDescField,
             },
             {
-                id: "type",
+                id: "equipmentClasses",
                 type: "selectMutils",
                 label: "Loại thiết bị",
                 list: equipmentTypeList ?? [],
                 isError: validateRequiredField,
             },
         ],
+    },
+]
+
+export const getEditEquipmentMenuNav = (equipmentTypeList) => [
+    {
+        id: "info",
+        title: "Thông tin thiết bị",
+        type: "form",
+        items: [
+            {
+                id: "equipmentId",
+                type: "text",
+                label: "ID thiết bị",
+                isError: validateIdField,
+            },
+            {
+                id: "description",
+                type: "text",
+                label: "Tên thiết bị",
+                isError: validateIdField,
+            },
+            {
+                id: "equipmentClasses",
+                type: "selectMutils",
+                label: "Loại thiết bị",
+                list: equipmentTypeList ?? [],
+                isError: validateRequiredField,
+            },
+        ],
+    },
+    {
+        id: "properties",
+        title: "Thuộc tính thiết bị",
+        type: "table",
+        headers: PROPERTIES_TABLE_COLUMNS,
+        canAddRecord: false,
+        subNav: EDIT_PROPERTY_SUB_NAV,
     },
 ]
 

@@ -1,7 +1,12 @@
 export const PRODUCT_SEGMENTS_TABLE_COLUMNS = [
     {
-        Header: "Công đoạn",
+        Header: "ID công đoạn",
         accessor: "segmentId",
+        disableSortBy: false,
+    },
+    {
+        Header: "Mô tả",
+        accessor: "description",
         disableSortBy: false,
     },
     {

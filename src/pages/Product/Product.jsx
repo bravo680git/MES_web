@@ -29,6 +29,8 @@ import {
     SEGMENT_PARAMS_MOCK_DATA,
     SEGMENT_RELATIONSHIP_MOCK_DATA,
 } from "@/utils/mockData"
+import { SEGMENT_RELATION } from "@/utils/constants"
+import { handleGanttChartData } from "@/utils/functions"
 
 function Product() {
     const params = useParams()
@@ -39,11 +41,7 @@ function Product() {
         dispatch(commonStoreActions.setPageTitle(`Chi tiết sản phẩm ${params.productId}`))
     }, [dispatch, params.productId])
 
-    const data = SEGMENT_RELATIONSHIP_MOCK_DATA.map((item) => ({
-        x: item.id,
-        y: [item.begin, item.end],
-        name: item.description,
-    }))
+    const data = handleGanttChartData(PRODUCT_SEGMENTS_MOCK_DATA, SEGMENT_RELATIONSHIP_MOCK_DATA)
 
     return (
         <div data-component="Product" className="container h-full">

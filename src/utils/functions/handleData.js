@@ -1,4 +1,4 @@
-import { VALUE_TYPE } from "@/utils/constants"
+import { VALUE_TYPE, SEGMENT_RELATION } from "@/utils/constants"
 import { validateValueType } from "./validate"
 
 export const getMenuItemValue = (value, path = [], id) => {
@@ -36,13 +36,15 @@ export const getMenuTableData = (value, id) => {
     return value?.map((v) => v[id])
 }
 
-export const getSegmentOptionList = (segmentList) => {
-    const segments = segmentList.productSegments
-
-    return segments?.map((item) => ({
-        key: item.segment.name,
-        value: item.segment.id,
+export const getSegmentOptionList = (segments) => {
+    const segmenList = segments.productSegments?.map((item) => ({
+        key: item.segment.description,
+        value: item.segment.segmentId,
     }))
+    if (Array.isArray(segmenList)) {
+        segmenList.unshift({ key: "Start", value: "start-segment" })
+    }
+    return segmenList
 }
 
 export const formatNumberValue = (value, format) => {
@@ -120,4 +122,52 @@ export const updateValidateRuleForFormMenuItems = (valueType, items = []) => {
         return newItems
     }
     return items
+}
+
+export const handleGanttChartData = (segments, segmentRelationships) => {
+    const result = segments.map((item) => {
+        return {
+            id: item.segmentId,
+            begin: 0,
+            end: 0,
+            duration: item.duration,
+        }
+    })
+
+    segmentRelationships.forEach((item) => {
+        let time, begin, end, prevEnd
+        const segA = result.find((s) => s.id === item.segmentA)
+        const segB = result.find((s) => s.id === item.segmentB)
+
+        switch (item.relation) {
+            case SEGMENT_RELATION.afterJustDone:
+            case SEGMENT_RELATION.after:
+                prevEnd = item.segmentA === "start-segment" ? 0 : segA.end
+                begin = segB.begin > prevEnd ? segB.begin : prevEnd
+                time = segB.duration
+                end = begin + time
+                break
+
+            case SEGMENT_RELATION.afterWithDuration:
+                prevEnd = item.segmentA === "start-segment" ? 0 : segA.end
+                begin = segB.begin > prevEnd ? segB.begin : prevEnd
+                begin += item.duration
+                time = segB.duration
+                end = begin + time
+                break
+            default:
+        }
+
+        result.forEach((r) => {
+            if (r.id === segB.id) {
+                r.begin = begin
+                r.end = end
+            }
+        })
+    })
+    return result.map((item) => ({
+        x: item.id,
+        y: [item.begin, item.end],
+        name: item.id,
+    }))
 }

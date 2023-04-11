@@ -1,25 +1,21 @@
 import { PROPERTIES_TABLE_COLUMNS } from "@/utils/tableColumns"
-import {
-    validateRequiredField,
-    validateNumberField,
-    validateIdField,
-    validateDescField,
-} from "@/utils/functions/validate"
+import { validateRequiredField, validateNumberField, validateIdField } from "@/utils/functions/validate"
+import { CREATE_PROPERTY_SUB_NAV } from "./common"
 
 export const productMenuNav = {
     getInfo: () => ({
-        id: "productInfo",
+        id: "info",
         title: "Thông tin sản phẩm",
         type: "form",
         items: [
             {
-                id: "id",
+                id: "productId",
                 type: "text",
                 label: "ID sản phẩm",
                 isError: validateIdField,
             },
             {
-                id: "name",
+                id: "description",
                 type: "text",
                 label: "Tên sản phẩm",
                 isError: validateIdField,
@@ -28,37 +24,11 @@ export const productMenuNav = {
     }),
 
     getProperties: () => ({
-        id: "productProperties",
+        id: "properties",
         title: "Thuộc tính sản phẩm",
         type: "table",
         headers: PROPERTIES_TABLE_COLUMNS,
-        subNav: [
-            {
-                id: "property",
-                title: "Thêm thuộc tính mới",
-                type: "form",
-                items: [
-                    {
-                        id: "description",
-                        type: "text",
-                        label: "Mô tả",
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "unit",
-                        type: "text",
-                        label: "Đơn vị",
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "value",
-                        type: "text",
-                        label: "Giá trị",
-                        isError: validateRequiredField,
-                    },
-                ],
-            },
-        ],
+        subNav: CREATE_PROPERTY_SUB_NAV,
     }),
     getSegments: (workerTypeList = [], equipmentTypeList = [], materialList = []) => ({
         id: "productSegments",
@@ -67,12 +37,12 @@ export const productMenuNav = {
         headers: [
             {
                 Header: "ID",
-                accessor: "id",
+                accessor: "segmentId",
                 disableSortBy: false,
             },
             {
                 Header: "Tên công đoạn",
-                accessor: "name",
+                accessor: "description",
                 disableSortBy: false,
             },
             {
@@ -103,13 +73,13 @@ export const productMenuNav = {
                 type: "form",
                 items: [
                     {
-                        id: "id",
+                        id: "segmentId",
                         type: "text",
                         label: "ID",
                         isError: validateIdField,
                     },
                     {
-                        id: "name",
+                        id: "description",
                         type: "text",
                         label: "Tên công đoạn",
                         isError: validateIdField,
@@ -129,12 +99,7 @@ export const productMenuNav = {
                 headers: [
                     {
                         Header: "ID loại nhân viên",
-                        accessor: "id",
-                        disableSortBy: false,
-                    },
-                    {
-                        Header: "Mô tả",
-                        accessor: "description",
+                        accessor: "personnelClassId",
                         disableSortBy: false,
                     },
                     {
@@ -150,12 +115,12 @@ export const productMenuNav = {
                 ],
                 subNav: [
                     {
-                        id: "workerType ",
+                        id: "workerType",
                         title: "Thêm bộ phận",
                         type: "form",
                         items: [
                             {
-                                id: "workerId",
+                                id: "personnelClassId",
                                 type: "select",
                                 label: "ID bộ phận",
                                 list: workerTypeList,
@@ -177,18 +142,13 @@ export const productMenuNav = {
                 ],
             },
             {
-                id: "equipments",
+                id: "equipmentTypes",
                 title: "Danh sách loại thiết bị",
                 type: "table",
                 headers: [
                     {
                         Header: "ID loại thiết bị",
-                        accessor: "id",
-                        disableSortBy: false,
-                    },
-                    {
-                        Header: "Mô tả",
-                        accessor: "description",
+                        accessor: "equipmentClassId",
                         disableSortBy: false,
                     },
                     {
@@ -204,12 +164,12 @@ export const productMenuNav = {
                 ],
                 subNav: [
                     {
-                        id: "equipment",
+                        id: "equipmentType",
                         title: "Thêm loại thiết bị",
                         type: "form",
                         items: [
                             {
-                                id: "equipmentType",
+                                id: "equipmentClassId",
                                 type: "select",
                                 label: "Loại thiết bị",
                                 list: equipmentTypeList,
@@ -237,12 +197,7 @@ export const productMenuNav = {
                 headers: [
                     {
                         Header: "ID vật tư",
-                        accessor: "id",
-                        disableSortBy: false,
-                    },
-                    {
-                        Header: "Mô tả",
-                        accessor: "description",
+                        accessor: "materialId",
                         disableSortBy: false,
                     },
                     {
@@ -334,67 +289,73 @@ export const productMenuNav = {
             },
         ],
     }),
-    getSegMentRelationship: (segments = [], relationList = []) => ({
-        id: "segmentRelationships",
-        title: "Ràng buộc giữa các công đoạn",
-        type: "table",
-        headers: [
-            {
-                Header: "ID công đoạn A",
-                accessor: "segmentA",
-                disableSortBy: false,
-            },
-            {
-                Header: "Ràng buộc",
-                accessor: "relation",
-                disableSortBy: false,
-            },
-            {
-                Header: "ID công đoạn B",
-                accessor: "segmentB",
-                disableSortBy: false,
-            },
-            {
-                Header: "Thời gian(giờ)",
-                accessor: "duration",
-                disableSortBy: false,
-            },
-        ],
-        subNav: [
-            {
-                id: "relationship",
-                title: "Thêm ràng buộc",
-                type: "form",
-                items: [
-                    {
-                        id: "segmentA",
-                        type: "select",
-                        label: "ID công đoạn A",
-                        list: segments,
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "relation",
-                        type: "select",
-                        label: "Ràng buộc",
-                        list: relationList,
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "segmentB",
-                        type: "select",
-                        label: "ID công đoạn B",
-                        list: segments,
-                        isError: validateRequiredField,
-                    },
-                    {
-                        id: "duration",
-                        type: "text",
-                        label: "Thời gian(giờ)",
-                        isError: validateNumberField,
-                    },
-                ],
-            },
-        ],
-    }),
+    getSegMentRelationship: (segments = [], relationList = []) => {
+        const startList = [...segments]
+        segments.shift()
+        const endList = segments
+
+        return {
+            id: "segmentRelationships",
+            title: "Ràng buộc giữa các công đoạn",
+            type: "table",
+            headers: [
+                {
+                    Header: "ID công đoạn A",
+                    accessor: "segmentA",
+                    disableSortBy: false,
+                },
+                {
+                    Header: "Ràng buộc",
+                    accessor: "relation",
+                    disableSortBy: false,
+                },
+                {
+                    Header: "ID công đoạn B",
+                    accessor: "segmentB",
+                    disableSortBy: false,
+                },
+                {
+                    Header: "Thời gian(giờ)",
+                    accessor: "duration",
+                    disableSortBy: false,
+                },
+            ],
+            subNav: [
+                {
+                    id: "relationship",
+                    title: "Thêm ràng buộc",
+                    type: "form",
+                    items: [
+                        {
+                            id: "segmentA",
+                            type: "select",
+                            label: "ID công đoạn A",
+                            list: startList,
+                            isError: validateRequiredField,
+                        },
+                        {
+                            id: "relation",
+                            type: "select",
+                            label: "Ràng buộc",
+                            list: relationList,
+                            isError: validateRequiredField,
+                        },
+                        {
+                            id: "segmentB",
+                            type: "select",
+                            label: "ID công đoạn B",
+                            list: endList,
+                            isError: validateRequiredField,
+                        },
+                        {
+                            id: "duration",
+                            type: "text",
+                            label: "Thời gian(giờ)",
+                            isError: validateNumberField,
+                        },
+                    ],
+                },
+            ],
+        }
+    },
 }

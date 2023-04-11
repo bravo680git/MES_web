@@ -12,7 +12,10 @@ function FormMenu({ items, value, setValue, path, setValidateRows }) {
 
     useEffect(() => {
         const newItems = updateValidateRuleForFormMenuItems(valueType, items, setValue)
-        if (validateValueType(getValue(value, path, "valueString"), valueType)) {
+        if (
+            typeof setValidateRows === "function" &&
+            validateValueType(getValue(value, path, "valueString"), valueType)
+        ) {
             setValidateRows((prev) => ({
                 ...prev,
                 valid: prev.valid.filter((item) => item !== "valueString"),
