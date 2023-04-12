@@ -238,7 +238,7 @@ export const getMaterialClassMenuNav = () => [
         type: "form",
         items: [
             {
-                id: "id",
+                id: "materialClassId",
                 type: "text",
                 label: "ID loại vật tư",
                 isError: validateIdField,

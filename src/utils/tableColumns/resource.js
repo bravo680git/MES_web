@@ -140,7 +140,7 @@ export const MATERIAL_INFO_TABLE_COLUMNS = [
 export const MATERIAL_CLASS_TABLE_COLUMNS = [
     {
         Header: "ID loại vật tư",
-        accessor: "id",
+        accessor: "materialClassId",
         disableSortBy: false,
     },
     {

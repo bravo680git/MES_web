@@ -54,12 +54,12 @@ const handler = {
     fetchClasses: {
         worker: resourceApi.worker.getWorkerClasses,
         equipment: resourceApi.equipment.getEquipmentClasses,
-        material: null,
+        material: resourceApi.material.getEquipmentClasses,
     },
     classesList: {
         worker: (items) => items.map((item) => ({ value: item.personnelClassId, key: item.description })),
         equipment: (items) => items.map((item) => ({ value: item.equipmentClassId, key: item.description })),
-        material: null,
+        material: (items) => items.map((item) => ({ value: item.materialClassId, key: item.description })),
     },
     create: {
         worker: (data) => resourceApi.worker.createWorker(data),
