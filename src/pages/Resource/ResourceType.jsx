@@ -23,6 +23,7 @@ import {
     getCreateMaterialMenuNav,
     getEditWorkerMenuNav,
     getEditEquipmentMenuNav,
+    getEditMaterialMenuNav,
 } from "@/utils/menuNavigation"
 
 const handler = {
@@ -39,7 +40,7 @@ const handler = {
     editMenuNav: {
         worker: (list) => getEditWorkerMenuNav(list),
         equipment: (list) => getEditEquipmentMenuNav(list),
-        material: null,
+        material: (list) => getEditMaterialMenuNav(list),
     },
     headers: {
         worker: WORKER_INFO_TABLE_COLUMNS,
@@ -49,7 +50,7 @@ const handler = {
     fetchData: {
         worker: resourceApi.worker.getWorkers,
         equipment: resourceApi.equipment.getEquipments,
-        material: null,
+        material: resourceApi.material.getMaterials,
     },
     fetchClasses: {
         worker: resourceApi.worker.getWorkerClasses,
@@ -64,12 +65,12 @@ const handler = {
     create: {
         worker: (data) => resourceApi.worker.createWorker(data),
         equipment: (data) => resourceApi.equipment.createEquipment(data),
-        material: null,
+        material: (data) => resourceApi.material.createMaterial(data),
     },
     edit: {
         worker: (data, item) => resourceApi.worker.updateWorker(data, item.personId),
         equipment: (data, item) => resourceApi.equipment.updateEquipment(data, item.equipmentId),
-        material: null,
+        material: (data, item) => resourceApi.material.updateMaterial(data, item.materialDefinitionId),
     },
 }
 

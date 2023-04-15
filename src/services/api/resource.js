@@ -23,6 +23,10 @@ const resourceApi = {
         getEquipmentClasses: async () => await axiosClient.get("/materialClasses"),
         createEquipmentClass: async (data) => await axiosClient.post("/materialClasses", data),
         updateEquipmentClass: async (data, classId) => await axiosClient.put(`/materialClasses/${classId}`, data),
+
+        getMaterials: async () => await axiosClient.get("/materialDefinitions"),
+        createMaterial: async (data) => await axiosClient.post("/materialDefinitions", data),
+        updateMaterial: async (data, workerId) => await axiosClient.put(`/materialDefinitions/${workerId}`, data),
     },
 }
 

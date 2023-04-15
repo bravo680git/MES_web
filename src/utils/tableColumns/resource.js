@@ -122,7 +122,7 @@ export const EQUIPMENT_CLASS_TABLE_COLUMNS = [
 export const MATERIAL_INFO_TABLE_COLUMNS = [
     {
         Header: "ID",
-        accessor: "id",
+        accessor: "materialDifinitionId",
         disableSortBy: false,
     },
     {
@@ -132,7 +132,7 @@ export const MATERIAL_INFO_TABLE_COLUMNS = [
     },
     {
         Header: "Loại vật tư",
-        accessor: "type",
+        accessor: "materialClasses",
         disableSortBy: true,
     },
 ]
