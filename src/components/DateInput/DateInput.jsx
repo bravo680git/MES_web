@@ -39,7 +39,7 @@ function DateInput({ id, label, value, setValue, className }) {
                     {label}
                 </label>
                 <div className="flex min-h-[58px] items-end pt-6">
-                    <div className="ml-2 flex w-fit min-w-[100px] max-w-[200px] flex-wrap"></div>
+                    <div className="ml-2 flex w-fit min-w-[150px] max-w-[200px] flex-wrap"></div>
                     <input
                         type="date"
                         className="text-14 m block h-5 grow pl-2 focus:outline-none"
