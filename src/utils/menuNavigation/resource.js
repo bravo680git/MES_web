@@ -202,7 +202,7 @@ export const getCreateMaterialMenuNav = (materialTypeList, materialSlotList) => 
         type: "form",
         items: [
             {
-                id: "id",
+                id: "materialDefinitionId",
                 type: "text",
                 label: "ID vật tư",
                 isError: validateIdField,
@@ -214,17 +214,10 @@ export const getCreateMaterialMenuNav = (materialTypeList, materialSlotList) => 
                 isError: validateDescField,
             },
             {
-                id: "type",
+                id: "materialClasses",
                 type: "selectMutils",
                 label: "Loại vật tư",
                 list: materialTypeList ?? [],
-                isError: validateRequiredField,
-            },
-            {
-                id: "slot",
-                type: "select",
-                label: "Lô vật tư",
-                list: materialSlotList ?? [],
                 isError: validateRequiredField,
             },
         ],
@@ -238,7 +231,7 @@ export const getMaterialClassMenuNav = () => [
         type: "form",
         items: [
             {
-                id: "id",
+                id: "materialClassId",
                 type: "text",
                 label: "ID loại vật tư",
                 isError: validateIdField,
@@ -257,5 +250,42 @@ export const getMaterialClassMenuNav = () => [
         type: "table",
         headers: PROPERTIES_TABLE_COLUMNS,
         subNav: CREATE_PROPERTY_SUB_NAV,
+    },
+]
+
+export const getEditMaterialMenuNav = (materialClasses) => [
+    {
+        id: "info",
+        title: "Thông tin vật tư",
+        type: "form",
+        items: [
+            {
+                id: "materialDefinitionId",
+                type: "text",
+                label: "ID vật tư",
+                isError: validateIdField,
+            },
+            {
+                id: "description",
+                type: "text",
+                label: "Tên vật tư",
+                isError: validateIdField,
+            },
+            {
+                id: "materialClasses",
+                type: "selectMutils",
+                label: "Loại vật tư",
+                list: materialClasses ?? [],
+                isError: validateRequiredField,
+            },
+        ],
+    },
+    {
+        id: "properties",
+        title: "Thuộc tính vật tư",
+        type: "table",
+        headers: PROPERTIES_TABLE_COLUMNS,
+        canAddRecord: false,
+        subNav: EDIT_PROPERTY_SUB_NAV,
     },
 ]
