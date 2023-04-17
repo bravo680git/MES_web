@@ -8,6 +8,8 @@ import Chart from "react-apexcharts"
 
 import { useState } from "react"
 import { oeeMockData } from "@/utils/mockData"
+import { useNavigate } from "react-router-dom"
+
 const oeeModeList = ["All", "OEE", "A", "P", "Q", "L"]
 const calDayStartEnd = () => {
     const currentDate = new Date()
@@ -17,6 +19,23 @@ const calDayStartEnd = () => {
     const dayStart = tenDaysAgo.toISOString().substr(0, 10)
     // mặc định hiển thị từ 10 ngày trước đến hôm nay
     return { dayStart, dayEnd }
+}
+// viết lại dùng object
+const modeToText = (mode) => {
+    switch (mode) {
+        case 0:
+            return "ALL"
+        case 1:
+            return "OEE"
+        case 2:
+            return "A"
+        case 3:
+            return "P"
+        case 4:
+            return "Q"
+        case 5:
+            return "L"
+    }
 }
 const machineList = [
     {
@@ -28,43 +47,65 @@ const machineList = [
         value: "P002",
     },
 ]
-const header = [
-    {
-        Header: "Ngày",
-        accessor: "date",
-        disableSortBy: false,
-    },
-    {
-        Header: "OEE",
-        accessor: "oee",
-        disableSortBy: false,
-    },
-    {
-        Header: "A",
-        accessor: "a",
-        disableSortBy: false,
-    },
-    {
-        Header: "P",
-        accessor: "p",
-        disableSortBy: false,
-    },
-    {
-        Header: "Q",
-        accessor: "q",
-        disableSortBy: false,
-    },
-    {
-        Header: "L",
-        accessor: "l",
-        disableSortBy: false,
-    },
-]
+
+const returnHeader = (mode) => {
+    const header = [
+        {
+            Header: "Ngày",
+            accessor: "date",
+            disableSortBy: false,
+        },
+        {
+            Header: "OEE",
+            accessor: "oee",
+            disableSortBy: false,
+        },
+        {
+            Header: "A",
+            accessor: "a",
+            disableSortBy: false,
+        },
+        {
+            Header: "P",
+            accessor: "p",
+            disableSortBy: false,
+        },
+        {
+            Header: "Q",
+            accessor: "q",
+            disableSortBy: false,
+        },
+        {
+            Header: "L",
+            accessor: "l",
+            disableSortBy: false,
+        },
+    ]
+    switch (mode) {
+        case 0:
+            return header
+        case 1:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "oee")
+        case 2:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "a")
+        case 3:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "p")
+        case 4:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "q")
+        case 5:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "l")
+        default:
+            return []
+    }
+}
+
 function OeePage() {
+    const navigate = useNavigate()
+
     const [oeeModeIndex, setOeeModeIndex] = useState(0) // oee search bar states
     const [dayStart, setDayStart] = useState(calDayStartEnd().dayStart)
     const [dayEnd, setDayEnd] = useState(calDayStartEnd().dayEnd)
-    const [selectedMachine, setSelectedMachine] = useState("P001")
+    const [selectedMachine, setSelectedMachine] = useState(["P001"])
 
     const handleSubmitForm = () => {
         const data = {
@@ -75,8 +116,11 @@ function OeePage() {
         console.log(data)
         console.log("Calling the API...")
     }
+    const handleClickRow = (row) => {
+        navigate(`/oee-detail/${row.a}`)
+    }
     const xaxis = oeeMockData.map((e) => e.date)
-    const yaxis = oeeMockData.map((e) => e.a)
+    const yaxis = oeeMockData.map((e) => e[modeToText(oeeModeIndex).toLowerCase()])
     const state = {
         options: {
             xaxis: {
@@ -98,7 +142,7 @@ function OeePage() {
         },
         series: [
             {
-                name: `a`,
+                name: `${modeToText(oeeModeIndex)}`,
                 data: yaxis,
             },
         ],
@@ -108,7 +152,7 @@ function OeePage() {
             <div className="container mb-5 ">
                 <Card>
                     <div className=" mb-3 flex w-full justify-between">
-                        <div className="height:  1rem p-1 p-1 ">
+                        <div className="  p-1">
                             <DateInput
                                 className=""
                                 label="Chọn ngày bắt đầu:"
@@ -116,10 +160,10 @@ function OeePage() {
                                 setValue={setDayStart}
                             />
                         </div>
-                        <div className="height:  1rem p-1 p-1 ">
+                        <div className="  p-1 ">
                             <DateInput className="" label="Chọn ngày kết thúc:" value={dayEnd} setValue={setDayEnd} />
                         </div>
-                        <div className="height:  1rem p-1 p-1">
+                        <div className="  p-1">
                             <SelectInput
                                 value={selectedMachine}
                                 setValue={setSelectedMachine}
@@ -135,17 +179,11 @@ function OeePage() {
                 </Card>
             </div>
             <Card>
-                <h1>Giá trị OEE</h1>
+                <h2>Giá trị {modeToText(oeeModeIndex)}</h2>
                 {oeeModeIndex !== 0 && (
-                    <Chart
-                        options={state.options}
-                        series={state.series}
-                        type="line"
-                        width={(window.innerWidth / 1920) * 1450}
-                        height={(window.innerWidth / 1920) * 500}
-                    />
+                    <Chart options={state.options} series={state.series} type="line" width="100%" height={440} />
                 )}
-                <Table headers={header} body={oeeMockData} sticky />
+                <Table headers={returnHeader(oeeModeIndex)} body={oeeMockData} sticky onRowClick={handleClickRow} />
             </Card>
         </>
     )

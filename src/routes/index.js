@@ -15,6 +15,12 @@ const routes = [
         layout: "main",
     },
     {
+        path: paths.oeeDetail,
+        title: "Chi tiết oee",
+        component: Pages.OeeDetailPage,
+        layout: "main",
+    },
+    {
         path: paths.downtime,
         title: "Thơi gian chết",
         component: "div",
