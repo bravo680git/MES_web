@@ -3,36 +3,61 @@ import { useState, useEffect } from "react"
 import Form from "@/components/Form"
 import Button from "@/components/Button"
 
-import { getSegmentOptionList } from "@/utils/functions/handleData"
+import { useCallApi } from "@/hooks"
+import { resourceApi } from "@/services/api"
+import { TIME_UNIT_LIST, SEGMENT_RELATION_OPTION_LIST } from "@/utils/constants"
+import { getSegmentOptionList, productMapper, getResourceOptionsList } from "@/utils/functions"
 import { productMenuNav } from "@/utils/menuNavigation"
-import { WORKER_TYPE_LIST, EQUIPMENT_TYPE_LIST, MATERIAL_LIST } from "@/utils/mockData"
 
 function NewProduct() {
     const [info, setInfo] = useState({})
     const [properties, setProperties] = useState({})
     const [segments, setSegments] = useState({})
     const [segmentRelationships, setSegmentRelationships] = useState({})
+    const [classList, setClassList] = useState({
+        worker: [],
+        equipment: [],
+        material: [],
+    })
+    const callAPi = useCallApi()
 
     const [invalid, setInvalid] = useState(true)
 
     const handleSubmit = () => {
-        console.log({ info, properties, segments, segmentRelationships })
+        const data = {
+            info: info.info,
+            segments: segments.productSegments,
+            segmentRelationships: segmentRelationships.segmentRelationships,
+        }
+        console.log(productMapper.clientToAPi(data))
     }
 
     useEffect(() => {
         const _segments = segments.productSegments?.map((item) => ({
             ...item,
-            segment: {
-                ...item.segment,
-                workerTypeCount: item.workerTypes?.length ?? 0,
-                equipmentTypeCount: item.equipmentTypes?.length ?? 0,
-                materialCount: item.materials?.length ?? 0,
+            info: {
+                ...item.info,
+                workerTypeCount: item.personnelSpecifications?.length ?? 0,
+                equipmentTypeCount: item.equipmentSpecifications?.length ?? 0,
+                materialCount: item.materialSpecifications?.length ?? 0,
+                durationUnitDisplay: TIME_UNIT_LIST.find((time) => time.value === item.info.durationUnit[0])?.key,
             },
         }))
         setSegments((prev) => ({
             productSegments: _segments,
         }))
     }, [segments.productSegments?.length])
+
+    useEffect(() => {
+        const _segmnetRelationships = segmentRelationships.segmentRelationships?.map((item) => ({
+            ...item,
+            info: {
+                ...item.info,
+                relationDisplay: SEGMENT_RELATION_OPTION_LIST.find((s) => s.value === item.info.relation[0])?.key,
+            },
+        }))
+        setSegmentRelationships({ segmentRelationships: _segmnetRelationships })
+    }, [segmentRelationships?.segmentRelationships?.length])
 
     useEffect(() => {
         if (
@@ -45,6 +70,26 @@ function NewProduct() {
             setInvalid(true)
         }
     }, [info.productInfo?.id.length, info.productInfo?.name.length, segments.productSegments?.length])
+
+    useEffect(() => {
+        callAPi(
+            [
+                resourceApi.worker.getWorkerClasses(),
+                resourceApi.equipment.getEquipmentClasses(),
+                resourceApi.material.getMaterials(),
+            ],
+            (res) => {
+                const workerClasses = res[0].items
+                const equipmentClasses = res[1].items
+                const materialClasses = res[2].items
+                setClassList({
+                    worker: getResourceOptionsList(workerClasses, "personnelClassId"),
+                    equipment: getResourceOptionsList(equipmentClasses, "equipmentClassId"),
+                    material: getResourceOptionsList(materialClasses, "materialDefinitionId"),
+                })
+            },
+        )
+    }, [callAPi])
 
     return (
         <div data-component="NewProduct" className="container flex h-full">
@@ -61,7 +106,7 @@ function NewProduct() {
                     />
                 </div>
 
-                <Button className="mt-5" onClick={handleSubmit} disabled={false}>
+                <Button className="mt-5" onClick={handleSubmit} disabled={!invalid}>
                     Xác nhận
                 </Button>
             </div>
@@ -69,7 +114,11 @@ function NewProduct() {
                 <div className="max-h-[50%] w-full">
                     <Form
                         className="h-full"
-                        menuNavigaton={productMenuNav.getSegments(WORKER_TYPE_LIST, EQUIPMENT_TYPE_LIST, MATERIAL_LIST)}
+                        menuNavigaton={productMenuNav.getSegments(
+                            classList.worker,
+                            classList.equipment,
+                            classList.material,
+                        )}
                         value={segments}
                         setValue={setSegments}
                     />

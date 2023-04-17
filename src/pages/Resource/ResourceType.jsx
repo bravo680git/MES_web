@@ -10,7 +10,7 @@ import { usePoperMenu, useCallApi } from "@/hooks"
 import { resourceApi } from "@/services/api"
 import { commonStoreActions } from "@/store"
 import { paths } from "@/config"
-import { resourceMapper, getClassOptionsList } from "@/utils/functions"
+import { resourceMapper, getResourceOptionsList } from "@/utils/functions"
 import {
     WORKER_INFO_TABLE_COLUMNS,
     PROPERTIES_TABLE_COLUMNS,
@@ -58,9 +58,9 @@ const handler = {
         material: resourceApi.material.getMaterialClasses,
     },
     classesList: {
-        worker: (items) => getClassOptionsList(items, "worker"),
-        equipment: (items) => getClassOptionsList(items, "equipment"),
-        material: (items) => getClassOptionsList(items, "material"),
+        worker: (items) => getResourceOptionsList(items, "personnelClassId"),
+        equipment: (items) => getResourceOptionsList(items, "equipmentClassId"),
+        material: (items) => getResourceOptionsList(items, "materialClassId"),
     },
     create: {
         worker: (data) => resourceApi.worker.createWorker(data),

@@ -38,13 +38,17 @@ export const getMenuTableData = (value, id) => {
 
 export const getSegmentOptionList = (segments) => {
     const segmenList = segments.productSegments?.map((item) => ({
-        key: item.segment.description,
-        value: item.segment.segmentId,
+        key: item.info.description,
+        value: item.info.productSegmentId,
     }))
     if (Array.isArray(segmenList)) {
         segmenList.unshift({ key: "Start", value: "start-segment" })
     }
     return segmenList
+}
+
+export const getResourceOptionsList = (items, key) => {
+    return items.map((item) => ({ value: item[key], key: item.description }))
 }
 
 export const formatNumberValue = (value, format) => {

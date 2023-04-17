@@ -25,7 +25,7 @@ export const PRODUCT_SEGMENTS_TABLE_COLUMNS = [
         disableSortBy: false,
     },
     {
-        Header: "Thời gian(giờ)",
+        Header: "Thời gian",
         accessor: "duration",
         disableSortBy: false,
     },
