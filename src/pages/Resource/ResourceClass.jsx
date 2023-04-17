@@ -37,18 +37,18 @@ const handler = {
     fetchData: {
         worker: resourceApi.worker.getWorkerClasses,
         equipment: resourceApi.equipment.getEquipmentClasses,
-        material: resourceApi.material.getEquipmentClasses,
+        material: resourceApi.material.getMaterialClasses,
     },
     addClass: {
         worker: (data) => resourceApi.worker.createWorkerClass(data),
         equipment: (data) => resourceApi.equipment.createEquipmentClass(data),
-        material: (data) => resourceApi.material.createEquipmentClass(data),
+        material: (data) => resourceApi.material.createMaterialClass(data),
     },
     editClass: {
         worker: (data, currentItem) => resourceApi.worker.updateWorkerClass(data, currentItem.personnelClassId),
         equipment: (data, currentItem) =>
             resourceApi.equipment.updateEquipmentClass(data, currentItem.equipmentClassId),
-        material: (data, currentItem) => resourceApi.material.updateEquipmentClass(data, currentItem.materialClassId),
+        material: (data, currentItem) => resourceApi.material.updateMaterialClass(data, currentItem.materialClassId),
     },
 }
 
