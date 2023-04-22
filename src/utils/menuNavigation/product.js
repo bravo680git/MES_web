@@ -40,7 +40,14 @@ export const productMenuNav = {
     }),
 
     //Product segments
-    getSegments: (workerTypeList = [], equipmentTypeList = [], materialList = []) => ({
+    getSegments: (
+        workerTypeList = [],
+        equipmentTypeList = [],
+        materialTypesList = [],
+        workerList = [],
+        equipmentList = [],
+        materialList = [],
+    ) => ({
         id: "productSegments",
         title: "Công đoạn sản phẩm",
         type: "table",
@@ -120,7 +127,7 @@ export const productMenuNav = {
                 headers: [
                     {
                         Header: "ID loại nhân viên",
-                        accessor: "personnelClassId",
+                        accessor: "personnelClasses",
                         disableSortBy: false,
                     },
                     {
@@ -141,7 +148,7 @@ export const productMenuNav = {
                         type: "form",
                         items: [
                             {
-                                id: "personnelClassId",
+                                id: "personnelClasses",
                                 type: "select",
                                 label: "ID loại  nhân viên",
                                 list: workerTypeList,
@@ -169,7 +176,7 @@ export const productMenuNav = {
                 headers: [
                     {
                         Header: "ID loại thiết bị",
-                        accessor: "equipmentClassId",
+                        accessor: "equipmentClasses",
                         disableSortBy: false,
                     },
                     {
@@ -190,7 +197,7 @@ export const productMenuNav = {
                         type: "form",
                         items: [
                             {
-                                id: "equipmentClassId",
+                                id: "equipmentClasses",
                                 type: "select",
                                 label: "Loại thiết bị",
                                 list: equipmentTypeList,
@@ -212,13 +219,13 @@ export const productMenuNav = {
                 ],
             },
             {
-                id: "materialSpecifications",
+                id: "materialSpecification",
                 title: "Danh sách vật tư",
                 type: "table",
                 headers: [
                     {
-                        Header: "ID vật tư",
-                        accessor: "materialDefinitionId",
+                        Header: "ID loại vật tư",
+                        accessor: "materialClasses",
                         disableSortBy: false,
                     },
                     {
@@ -239,10 +246,10 @@ export const productMenuNav = {
                         type: "form",
                         items: [
                             {
-                                id: "materialDefinitionId",
+                                id: "materialClasses",
                                 type: "select",
                                 label: "Chọn vật tư",
-                                list: materialList,
+                                list: materialTypesList,
                                 isError: validateRequiredField,
                             },
                             {

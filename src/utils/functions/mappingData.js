@@ -70,20 +70,23 @@ export const productMapper = {
             const personnelSpecifications =
                 segment.personnelSpecifications?.map((item) => ({
                     ...item.info,
-                    personnelClassId: item.info.personnelClassId[0],
                     properties: [],
+                    persons: [],
+                    description: "",
                 })) ?? []
             const equipmentSpecifications =
                 segment.equipmentSpecifications?.map((item) => ({
                     ...item.info,
-                    equipmentClassId: item.info.equipmentClassId[0],
                     properties: [],
+                    equipments: [],
+                    description: "",
                 })) ?? []
             const materialSpecifications =
                 segment.materialSpecifications?.map((item) => ({
                     ...item.info,
-                    materialDefinitionId: item.info.materialDefinitionId[0],
                     properties: [],
+                    materialDefinitions: [],
+                    description: "",
                 })) ?? []
             const properties =
                 segment.properties?.map((item) => ({
@@ -96,7 +99,7 @@ export const productMapper = {
                 productSegmentId: segmentInfo.productSegmentId,
                 description: segmentInfo.description,
                 duration: segmentInfo.duration,
-                durationUnit: segmentInfo.durationUnit[0],
+                durationUnitOfMeasure: segmentInfo.durationUnit[0],
                 personnelSpecifications,
                 equipmentSpecifications,
                 materialSpecifications,
@@ -108,18 +111,20 @@ export const productMapper = {
             data.segmentRelationships?.map((item) => {
                 const segmentRelationship = item.info
                 return {
-                    segmentA: segmentRelationship.segmentA[0],
-                    segmentB: segmentRelationship.segmentB[0],
-                    durationUnit: segmentRelationship.durationUnit[0],
-                    relation: segmentRelationship.relation[0],
-                    duration: segmentRelationship.duration,
+                    aSegmentId: segmentRelationship.segmentA[0],
+                    bSegmentId: segmentRelationship.segmentB[0],
+                    timeWindowUnitOfMeasure: segmentRelationship.durationUnit[0],
+                    dependencyType: segmentRelationship.relation[0],
+                    timeWindow: segmentRelationship.duration,
+                    description: "",
                 }
             }) ?? []
 
         return {
             ...productInfo,
-            segments,
-            segmentRelationships,
+            version: 0,
+            productSegments: segments,
+            productSegmentDependencies: segmentRelationships,
         }
     },
 }

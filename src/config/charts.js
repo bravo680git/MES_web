@@ -45,3 +45,40 @@ export const singleRangBarChartConfig = {
         },
     },
 }
+
+export const mutilSeriesRangeBarChartConfig = {
+    chart: {
+        height: 450,
+        type: "rangeBar",
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
+            barHeight: "100%",
+            rangeBarGroupRows: false,
+        },
+    },
+    xaxis: {
+        type: "datetime",
+    },
+    stroke: {
+        width: 1,
+    },
+    fill: {
+        type: "solid",
+        opacity: 0.6,
+    },
+    dataLabels: {
+        enabled: true,
+        formatter: function (val, opts) {
+            return opts.w.globals.seriesNames[opts.seriesIndex]
+        },
+        style: {
+            colors: ["#f3f4f5", "#fff"],
+        },
+    },
+    legend: {
+        position: "top",
+        horizontalAlign: "left",
+    },
+}

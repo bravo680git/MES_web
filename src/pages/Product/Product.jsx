@@ -13,7 +13,6 @@ import Button from "@/components/Button"
 import { singleRangBarChartConfig } from "@/config"
 import { commonStoreActions } from "@/store"
 import {
-    PROPERTIES_TABLE_COLUMNS,
     PRODUCT_SEGMENTS_TABLE_COLUMNS,
     SEGMENT_WORKER_TABLE_COLUMNS,
     SEGMENT_EQUIPMENT_TABLE_COLUMNS,
@@ -21,7 +20,6 @@ import {
     SEGMENT_PARAMS_TABLE_COLUMNS,
 } from "@/utils/tableColumns"
 import {
-    PROPERTIES_MOCK_DATA,
     PRODUCT_SEGMENTS_MOCK_DATA,
     SEGMENT_EQUIPMENT_MOCK_DATA,
     SEGMENT_WORKER_MOCK_DATA,
@@ -29,19 +27,19 @@ import {
     SEGMENT_PARAMS_MOCK_DATA,
     SEGMENT_RELATIONSHIP_MOCK_DATA,
 } from "@/utils/mockData"
-import { SEGMENT_RELATION } from "@/utils/constants"
 import { handleGanttChartData } from "@/utils/functions"
 
 function Product() {
     const params = useParams()
     const dispatch = useDispatch()
     const [showGanttChart, setShowGanttChart] = useState(false)
+    const data = handleGanttChartData(PRODUCT_SEGMENTS_MOCK_DATA, SEGMENT_RELATIONSHIP_MOCK_DATA)
+
+    const handelRowClick = (row, index) => {}
 
     useEffect(() => {
         dispatch(commonStoreActions.setPageTitle(`Chi tiết sản phẩm ${params.productId}`))
     }, [dispatch, params.productId])
-
-    const data = handleGanttChartData(PRODUCT_SEGMENTS_MOCK_DATA, SEGMENT_RELATIONSHIP_MOCK_DATA)
 
     return (
         <div data-component="Product" className="container h-full">
@@ -81,22 +79,13 @@ function Product() {
                                 <Table
                                     headers={PRODUCT_SEGMENTS_TABLE_COLUMNS}
                                     body={PRODUCT_SEGMENTS_MOCK_DATA}
+                                    onRowClick={handelRowClick}
                                     activable
                                     primary
                                     sticky
                                 />
                             )}
                         </div>
-                    </Card>
-
-                    <Card className="h-full w-[480px]">
-                        <h3 className="mb-2">Thuộc tính sản phẩm</h3>
-                        <Table
-                            headers={PROPERTIES_TABLE_COLUMNS}
-                            body={PROPERTIES_MOCK_DATA}
-                            sticky
-                            className="scroll-y h-[calc(100%-38px)]"
-                        />
                     </Card>
                 </div>
 

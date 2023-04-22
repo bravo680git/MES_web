@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react"
 
 import Form from "@/components/Form"
@@ -11,10 +12,12 @@ import { productMenuNav } from "@/utils/menuNavigation"
 
 function NewProduct() {
     const [info, setInfo] = useState({})
-    const [properties, setProperties] = useState({})
     const [segments, setSegments] = useState({})
     const [segmentRelationships, setSegmentRelationships] = useState({})
-    const [classList, setClassList] = useState({
+    const [optionList, setOptionList] = useState({
+        workerClass: [],
+        equipmentClass: [],
+        materialClass: [],
         worker: [],
         equipment: [],
         material: [],
@@ -76,16 +79,19 @@ function NewProduct() {
             [
                 resourceApi.worker.getWorkerClasses(),
                 resourceApi.equipment.getEquipmentClasses(),
+                resourceApi.material.getMaterialClasses(),
+                resourceApi.worker.getWorkers(),
+                resourceApi.equipment.getEquipments(),
                 resourceApi.material.getMaterials(),
             ],
             (res) => {
                 const workerClasses = res[0].items
                 const equipmentClasses = res[1].items
                 const materialClasses = res[2].items
-                setClassList({
-                    worker: getResourceOptionsList(workerClasses, "personnelClassId"),
-                    equipment: getResourceOptionsList(equipmentClasses, "equipmentClassId"),
-                    material: getResourceOptionsList(materialClasses, "materialDefinitionId"),
+                setOptionList({
+                    workerClass: getResourceOptionsList(workerClasses, "personnelClassId"),
+                    equipmentClass: getResourceOptionsList(equipmentClasses, "equipmentClassId"),
+                    materialClass: getResourceOptionsList(materialClasses, "materialClassId"),
                 })
             },
         )
@@ -97,14 +103,6 @@ function NewProduct() {
                 <div className="max-h-[50%] w-full">
                     <Form className="h-full" menuNavigaton={productMenuNav.getInfo()} value={info} setValue={setInfo} />
                 </div>
-                <div className="mt-6 max-h-[50%] w-full">
-                    <Form
-                        className="h-full"
-                        menuNavigaton={productMenuNav.getProperties()}
-                        value={properties}
-                        setValue={setProperties}
-                    />
-                </div>
 
                 <Button className="mt-5" onClick={handleSubmit} disabled={!invalid}>
                     Xác nhận
@@ -115,9 +113,12 @@ function NewProduct() {
                     <Form
                         className="h-full"
                         menuNavigaton={productMenuNav.getSegments(
-                            classList.worker,
-                            classList.equipment,
-                            classList.material,
+                            optionList.workerClass,
+                            optionList.equipmentClass,
+                            optionList.materialClass,
+                            optionList.worker,
+                            optionList.equipment,
+                            optionList.material,
                         )}
                         value={segments}
                         setValue={setSegments}
