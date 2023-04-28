@@ -38,8 +38,8 @@ export const EQUIPMENT_TABLE_COLUMNS = [
 
 export const MATERIAL_TABLE_COLUMNS = [
     {
-        Header: "ID",
-        accessor: "materialId",
+        Header: "ID vật tư",
+        accessor: "materialDefinitionId",
         disableSortBy: false,
     },
     {
@@ -121,12 +121,12 @@ export const EQUIPMENT_CLASS_TABLE_COLUMNS = [
 //material
 export const MATERIAL_INFO_TABLE_COLUMNS = [
     {
-        Header: "ID",
-        accessor: "materialDifinitionId",
+        Header: "ID vật tư",
+        accessor: "materialDefinitionId",
         disableSortBy: false,
     },
     {
-        Header: "Mô tả",
+        Header: "Tên vật tư",
         accessor: "description",
         disableSortBy: false,
     },

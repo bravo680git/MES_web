@@ -38,13 +38,17 @@ export const getMenuTableData = (value, id) => {
 
 export const getSegmentOptionList = (segments) => {
     const segmenList = segments.productSegments?.map((item) => ({
-        key: item.segment.description,
-        value: item.segment.segmentId,
+        key: item.info.description,
+        value: item.info.productSegmentId,
     }))
     if (Array.isArray(segmenList)) {
         segmenList.unshift({ key: "Start", value: "start-segment" })
     }
     return segmenList
+}
+
+export const getResourceOptionsList = (items, key) => {
+    return items.map((item) => ({ value: item[key], key: item.description }))
 }
 
 export const formatNumberValue = (value, format) => {
@@ -128,6 +132,7 @@ export const handleGanttChartData = (segments, segmentRelationships) => {
     const result = segments.map((item) => {
         return {
             id: item.segmentId,
+            description: item.description,
             begin: 0,
             end: 0,
             duration: item.duration,
@@ -168,6 +173,58 @@ export const handleGanttChartData = (segments, segmentRelationships) => {
     return result.map((item) => ({
         x: item.id,
         y: [item.begin, item.end],
-        name: item.id,
+        name: item.description,
     }))
+}
+
+export const handleScheduleDataByMachine = (data) => {
+    const result = []
+    data.forEach((item) => {
+        const index = result.findIndex((_item) => _item.name === item.productId)
+        if (index >= 0) {
+            result[index].name = item.productId
+            result[index].data.push({
+                x: item.machineId,
+                y: [item.start, item.end],
+            })
+        } else {
+            result.push({
+                name: item.productId,
+                data: [
+                    {
+                        x: item.machineId,
+                        y: [item.start, item.end],
+                    },
+                ],
+            })
+        }
+    })
+
+    return result
+}
+
+export const handleScheduleDataByProduct = (data) => {
+    const result = []
+    data.forEach((item) => {
+        const index = result.findIndex((_item) => _item.name === item.machineId)
+        if (index >= 0) {
+            result[index].name = item.machineId
+            result[index].data.push({
+                x: item.productId,
+                y: [item.start, item.end],
+            })
+        } else {
+            result.push({
+                name: item.machineId,
+                data: [
+                    {
+                        x: item.productId,
+                        y: [item.start, item.end],
+                    },
+                ],
+            })
+        }
+    })
+
+    return result
 }

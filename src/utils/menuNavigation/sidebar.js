@@ -1,5 +1,5 @@
 import { BsGear } from "react-icons/bs"
-import { OeeIcon, CommandIcon, DowntimeIcon, QuantityIcon, ResourceIcon, ScheduleIcon } from "@/components/Icons"
+import { OeeIcon, CommandIcon, QuantityIcon, ResourceIcon, ScheduleIcon } from "@/components/Icons"
 import { paths } from "@/config"
 
 const SIDEBAR_ITEMS = [
@@ -7,11 +7,6 @@ const SIDEBAR_ITEMS = [
         label: "Chỉ số OEE",
         icon: OeeIcon,
         route: paths.oee,
-    },
-    {
-        label: "Thời gian chết",
-        icon: DowntimeIcon,
-        route: paths.downtime,
     },
     {
         label: "Tiến độ sản xuất",

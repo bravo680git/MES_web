@@ -21,12 +21,6 @@ const routes = [
         layout: "main",
     },
     {
-        path: paths.downtime,
-        title: "Thơi gian chết",
-        component: "div",
-        layout: "main",
-    },
-    {
         path: paths.progress,
         title: "Tiến độ sản xuất",
         component: Pages.ProductionProgress,
@@ -53,7 +47,7 @@ const routes = [
     {
         path: paths.schedule,
         title: "Kế hoạch sản xuất",
-        component: "div",
+        component: Pages.ProductionSchedule,
         layout: "main",
     },
     {
