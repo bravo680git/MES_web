@@ -126,16 +126,15 @@ function OeePage() {
             xaxis: {
                 categories: xaxis,
             },
-            yaxis: { decimalsInFloat: 1 },
-            // yaxis:
-            //     mode !== 5
-            //         ? {
-            //               min: 0,
-            //               max: 1,
-            //               tickAmount: 5,
-            //               decimalsInFloat: 1,
-            //           }
-            //         : { decimalsInFloat: 1 },
+            yaxis:
+                oeeModeIndex !== 5
+                    ? {
+                          min: 0,
+                          max: 1,
+                          tickAmount: 5,
+                          decimalsInFloat: 1,
+                      }
+                    : { decimalsInFloat: 1 },
             noData: {
                 text: "Loading...",
             },
@@ -179,7 +178,8 @@ function OeePage() {
                 </Card>
             </div>
             <Card>
-                <h2>Giá trị {modeToText(oeeModeIndex)}</h2>
+                {oeeModeIndex != 0 && <h2>Giá trị {modeToText(oeeModeIndex)}</h2>}
+
                 {oeeModeIndex !== 0 && (
                     <Chart options={state.options} series={state.series} type="line" width="100%" height={440} />
                 )}
