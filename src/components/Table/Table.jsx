@@ -132,7 +132,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                         className={cl(" group rounded-md bg-neutron-4", {
                                             "cursor-pointer hover:bg-hoverBg": onRowClick,
                                         })}
-                                        onClick={() => handleRowClick(row)}
+                                        onClick={() => handleRowClick(row, index)}
                                         key={index}
                                     >
                                         {headers.map((column, i) => (

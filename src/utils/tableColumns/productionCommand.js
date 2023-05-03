@@ -1,12 +1,12 @@
 export const PRODUCTION_COMMAND_TABLE_COLUMNS = [
     {
-        Header: "ID",
-        accessor: "id",
+        Header: "ID lệnh sản xuất",
+        accessor: "workOrderId",
         disableSortBy: false,
     },
     {
         Header: "Sản phẩm",
-        accessor: "product",
+        accessor: "materialDefinitionId",
         disableSortBy: false,
     },
     {
@@ -15,18 +15,8 @@ export const PRODUCTION_COMMAND_TABLE_COLUMNS = [
         disableSortBy: false,
     },
     {
-        Header: "Đơn vị",
-        accessor: "unit",
-        disableSortBy: true,
-    },
-    {
-        Header: "Phụ trách",
-        accessor: "manager",
-        disableSortBy: true,
-    },
-    {
-        Header: "Dự kiến hoàn thành",
-        accessor: "expectedDate",
+        Header: "Ngày đến hạn",
+        accessor: "dueDate",
         disableSortBy: false,
     },
     {

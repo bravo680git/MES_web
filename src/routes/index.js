@@ -51,6 +51,12 @@ const routes = [
         layout: "main",
     },
     {
+        path: paths.scheduling,
+        title: "Điều độ sản xuất",
+        component: Pages.ProductScheduling,
+        layout: "main",
+    },
+    {
         path: paths.resource,
         title: "Quản lý nguồn lực",
         component: Pages.ResourcePage,
