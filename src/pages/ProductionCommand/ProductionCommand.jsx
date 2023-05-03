@@ -1,61 +1,133 @@
+import { useState, useEffect, useCallback } from "react"
+import { useDispatch } from "react-redux"
+import cl from "classnames"
 import { useNavigate } from "react-router-dom"
+import { MdOutlineClose } from "react-icons/md"
 
 import Card from "@/components/Card"
 import Button from "@/components/Button"
 import Table from "@/components/Table"
 import PoperMenu from "@/components/PoperMenu"
 
-import { usePoperMenu } from "@/hooks"
-import { PRODUCTION_COMMAND_TABLE_COLUMNS, PRODUCT_LIST_TABLE_COLUMNS } from "@/utils/tableColumns"
+import { usePoperMenu, useCallApi } from "@/hooks"
+import { schedulingActions } from "@/store"
+import { workOrderApi, resourceApi } from "@/services/api"
+import { PRODUCTION_COMMAND_TABLE_COLUMNS } from "@/utils/tableColumns"
 import { getProductionCommandMenuNav } from "@/utils/menuNavigation"
 import { paths } from "@/config"
-import { PRODUCTION_COMMAND_MOCK_DATA, PRODUCT_LIST_MOCK_DATA } from "@/utils/mockData"
 
 function ProductionCommand() {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const callApi = useCallApi()
+
+    const [workOrders, setWorkOrders] = useState([])
+    const [materialList, setMaterialList] = useState([])
+    const [schedulingOrders, setSchedulingOrders] = useState([])
+
+    const fetchWorkOrders = useCallback(() => {
+        callApi([workOrderApi.getWorkOrders(), resourceApi.material.getMaterials()], ([workOrders, materials]) => {
+            setWorkOrders(workOrders.items)
+            setMaterialList(
+                materials.items.map((item) => ({
+                    value: item.materialDefinitionId,
+                    key: item.description,
+                })),
+            )
+        })
+    }, [callApi])
 
     const handleSubmit = (value) => {
-        console.log(value)
+        const date = value.info.dueDate.split("/")
+        const postData = {
+            ...value.info,
+            materialDefinition: value.info.materialDefinition[0],
+            dueDate: new Date(date[2], date[1] - 1, date[0]).toISOString(),
+        }
+        callApi(() => workOrderApi.createWorkOrder(postData), fetchWorkOrders, "Tạo lệnh sản xuất thành công")
     }
 
-    const handleShowProduct = (row) => {
-        navigate(paths.command + "/products/" + row.id)
+    const handleSelectOrder = (row, index) => {
+        setSchedulingOrders([...schedulingOrders, row])
+        setWorkOrders((prevData) => prevData.filter((item, _index) => item.productId !== row.productId))
     }
+
+    const handleRemoveItem = (id) => {
+        const newValue = schedulingOrders.filter((item) => {
+            if (item.productId !== id) {
+                setWorkOrders([...workOrders, item])
+                return true
+            }
+            return false
+        })
+        setSchedulingOrders(newValue)
+    }
+
+    const handleScheduling = () => {
+        dispatch(schedulingActions.setSchedulingProducts(schedulingOrders))
+        navigate(paths.scheduling)
+    }
+
+    useEffect(() => {
+        fetchWorkOrders()
+    }, [fetchWorkOrders])
 
     return (
         <div data-component="ProductionCommand" className="container flex h-full">
-            <Card className="mr-5 h-full grow">
-                <div className="mb-5 flex items-center justify-between">
-                    <h3>Danh sách lệnh sản xuất</h3>
-                    <Button large>Lên kế hoạch sx</Button>
-                </div>
-                <div className="scroll-y h-[calc(100%-70px)]">
-                    <Table headers={PRODUCTION_COMMAND_TABLE_COLUMNS} body={PRODUCTION_COMMAND_MOCK_DATA} sticky />
-                    <Button large className="mt-2" onClick={handleOpen}>
-                        Lệnh sản xuất mới
-                    </Button>
-                </div>
-            </Card>
-
-            <Card className="h-full w-[480px]">
-                <h3 className="mb-5">Danh sách sản phẩm</h3>
-                <div className="scroll-y h-[calc(100%-60px)]">
-                    <Table
-                        headers={PRODUCT_LIST_TABLE_COLUMNS}
-                        body={PRODUCT_LIST_MOCK_DATA}
-                        sticky
-                        onRowClick={handleShowProduct}
-                    />
-                    <Button className="mt-4" onClick={() => navigate(paths.newProduct)}>
-                        Sản phẩm mới
-                    </Button>
-                </div>
-            </Card>
+            <div className="mr-5 flex h-full grow flex-col gap-5">
+                <Card className="h-3/4">
+                    <div className="mb-5 flex items-center justify-between">
+                        <h3>Danh sách lệnh sản xuất</h3>
+                        <Button large className="mt-2" onClick={handleOpen}>
+                            Lệnh sản xuất mới
+                        </Button>
+                    </div>
+                    <div className="scroll-y h-[calc(100%-70px)]">
+                        <Table
+                            headers={PRODUCTION_COMMAND_TABLE_COLUMNS}
+                            body={workOrders}
+                            sticky
+                            onRowClick={handleSelectOrder}
+                        />
+                    </div>
+                </Card>
+                {schedulingOrders.length && (
+                    <Card className="scroll-y grow">
+                        <h3>Danh sách lệnh sản xuất được điều độ</h3>
+                        <div className="mb-4 flex flex-wrap">
+                            {schedulingOrders.map((item, index) => (
+                                <div
+                                    key={item.productId}
+                                    className={cl(
+                                        "text-16-m group relative mr-3 mt-1 flex",
+                                        "cursor-pointer whitespace-nowrap rounded-lg shadow-sub transition-all hover:bg-accent-2",
+                                    )}
+                                    onClick={() => handleRemoveItem(item.productId)}
+                                >
+                                    <span className="px-3 py-1">{item.productId}</span>
+                                    <span
+                                        className={cl(
+                                            "absolute hidden bg-accent-1 text-neutron-4",
+                                            "top-[50%] right-[-10px] h-8 w-8 translate-y-[-50%] ",
+                                            "items-center justify-center rounded-full group-hover:flex",
+                                        )}
+                                    >
+                                        <MdOutlineClose className="text-2xl" />
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                        <Button large onClick={handleScheduling}>
+                            Lên kế hoạch sx
+                        </Button>
+                    </Card>
+                )}
+            </div>
 
             {active && (
                 <PoperMenu
-                    menuNavigaton={getProductionCommandMenuNav([])}
+                    menuNavigaton={getProductionCommandMenuNav(materialList)}
                     position={position}
                     onClose={handleClose}
                     onClick={handleSubmit}
