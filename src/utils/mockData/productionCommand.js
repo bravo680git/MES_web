@@ -1,6 +1,6 @@
 export const PRODUCTION_COMMAND_MOCK_DATA = [
     {
-        id: "prc-1",
+        productId: "prc-1",
         product: "Sản phẩm 1",
         quantity: 52,
         unit: "cái",
@@ -9,7 +9,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "01/01/2022",
     },
     {
-        id: "prc-2",
+        productId: "prc-2",
         product: "Sản phẩm 2",
         quantity: 37,
         unit: "tấm",
@@ -18,7 +18,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "23/12/2021",
     },
     {
-        id: "prc-3",
+        productId: "prc-3",
         product: "Sản phẩm 3",
         quantity: 83,
         unit: "hộp",
@@ -27,7 +27,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "11/05/2022",
     },
     {
-        id: "prc-4",
+        productId: "prc-4",
         product: "Sản phẩm 4",
         quantity: 13,
         unit: "cái",
@@ -36,7 +36,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "28/02/2022",
     },
     {
-        id: "prc-5",
+        productId: "prc-5",
         product: "Sản phẩm 5",
         quantity: 72,
         unit: "tấm",
@@ -45,7 +45,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "07/03/2022",
     },
     {
-        id: "prc-6",
+        productId: "prc-6",
         product: "Sản phẩm 6",
         quantity: 28,
         unit: "hộp",
@@ -54,7 +54,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "25/12/2021",
     },
     {
-        id: "prc-7",
+        productId: "prc-7",
         product: "Sản phẩm 7",
         quantity: 66,
         unit: "cái",
@@ -63,7 +63,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "19/01/2022",
     },
     {
-        id: "prc-8",
+        productId: "prc-8",
         product: "Sản phẩm 8",
         quantity: 86,
         unit: "tấm",
@@ -72,7 +72,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "10/06/2022",
     },
     {
-        id: "prc-9",
+        productId: "prc-9",
         product: "Sản phẩm 9",
         quantity: 99,
         unit: "hộp",
@@ -81,7 +81,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "17/05/2022",
     },
     {
-        id: "prc-10",
+        productId: "prc-10",
         product: "Sản phẩm 1",
         quantity: 34,
         unit: "cái",
@@ -90,7 +90,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "05/03/2022",
     },
     {
-        id: "prc-11",
+        productId: "prc-11",
         product: "Sản phẩm 2",
         quantity: 47,
         unit: "tấm",
@@ -99,7 +99,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "01/01/2022",
     },
     {
-        id: "prc-12",
+        productId: "prc-12",
         product: "Sản phẩm 3",
         quantity: 54,
         unit: "cái",
@@ -108,7 +108,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "12/02/2022",
     },
     {
-        id: "prc-13",
+        productId: "prc-13",
         product: "Sản phẩm 4",
         quantity: 18,
         unit: "hộp",
@@ -117,7 +117,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "20/03/2022",
     },
     {
-        id: "prc-14",
+        productId: "prc-14",
         product: "Sản phẩm 5",
         quantity: 72,
         unit: "cái",
@@ -126,7 +126,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "05/01/2022",
     },
     {
-        id: "prc-15",
+        productId: "prc-15",
         product: "Sản phẩm 6",
         quantity: 15,
         unit: "tấm",
@@ -135,7 +135,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "15/02/2022",
     },
     {
-        id: "prc-16",
+        productId: "prc-16",
         product: "Sản phẩm 7",
         quantity: 81,
         unit: "hộp",
@@ -144,7 +144,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "01/03/2022",
     },
     {
-        id: "prc-17",
+        productId: "prc-17",
         product: "Sản phẩm 8",
         quantity: 26,
         unit: "cái",
@@ -153,7 +153,7 @@ export const PRODUCTION_COMMAND_MOCK_DATA = [
         createdDate: "06/01/2022",
     },
     {
-        id: "prc-18",
+        productId: "prc-18",
         product: "Sản phẩm 9",
         quantity: 67,
         unit: "cái",

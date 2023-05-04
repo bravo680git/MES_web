@@ -57,6 +57,15 @@ export const validateDateInput = (value) => {
     }
 }
 
+export const validateTimeInput = (value) => {
+    const regex = /^([0-1]?[0-9]|[2][0-3]):[0-5]?[0-9]:[0-5]?[0-9]$/
+    if (regex.test(value)) {
+        return false
+    } else {
+        return "Vui lòng nhập đúng định dạng giờ:phút:giây"
+    }
+}
+
 export const validateIdField = (value) => {
     const regex = /[/+&]/
     const length = value ? value.length : 0

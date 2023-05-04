@@ -77,7 +77,7 @@ const routes = [
     {
         path: paths.setting,
         title: "Thiết lập",
-        component: "div",
+        component: Pages.Setting,
         layout: "main",
     },
     {

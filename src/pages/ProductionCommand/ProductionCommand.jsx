@@ -28,7 +28,7 @@ function ProductionCommand() {
 
     const fetchWorkOrders = useCallback(() => {
         callApi([workOrderApi.getWorkOrders(), resourceApi.material.getMaterials()], ([workOrders, materials]) => {
-            setWorkOrders(workOrders.items)
+            setWorkOrders(workOrders.items.filter((item) => !item.isScheduled))
             setMaterialList(
                 materials.items.map((item) => ({
                     value: item.materialDefinitionId,
@@ -50,12 +50,14 @@ function ProductionCommand() {
 
     const handleSelectOrder = (row, index) => {
         setSchedulingOrders([...schedulingOrders, row])
-        setWorkOrders((prevData) => prevData.filter((item, _index) => item.productId !== row.productId))
+        setWorkOrders((prevData) =>
+            prevData.filter((item, _index) => item.materialDefinition !== row.materialDefinition),
+        )
     }
 
     const handleRemoveItem = (id) => {
         const newValue = schedulingOrders.filter((item) => {
-            if (item.productId !== id) {
+            if (item.materialDefinition !== id) {
                 setWorkOrders([...workOrders, item])
                 return true
             }
@@ -84,28 +86,35 @@ function ProductionCommand() {
                         </Button>
                     </div>
                     <div className="scroll-y h-[calc(100%-70px)]">
-                        <Table
-                            headers={PRODUCTION_COMMAND_TABLE_COLUMNS}
-                            body={workOrders}
-                            sticky
-                            onRowClick={handleSelectOrder}
-                        />
+                        {workOrders.length > 0 ? (
+                            <Table
+                                headers={PRODUCTION_COMMAND_TABLE_COLUMNS}
+                                body={workOrders}
+                                sticky
+                                onRowClick={handleSelectOrder}
+                            />
+                        ) : (
+                            <div className="text-16-m">
+                                Hiện tại không có lệnh sản xuất nào, vui lòng tạo mới hoặc xem các lệnh sản xuất đã được
+                                điều độ tại trang kế hoạch sản xuất.
+                            </div>
+                        )}
                     </div>
                 </Card>
-                {schedulingOrders.length && (
+                {schedulingOrders.length > 0 && (
                     <Card className="scroll-y grow">
                         <h3>Danh sách lệnh sản xuất được điều độ</h3>
                         <div className="mb-4 flex flex-wrap">
                             {schedulingOrders.map((item, index) => (
                                 <div
-                                    key={item.productId}
+                                    key={item.materialDefinition}
                                     className={cl(
                                         "text-16-m group relative mr-3 mt-1 flex",
                                         "cursor-pointer whitespace-nowrap rounded-lg shadow-sub transition-all hover:bg-accent-2",
                                     )}
-                                    onClick={() => handleRemoveItem(item.productId)}
+                                    onClick={() => handleRemoveItem(item.materialDefinition)}
                                 >
-                                    <span className="px-3 py-1">{item.productId}</span>
+                                    <span className="px-3 py-1">{item.materialDefinition}</span>
                                     <span
                                         className={cl(
                                             "absolute hidden bg-accent-1 text-neutron-4",

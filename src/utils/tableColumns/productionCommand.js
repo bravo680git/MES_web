@@ -5,8 +5,13 @@ export const PRODUCTION_COMMAND_TABLE_COLUMNS = [
         disableSortBy: false,
     },
     {
-        Header: "Sản phẩm",
-        accessor: "materialDefinitionId",
+        Header: "Mô tả",
+        accessor: "description",
+        disableSortBy: false,
+    },
+    {
+        Header: "ID sản phẩm",
+        accessor: "materialDefinition",
         disableSortBy: false,
     },
     {
@@ -17,11 +22,6 @@ export const PRODUCTION_COMMAND_TABLE_COLUMNS = [
     {
         Header: "Ngày đến hạn",
         accessor: "dueDate",
-        disableSortBy: false,
-    },
-    {
-        Header: "Ngày tạo",
-        accessor: "createdDate",
         disableSortBy: false,
     },
 ]

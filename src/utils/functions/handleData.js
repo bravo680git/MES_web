@@ -1,3 +1,4 @@
+import { toast } from "react-toastify"
 import { VALUE_TYPE, SEGMENT_RELATION } from "@/utils/constants"
 import { validateValueType } from "./validate"
 
@@ -180,20 +181,20 @@ export const handleGanttChartData = (segments, segmentRelationships) => {
 export const handleScheduleDataByMachine = (data) => {
     const result = []
     data.forEach((item) => {
-        const index = result.findIndex((_item) => _item.name === item.productId)
+        const index = result.findIndex((_item) => _item.name === item.materialDefinition)
         if (index >= 0) {
-            result[index].name = item.productId
+            result[index].name = item.materialDefinition
             result[index].data.push({
-                x: item.machineId,
-                y: [item.start, item.end],
+                x: item.equipment,
+                y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
             })
         } else {
             result.push({
-                name: item.productId,
+                name: item.materialDefinition,
                 data: [
                     {
-                        x: item.machineId,
-                        y: [item.start, item.end],
+                        x: item.equipment,
+                        y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
                     },
                 ],
             })
@@ -206,20 +207,20 @@ export const handleScheduleDataByMachine = (data) => {
 export const handleScheduleDataByProduct = (data) => {
     const result = []
     data.forEach((item) => {
-        const index = result.findIndex((_item) => _item.name === item.machineId)
+        const index = result.findIndex((_item) => _item.name === item.equipment)
         if (index >= 0) {
-            result[index].name = item.machineId
+            result[index].name = item.equipment
             result[index].data.push({
-                x: item.productId,
-                y: [item.start, item.end],
+                x: item.materialDefinition,
+                y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
             })
         } else {
             result.push({
-                name: item.machineId,
+                name: item.equipment,
                 data: [
                     {
-                        x: item.productId,
-                        y: [item.start, item.end],
+                        x: item.materialDefinition,
+                        y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
                     },
                 ],
             })
@@ -227,4 +228,94 @@ export const handleScheduleDataByProduct = (data) => {
     })
 
     return result
+}
+
+export const handleScheduledData = (schedulingProducts, shifts) => {
+    const data = []
+    const dataByEquipment = {}
+    let valid = true
+
+    schedulingProducts.forEach((item) => {
+        const productId = item.materialDefinition
+        const equipmentId = item.equipmentId
+
+        if (!item.equipmentId.length) {
+            toast.error(`Thiết bị của sản phẩm ${productId} không được bỏ trống`)
+            valid = false
+            return
+        }
+
+        const dueDate = new Date(item.dueDate)
+
+        if (!item.startDate) {
+            toast.error(`Ngày bắt đầu của sản phẩm ${productId} không được bỏ trống`)
+            valid = false
+            return
+        }
+        if (!item.endDate) {
+            toast.error(`Ngày kết thúc của sản phẩm ${productId} không được bỏ trống`)
+            valid = false
+            return
+        }
+
+        const startDate = new Date(item.startDate)
+        const endDate = new Date(item.endDate)
+
+        if (!item.startShift?.length) {
+            toast.error(`Ca bắt đầu của sản phẩm ${productId} không được bỏ trống`)
+            valid = false
+            return
+        }
+        if (!item.endShift?.length) {
+            toast.error(`Ca kết thúc của sản phẩm ${productId} không được bỏ trống`)
+            valid = false
+            return
+        }
+
+        const startTime = shifts[item.startShift[0]].startTime
+        const endTime = shifts[item.endShift[0]].endTime
+        startDate.setHours(...startTime.split(":"))
+        endDate.setHours(...endTime.split(":"))
+
+        if (dueDate < endDate) {
+            toast.error(`Ngày hoàn thành của sản phẩm ${productId} không được nhỏ hơn ngày đến hạn`)
+            valid = false
+            return
+        }
+
+        if (startDate > endDate) {
+            toast.error(`Ngày bắt đầu của sản phẩm ${productId} không được lớn hơn ngày hoàn thành`)
+            valid = false
+            return
+        }
+
+        if (dataByEquipment[equipmentId]?.length) {
+            dataByEquipment[equipmentId].push({ startDate, endDate })
+        } else {
+            dataByEquipment[equipmentId] = [{ startDate, endDate }]
+        }
+
+        data.push({
+            scheduledStartDate: startDate.toISOString(),
+            scheduledEndDate: endDate.toISOString(),
+            equipment: item.equipmentId[0],
+            workOrderId: item.workOrderId,
+        })
+    })
+
+    for (let key in dataByEquipment) {
+        const item = dataByEquipment[key]
+        item.sort((a, b) => a.startDate - b.startDate)
+        for (let i = 0; i < item.length - 1; i++) {
+            const prevEndDate = new Date(item[i].endDate)
+            const nextStartDate = new Date(item[i + 1].startDate)
+            if (prevEndDate > nextStartDate) {
+                toast.error(`Các ngày hoạt động của máy ${key} không được chồng lấn lên nhau`)
+                valid = false
+                return
+            }
+        }
+    }
+
+    return valid ? data : null
 }
