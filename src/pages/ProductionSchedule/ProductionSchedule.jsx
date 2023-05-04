@@ -5,7 +5,7 @@ import ToggleButtons from "@/components/ToggleButtons"
 import { mutilSeriesRangeBarChartConfig } from "@/config"
 import { useCallApi } from "@/hooks"
 import { workOrderApi } from "@/services/api"
-import { handleScheduleDataByMachine, handleScheduleDataByProduct } from "@/utils/functions"
+import { handleScheduleDataByMachine, handleScheduleDataByProduct, convertISOToLocaleDate } from "@/utils/functions"
 import { PRODUCTION_SCHEDULE_TABLE_COLUMNS } from "@/utils/tableColumns"
 import Table from "@/components/Table/Table"
 
@@ -31,8 +31,8 @@ function ProductionSchedule() {
             case 2:
                 const data = productionSchedule.map((item) => ({
                     ...item,
-                    scheduledStartDate: new Date(item.scheduledStartDate).toLocaleString("vi"),
-                    scheduledEndDate: new Date(item.scheduledEndDate).toLocaleString("vi"),
+                    scheduledStartDate: convertISOToLocaleDate(item.scheduledStartDate),
+                    scheduledEndDate: convertISOToLocaleDate(item.scheduledEndDate),
                 }))
                 setTableData(data)
                 return
@@ -42,7 +42,7 @@ function ProductionSchedule() {
 
     useEffect(() => {
         callApi(workOrderApi.getWorkOrders, (res) => {
-            setProductionSchedule(res.items.filter((item) => item.isScheduled))
+            setProductionSchedule(res.items.filter((item) => item.isScheduled && !item.isClosed))
         })
     }, [callApi])
 

@@ -12,6 +12,7 @@ import PoperMenu from "@/components/PoperMenu"
 import { usePoperMenu, useCallApi } from "@/hooks"
 import { schedulingActions } from "@/store"
 import { workOrderApi, resourceApi } from "@/services/api"
+import { convertISOToLocaleDate } from "@/utils/functions"
 import { PRODUCTION_COMMAND_TABLE_COLUMNS } from "@/utils/tableColumns"
 import { getProductionCommandMenuNav } from "@/utils/menuNavigation"
 import { paths } from "@/config"
@@ -28,7 +29,12 @@ function ProductionCommand() {
 
     const fetchWorkOrders = useCallback(() => {
         callApi([workOrderApi.getWorkOrders(), resourceApi.material.getMaterials()], ([workOrders, materials]) => {
-            setWorkOrders(workOrders.items.filter((item) => !item.isScheduled))
+            setWorkOrders(
+                workOrders.items.filter((item) => {
+                    item.dueDate = convertISOToLocaleDate(item.dueDate).slice(8)
+                    return !item.isScheduled
+                }),
+            )
             setMaterialList(
                 materials.items.map((item) => ({
                     value: item.materialDefinitionId,
@@ -50,18 +56,17 @@ function ProductionCommand() {
 
     const handleSelectOrder = (row, index) => {
         setSchedulingOrders([...schedulingOrders, row])
-        setWorkOrders((prevData) =>
-            prevData.filter((item, _index) => item.materialDefinition !== row.materialDefinition),
-        )
+        setWorkOrders((prevData) => prevData.filter((item, _index) => item.workOrderId !== row.workOrderId))
     }
 
     const handleRemoveItem = (id) => {
         const newValue = schedulingOrders.filter((item) => {
-            if (item.materialDefinition !== id) {
-                setWorkOrders([...workOrders, item])
+            if (item.workOrderId !== id) {
                 return true
+            } else {
+                setWorkOrders([...workOrders, item])
+                return false
             }
-            return false
         })
         setSchedulingOrders(newValue)
     }
@@ -107,14 +112,14 @@ function ProductionCommand() {
                         <div className="mb-4 flex flex-wrap">
                             {schedulingOrders.map((item, index) => (
                                 <div
-                                    key={item.materialDefinition}
+                                    key={item.workOrderId}
                                     className={cl(
                                         "text-16-m group relative mr-3 mt-1 flex",
                                         "cursor-pointer whitespace-nowrap rounded-lg shadow-sub transition-all hover:bg-accent-2",
                                     )}
-                                    onClick={() => handleRemoveItem(item.materialDefinition)}
+                                    onClick={() => handleRemoveItem(item.workOrderId)}
                                 >
-                                    <span className="px-3 py-1">{item.materialDefinition}</span>
+                                    <span className="px-3 py-1">{item.workOrderId}</span>
                                     <span
                                         className={cl(
                                             "absolute hidden bg-accent-1 text-neutron-4",

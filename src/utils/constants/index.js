@@ -24,3 +24,22 @@ export const SEGMENT_RELATION_OPTION_LIST = [
     { value: SEGMENT_RELATION.afterJustDone, key: "Thực hiện ngay sau" },
     { value: SEGMENT_RELATION.after, key: "Thực hiện sau" },
 ]
+
+export const PRODUCT_SCHEDULE_STATUS_LIST = [
+    {
+        value: 0,
+        key: "Tất cả trạng thái",
+    },
+    {
+        value: 1,
+        key: "Chưa sản xuất",
+    },
+    {
+        value: 2,
+        key: "Đang sản xuất",
+    },
+    {
+        value: 3,
+        key: "Đã hoàn thành",
+    },
+]

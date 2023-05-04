@@ -319,3 +319,9 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
 
     return valid ? data : null
 }
+
+export const convertISOToLocaleDate = (date) => {
+    return new Date(date)
+        .toLocaleString("vi")
+        .replace(/^([\d]?[\d])/, (val) => (Number(val) <= 16 ? Number(val) + 7 : Number(val) + 7 - 24))
+}
