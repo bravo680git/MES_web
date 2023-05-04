@@ -14,8 +14,13 @@ const SchedulingSLice = createSlice({
             productSchedulingStorageService.set(action.payload)
             return state
         },
+        removeSchedulingProducts(state, action) {
+            state.schedulingProducts = []
+            productSchedulingStorageService.remove()
+            return state
+        },
     },
 })
 
 export default SchedulingSLice.reducer
-export const { setSchedulingProducts } = SchedulingSLice.actions
+export const { setSchedulingProducts, removeSchedulingProducts } = SchedulingSLice.actions

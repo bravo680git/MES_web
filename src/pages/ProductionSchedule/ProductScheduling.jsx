@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { toast } from "react-toastify"
 
 import { schedulingActions } from "@/store"
+import { paths } from "@/config"
 import { resourceApi, workOrderApi } from "@/services/api"
 import { useCallApi } from "@/hooks"
 import { handleScheduledData } from "@/utils/functions"
@@ -13,6 +14,7 @@ import Button from "@/components/Button"
 function ProductSScheduling() {
     const callApi = useCallApi()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const { shifts } = useSelector((state) => state.setting)
     const shiftOptions = shifts.map((item, index) => ({ key: item.description, value: index }))
@@ -29,7 +31,14 @@ function ProductSScheduling() {
 
         if (data) {
             const apis = data.map((item) => workOrderApi.schedulingWorkOrder(item, item.workOrderId))
-            callApi(apis, (res) => console.log(res), "Tạo kế hoạch sản xuất thành công")
+            callApi(
+                apis,
+                (res) => {
+                    navigate(paths.schedule)
+                    dispatch(schedulingActions.removeSchedulingProducts())
+                },
+                "Tạo kế hoạch sản xuất thành công",
+            )
         }
     }
 

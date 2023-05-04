@@ -4,8 +4,8 @@ import * as Pages from "@/pages"
 const routes = [
     {
         path: paths.dashboard,
-        title: "Trang chủ",
-        component: "div",
+        title: "Dashboard",
+        component: Pages.Dashboard,
         layout: "main",
     },
     {

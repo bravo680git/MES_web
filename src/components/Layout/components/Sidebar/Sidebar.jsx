@@ -25,7 +25,10 @@ function Sidebar() {
                 "w-[80px] px-2 sm:invisible sm:w-0": !isExpand,
             })}
         >
-            <div className="mx-auto aspect-square w-full rounded-xl bg-neutron-4 sm:w-1/2"></div>
+            <div
+                className="mx-auto aspect-square w-full cursor-pointer rounded-xl bg-neutron-4 sm:w-1/2"
+                onClick={() => handleClick("/")}
+            ></div>
             <div className={cl("sticky top-1/3 xxl:top-0")}>
                 {SIDEBAR_ITEMS.map((item, index) => (
                     <SidebarItem
