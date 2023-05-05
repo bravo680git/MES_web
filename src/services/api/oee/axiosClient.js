@@ -1,14 +1,7 @@
 import axios from "axios"
+import { api as apiConfig } from "@/config"
 
-const axiosClient = axios.create({
-    // baseURL: process.env.REACT_APP_API_SERVER + '/api',
-    // baseURL: 'http://52.231.106.117/api',
-    baseURL: "https://thaiduongscadawebapi.azurewebsites.net/api",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    validateStatus: (status) => status < 400,
-})
+const axiosClient = axios.create(apiConfig.oeeAxiosClientConfig)
 
 // axiosClient.interceptors.request.use(
 //     async (config) => {

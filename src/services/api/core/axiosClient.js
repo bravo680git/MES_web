@@ -1,7 +1,7 @@
 import axios from "axios"
 import { api as apiConfig } from "@/config"
 
-const axiosClient = axios.create(apiConfig.axiosClientConfig)
+const axiosClient = axios.create(apiConfig.coreAxiosClientConfig)
 
 // axiosClient.interceptors.request.use(
 //     async (config) => {

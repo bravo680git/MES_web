@@ -13,7 +13,7 @@ import { useCallApi } from "@/hooks"
 import { paths } from "@/config"
 import { MACHINE_LIST, OEE_MODE_LIST } from "@/utils/constants"
 import { handleOeeData, handleOeeMode, handleOeePageHeader } from "@/utils/functions"
-import OeeApi from "@/services/api/oee/oee"
+import { oeeApi } from "@/services/api"
 
 function OeePage() {
     const navigate = useNavigate()
@@ -37,7 +37,7 @@ function OeePage() {
 
     const getOeeData = useCallback(() => {
         callApi(
-            () => OeeApi.getOee(selectedMachine[0], dayStart, dayEnd),
+            () => oeeApi.getOee(selectedMachine[0], dayStart, dayEnd),
             (data) => setOeeData(handleOeeData(data.reverse())),
         )
     }, [callApi, dayEnd, dayStart, selectedMachine])

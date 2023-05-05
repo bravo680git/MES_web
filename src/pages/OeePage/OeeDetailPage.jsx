@@ -7,7 +7,7 @@ import Table from "@/components/Table"
 import Radialbar from "@/components/Radialbar"
 import Progressbar from "@/components/Progressbar"
 
-import OeeApi from "@/services/api/oee/oee"
+import { oeeApi } from "@/services/api"
 import { useCallApi } from "@/hooks"
 import { formatData, formatTableData } from "@/utils/functions"
 import { OEE_DETAIL_TABLE_COLUMNS } from "@/utils/tableColumns"
@@ -47,7 +47,7 @@ function OeeDetailPage() {
 
     useEffect(() => {
         callApi(
-            () => OeeApi.getOeeDetail(id),
+            () => oeeApi.getOeeDetail(id),
             (data) => {
                 settOeeDetailPageData(data)
                 dispatch(
