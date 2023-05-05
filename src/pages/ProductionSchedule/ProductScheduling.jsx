@@ -49,14 +49,19 @@ function ProductSScheduling() {
     return (
         <div data-component="ProductSScheduling">
             <div className="flex gap-8">
-                <div className="text-16-b w-24">Sản phẩm</div>
+                <div className="text-16-b w-28">ID đơn hàng</div>
+                <div className="text-16-b w-28">ID sản phẩm</div>
+                <div className="text-16-b w-18">Số lượng</div>
                 <div className="text-16-b grow">Chọn thiết bị</div>
-                <div className="text-16-b w-[320px]">Ca bắt đầu</div>
-                <div className="text-16-b w-[320px]">Ca kết thúc</div>
+                <div className="text-16-b w-[280px]">Ca bắt đầu</div>
+                <div className="text-16-b w-[280px]">Ca kết thúc</div>
+                <div className="text-16-b w-[120px]">Ngày đến hạn</div>
             </div>
             {schedulingProducts.map((item, index) => (
                 <div key={index} className="flex items-end gap-8">
-                    <h4 className="w-24">{item.materialDefinition}</h4>
+                    <h4 className="w-28">{item.workOrderId}</h4>
+                    <h4 className="w-28">{item.materialDefinition}</h4>
+                    <div className="w-18">{item.quantity}</div>
                     <div className="grow">
                         <SelectInput
                             label=""
@@ -65,7 +70,7 @@ function ProductSScheduling() {
                             setValue={(value) => handleSetValue(value, index, "equipmentId")}
                         />
                     </div>
-                    <div className="flex w-[320px] items-end">
+                    <div className="flex w-[280px] items-end">
                         <SelectInput
                             className="grow"
                             label=""
@@ -76,12 +81,12 @@ function ProductSScheduling() {
                         />
                         <input
                             type="date"
-                            className="text-16-m w-32"
+                            className="text-16-m w-28"
                             value={schedulingProducts[index].startDate ?? ""}
                             onChange={(e) => handleSetValue(e.target.value, index, "startDate")}
                         />
                     </div>
-                    <div className="flex w-[320px] items-end">
+                    <div className="flex w-[280px] items-end">
                         <SelectInput
                             className="grow"
                             label=""
@@ -92,11 +97,12 @@ function ProductSScheduling() {
                         />
                         <input
                             type="date"
-                            className="text-16-m w-32"
+                            className="text-16-m w-28"
                             value={schedulingProducts[index].endDate ?? ""}
                             onChange={(e) => handleSetValue(e.target.value, index, "endDate")}
                         />
                     </div>
+                    <div className="w-[120px]">{item.dueDate}</div>
                 </div>
             ))}
 

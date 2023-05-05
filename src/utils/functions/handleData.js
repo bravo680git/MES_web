@@ -236,11 +236,11 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
     let valid = true
 
     schedulingProducts.forEach((item) => {
-        const productId = item.materialDefinition
+        const workOrderId = item.workOrderId
         const equipmentId = item.equipmentId
 
         if (!item.equipmentId.length) {
-            toast.error(`Thiết bị của sản phẩm ${productId} không được bỏ trống`)
+            toast.error(`Thiết bị của đơn hàng ${workOrderId} không được bỏ trống`)
             valid = false
             return
         }
@@ -248,12 +248,12 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         const dueDate = new Date(item.dueDate)
 
         if (!item.startDate) {
-            toast.error(`Ngày bắt đầu của sản phẩm ${productId} không được bỏ trống`)
+            toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
             valid = false
             return
         }
         if (!item.endDate) {
-            toast.error(`Ngày kết thúc của sản phẩm ${productId} không được bỏ trống`)
+            toast.error(`Ngày kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
             valid = false
             return
         }
@@ -262,12 +262,12 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         const endDate = new Date(item.endDate)
 
         if (!item.startShift?.length) {
-            toast.error(`Ca bắt đầu của sản phẩm ${productId} không được bỏ trống`)
+            toast.error(`Ca bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
             valid = false
             return
         }
         if (!item.endShift?.length) {
-            toast.error(`Ca kết thúc của sản phẩm ${productId} không được bỏ trống`)
+            toast.error(`Ca kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
             valid = false
             return
         }
@@ -278,13 +278,13 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         endDate.setHours(...endTime.split(":"))
 
         if (dueDate < endDate) {
-            toast.error(`Ngày hoàn thành của sản phẩm ${productId} không được nhỏ hơn ngày đến hạn`)
+            toast.error(`Ngày hoàn thành của đơn hàng ${workOrderId} không được nhỏ hơn ngày đến hạn`)
             valid = false
             return
         }
 
         if (startDate > endDate) {
-            toast.error(`Ngày bắt đầu của sản phẩm ${productId} không được lớn hơn ngày hoàn thành`)
+            toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được lớn hơn ngày hoàn thành`)
             valid = false
             return
         }

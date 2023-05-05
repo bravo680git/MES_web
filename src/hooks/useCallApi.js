@@ -33,10 +33,10 @@ const useCallApi = () => {
 
             if (Array.isArray(api)) {
                 dispatch(commonStoreActions.setLoading(true))
-                Promise.all(api)
+                Promise.allSettled(api)
                     .then((res) => {
                         if (typeof resolve === "function") {
-                            resolve(res)
+                            resolve(res.map((item) => item.value))
                         }
                         if (typeof message === "string") {
                             toast.success(message)
