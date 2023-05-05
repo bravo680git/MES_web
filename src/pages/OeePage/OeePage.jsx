@@ -6,9 +6,10 @@ import Table from "@/components/Table"
 import ToggleButtons from "@/components/ToggleButtons/ToggleButtons"
 import Chart from "react-apexcharts"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { oeeMockData } from "@/utils/mockData"
 import { useNavigate } from "react-router-dom"
+import OeeApi from "@/services/api/oee/oee"
 
 const oeeModeList = ["All", "OEE", "A", "P", "Q", "L"]
 const calDayStartEnd = () => {
@@ -38,14 +39,60 @@ const modeToText = (mode) => {
     }
 }
 const machineList = [
-    {
-        key: "Máy P001",
-        value: "P001",
-    },
-    {
-        key: "Máy P002",
-        value: "P002",
-    },
+    { value: "P001-left-U", key: "Máy ép P001-left-U" },
+    { value: "P001-left-D", key: "Máy ép P001-left-D" },
+    { value: "P001-right-U", key: "Máy ép P001-right-U" },
+    { value: "P001-right-D", key: "Máy ép P001-right-D" },
+    { value: "P002-left-U", key: "Máy ép P002-left-U" },
+    { value: "P002-left-D", key: "Máy ép P002-left-D" },
+    { value: "P002-right-U", key: "Máy ép P002-right-U" },
+    { value: "P002-right-D", key: "Máy ép P002-right-D" },
+    { value: "P003-left-U", key: "Máy ép P003-left-U" },
+    { value: "P003-left-D", key: "Máy ép P003-left-D" },
+    { value: "P003-right-U", key: "Máy ép P003-right-U" },
+    { value: "P003-right-D", key: "Máy ép P003-right-D" },
+    { value: "P004-left-U", key: "Máy ép P004-left-U" },
+    { value: "P004-left-D", key: "Máy ép P004-left-D" },
+    { value: "P004-right-U", key: "Máy ép P004-right-U" },
+    { value: "P004-right-D", key: "Máy ép P004-right-D" },
+    { value: "P005-left-U", key: "Máy ép P005-left-U" },
+    { value: "P005-left-D", key: "Máy ép P005-left-D" },
+    { value: "P005-right-U", key: "Máy ép P005-right-U" },
+    { value: "P005-right-D", key: "Máy ép P005-right-D" },
+    { value: "P007-left-U", key: "Máy ép P007-left-U" },
+    { value: "P007-left-D", key: "Máy ép P007-left-D" },
+    { value: "P007-right-U", key: "Máy ép P007-right-U" },
+    { value: "P007-right-D", key: "Máy ép P007-right-D" },
+    { value: "P009-left-U", key: "Máy ép P009-left-U" },
+    { value: "P009-left-D", key: "Máy ép P009-left-D" },
+    { value: "P009-right-U", key: "Máy ép P009-right-U" },
+    { value: "P009-right-D", key: "Máy ép P009-right-D" },
+    { value: "P010-left-U", key: "Máy ép P010-left-U" },
+    { value: "P010-left-D", key: "Máy ép P010-left-D" },
+    { value: "P010-right-U", key: "Máy ép P010-right-U" },
+    { value: "P010-right-D", key: "Máy ép P010-right-D" },
+    { value: "P011-left-U", key: "Máy ép P011-left-U" },
+    { value: "P011-left-D", key: "Máy ép P011-left-D" },
+    { value: "P011-right-U", key: "Máy ép P011-right-U" },
+    { value: "P011-right-D", key: "Máy ép P011-right-D" },
+    { value: "P101-left-U", key: "Máy ép P101-left-U" },
+    { value: "P101-left-D", key: "Máy ép P101-left-D" },
+    { value: "P101-right-U", key: "Máy ép P101-right-U" },
+    { value: "P101-right-D", key: "Máy ép P101-right-D" },
+    { value: "P102-left-U", key: "Máy ép P102-left-U" },
+    { value: "P102-left-D", key: "Máy ép P102-left-D" },
+    { value: "P102-right-U", key: "Máy ép P102-right-U" },
+    { value: "P102-right-D", key: "Máy ép P102-right-D" },
+    { value: "P103-left-U", key: "Máy ép P103-left-U" },
+    { value: "P103-left-D", key: "Máy ép P103-left-D" },
+    { value: "P103-right-U", key: "Máy ép P103-right-U" },
+    { value: "P103-right-D", key: "Máy ép P103-right-D" },
+    { value: "I1-1", key: "Máy ép nhựa I101" },
+    { value: "I2-1", key: "Máy ép nhựa I102" },
+    { value: "L1-1", key: "Máy ép lagging L1-1" },
+    { value: "L1-2", key: "Máy ép lagging L1-2" },
+    { value: "L1-3", key: "Máy ép lagging L1-3" },
+    { value: "L1-4", key: "Máy ép lagging L1-4" },
 ]
 
 const returnHeader = (mode) => {
@@ -98,29 +145,45 @@ const returnHeader = (mode) => {
             return []
     }
 }
-
+function fetchDataSuccess(data) {
+    //xử lý data trước khi hiển thị
+    const roundedData = data.map((item) => {
+        return {
+            ...item,
+            date: item.date.slice(0, 10),
+            a: Number(item.a.toFixed(3)),
+            p: Number(item.p.toFixed(3)),
+            q: Number(item.q.toFixed(3)),
+            l: Number(item.l.toFixed(3)),
+            oee: Number(item.oee.toFixed(3)),
+        }
+    })
+    return roundedData
+}
 function OeePage() {
     const navigate = useNavigate()
 
     const [oeeModeIndex, setOeeModeIndex] = useState(0) // oee search bar states
     const [dayStart, setDayStart] = useState(calDayStartEnd().dayStart)
     const [dayEnd, setDayEnd] = useState(calDayStartEnd().dayEnd)
-    const [selectedMachine, setSelectedMachine] = useState(["P001"])
+    const [selectedMachine, setSelectedMachine] = useState(["P001-left-U"])
 
+    const [oeeData, setOeeData] = useState([])
+    console.log(oeeData)
+    const getOeeData = () => {
+        OeeApi.getOee(selectedMachine[0], dayStart, dayEnd).then((data) => setOeeData(fetchDataSuccess(data)))
+    }
+    useEffect(() => {
+        getOeeData()
+    }, [])
     const handleSubmitForm = () => {
-        const data = {
-            dayStart: dayStart,
-            dayEnd: dayEnd,
-            selectedMachine: selectedMachine[0],
-        }
-        console.log(data)
-        console.log("Calling the API...")
+        getOeeData()
     }
     const handleClickRow = (row) => {
-        navigate(`/oee-detail/${row.a}`)
+        navigate(`/oee-detail/${row.id}`)
     }
-    const xaxis = oeeMockData.map((e) => e.date)
-    const yaxis = oeeMockData.map((e) => e[modeToText(oeeModeIndex).toLowerCase()])
+    const xaxis = oeeData.map((e) => e.date)
+    const yaxis = oeeData.map((e) => e[modeToText(oeeModeIndex).toLowerCase()])
     const state = {
         options: {
             xaxis: {
@@ -148,26 +211,35 @@ function OeePage() {
     }
     return (
         <>
-            <div className="container mb-5 ">
-                <Card>
+            <div className="flex h-screen flex-col">
+                <Card className="container mb-5 ">
                     <div className=" mb-3 flex w-full justify-between">
                         <div className="  p-1">
                             <DateInput
                                 className=""
-                                label="Chọn ngày bắt đầu:"
+                                key="Chọn ngày bắt đầu:"
                                 value={dayStart}
                                 setValue={setDayStart}
+                                type="dayStart"
+                                dayCompare={dayEnd}
                             />
                         </div>
                         <div className="  p-1 ">
-                            <DateInput className="" label="Chọn ngày kết thúc:" value={dayEnd} setValue={setDayEnd} />
+                            <DateInput
+                                className=""
+                                key="Chọn ngày kết thúc:"
+                                value={dayEnd}
+                                setValue={setDayEnd}
+                                type="dayEnd"
+                                dayCompare={dayStart}
+                            />
                         </div>
                         <div className="  p-1">
                             <SelectInput
                                 value={selectedMachine}
                                 setValue={setSelectedMachine}
                                 list={machineList}
-                                label="Chọn máy:"
+                                key="Chọn máy:"
                             />
                         </div>
                         <Button large onClick={() => handleSubmitForm()}>
@@ -176,15 +248,15 @@ function OeePage() {
                     </div>
                     <ToggleButtons active={oeeModeIndex} onClick={setOeeModeIndex} titles={oeeModeList} />
                 </Card>
-            </div>
-            <Card>
-                {oeeModeIndex != 0 && <h2>Giá trị {modeToText(oeeModeIndex)}</h2>}
+                <Card className="flex-1">
+                    {oeeModeIndex != 0 && <h2>Giá trị {modeToText(oeeModeIndex)}</h2>}
 
-                {oeeModeIndex !== 0 && (
-                    <Chart options={state.options} series={state.series} type="line" width="100%" height={440} />
-                )}
-                <Table headers={returnHeader(oeeModeIndex)} body={oeeMockData} sticky onRowClick={handleClickRow} />
-            </Card>
+                    {oeeModeIndex !== 0 && (
+                        <Chart options={state.options} series={state.series} type="line" width="100%" height={440} />
+                    )}
+                    <Table headers={returnHeader(oeeModeIndex)} body={oeeData} onRowClick={handleClickRow} />
+                </Card>
+            </div>
         </>
     )
 }

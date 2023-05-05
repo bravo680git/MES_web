@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import cl from "classnames"
+import { toast } from "react-toastify"
 
-function DateInput({ id, label, value, setValue, className }) {
+function DateInput({ id, label, value, setValue, className, type, dayCompare }) {
+    // type dùng để xác định input dayStart hay Dayend; dayCompare dùng để truyền ngày vào và so sánh-> kiểm tra hợp lệ
     const containerRef = useRef()
 
     const [focus, setFocus] = useState(false)
-
+    const [inputDate, setInputDate] = useState(value)
     const handleFocus = () => {
         setFocus(true)
     }
@@ -14,7 +16,21 @@ function DateInput({ id, label, value, setValue, className }) {
     const handleBlur = () => {
         setFocus(false)
     }
-
+    useEffect(() => {
+        if (type == "dayStart") {
+            if (inputDate < dayCompare) {
+                setValue(inputDate)
+            } else {
+                toast.error("Ngày kết thúc phải sau ngày bắt đầu")
+            }
+        } else {
+            if (inputDate > dayCompare) {
+                setValue(inputDate)
+            } else {
+                toast.error("Ngày kết thúc phải sau ngày bắt đầu")
+            }
+        }
+    }, [inputDate])
     return (
         <>
             <div
@@ -45,7 +61,7 @@ function DateInput({ id, label, value, setValue, className }) {
                         className="text-14 m block h-5 grow pl-2 focus:outline-none"
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        onChange={(e) => setValue(e.target.value)}
+                        onChange={(e) => setInputDate(e.target.value)}
                         value={value}
                     />
                 </div>
