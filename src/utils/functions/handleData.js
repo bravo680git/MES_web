@@ -325,3 +325,115 @@ export const convertISOToLocaleDate = (date) => {
         .toLocaleString("vi")
         .replace(/^([\d]?[\d])/, (val) => (Number(val) <= 16 ? Number(val) + 7 : Number(val) + 7 - 24))
 }
+
+export const formatData = (data, fixNumber) => {
+    const fomartedData = data.toFixed(fixNumber)
+    return fomartedData
+}
+
+export const fomartDate = (inputDate) => {
+    const dateParts = inputDate.split("T")
+    const date = dateParts[0].split("-").reverse().join("-")
+    const time = dateParts[1]
+
+    const outputDate = `${date} ${time}`
+    return outputDate
+}
+
+export const formatTableData = (data) => {
+    let formatedData
+    formatedData = data.map((item) => {
+        let formatedItem
+        formatedItem = {
+            injectionCycle: formatData(item.injectionCycle, 2),
+            injectionTime: formatData(item.injectionTime, 2),
+            timeStamp: fomartDate(item.timeStamp.split(".")[0]),
+        }
+        return formatedItem
+    })
+    return formatedData
+}
+
+export const handleOeeData = (data) => {
+    const roundedData = data.map((item) => {
+        return {
+            ...item,
+            date: new Date(item.date).toLocaleDateString("vi"),
+            a: (Number(item.a) * 100).toFixed(2),
+            p: (Number(item.p) * 100).toFixed(2),
+            q: (Number(item.q) * 100).toFixed(2),
+            l: Number(item.l.toFixed(2)),
+            oee: (Number(item.oee) * 100).toFixed(2),
+        }
+    })
+    return roundedData
+}
+
+export const handleOeeMode = (mode) => {
+    switch (mode) {
+        case 0:
+            return "ALL"
+        case 1:
+            return "OEE"
+        case 2:
+            return "A"
+        case 3:
+            return "P"
+        case 4:
+            return "Q"
+        case 5:
+            return "L"
+        default:
+    }
+}
+
+export const handleOeePageHeader = (mode) => {
+    const header = [
+        {
+            Header: "Ngày",
+            accessor: "date",
+            disableSortBy: false,
+        },
+        {
+            Header: "OEE(%)",
+            accessor: "oee",
+            disableSortBy: false,
+        },
+        {
+            Header: "Availability(%)",
+            accessor: "a",
+            disableSortBy: false,
+        },
+        {
+            Header: "Performance(%)",
+            accessor: "p",
+            disableSortBy: false,
+        },
+        {
+            Header: "Quality(%)",
+            accessor: "q",
+            disableSortBy: false,
+        },
+        {
+            Header: "Lost time(s)",
+            accessor: "l",
+            disableSortBy: false,
+        },
+    ]
+    switch (mode) {
+        case 0:
+            return header
+        case 1:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "oee")
+        case 2:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "a")
+        case 3:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "p")
+        case 4:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "q")
+        case 5:
+            return header.filter((item) => item.accessor === "date" || item.accessor === "l")
+        default:
+            return []
+    }
+}

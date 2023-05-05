@@ -1,6 +1,5 @@
 import Card from "@/components/Card"
 import Table from "@/components/Table"
-import { QuantityIcon } from "../Icons"
 
 function ResourceItem({ label, quantiy = {}, headers, body, onLabelClick, onBtnClick }) {
     return (
@@ -17,10 +16,10 @@ function ResourceItem({ label, quantiy = {}, headers, body, onLabelClick, onBtnC
                     <span className="w-[120px]">Tổng số</span>
                     <span className="heading-20-s">{quantiy.all ?? 0}</span>
                 </div>
-                <div className="mt-2 flex items-center xl:mt-0">
+                {/* <div className="mt-2 flex items-center xl:mt-0">
                     <span className="w-[120px]">Khả dụng</span>
-                    <span className="heading-20-s">{QuantityIcon.available ?? 0}</span>
-                </div>
+                    <span className="heading-20-s">{quantiy.available ?? 0}</span>
+                </div> */}
             </div>
 
             <Table headers={headers} body={body} className="scroll-y h-[calc(100%-138px)]" sticky />

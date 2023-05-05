@@ -41,7 +41,7 @@ function Dashboard() {
                     if (item.isClosed) {
                         quantity.isClosed++
                     } else {
-                        if (item.actualStartDate) {
+                        if (item.isStarted) {
                             quantity.isProducing++
                             isProducingWorkOrders.push(item)
                         } else {
@@ -190,9 +190,10 @@ function Dashboard() {
                         {data.isProducingWorkOrders?.map((item) => (
                             <div className="mb-3 flex items-center" key={item.workOrderId}>
                                 <span className="text-16-b w-20">{item.workOrderId}</span>
-                                <Progressbar value={30} textLimit={20} unit="%" />
+                                <Progressbar value={item.progressPercentage} textLimit={20} unit="%" />
                             </div>
                         ))}
+                        {!data.isProducingWorkOrders?.length && <div>Hiện không có đơn hàng nào đang sản xuất</div>}
                     </div>
                 </Card>
             </div>

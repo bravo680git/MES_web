@@ -1,7 +1,7 @@
 const paths = {
     dashboard: "/",
     oee: "/oee",
-    oeeDetail: "/oee-detail/:id",
+    oeeDetail: "/oee/:id",
     downtime: "/downtime",
     progress: "/production-progress",
     command: "/work-order",

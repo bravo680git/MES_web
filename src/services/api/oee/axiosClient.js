@@ -1,14 +1,11 @@
-import axios from 'axios'
-// import { authStorageService } from '@/services/browserStorage'
-// axios.defaults.adapter = require('axios/lib/adapters/http')
-// import https from 'https'
+import axios from "axios"
 
 const axiosClient = axios.create({
     // baseURL: process.env.REACT_APP_API_SERVER + '/api',
     // baseURL: 'http://52.231.106.117/api',
-    baseURL: 'https://thaiduongscadawebapi.azurewebsites.net/api',
+    baseURL: "https://thaiduongscadawebapi.azurewebsites.net/api",
     headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
     },
     validateStatus: (status) => status < 400,
 })
@@ -33,7 +30,7 @@ axiosClient.interceptors.response.use(
         }
     },
     async (error) => {
-        const errorData = error.response?.data || ''
+        const errorData = error.response?.data || ""
 
         return Promise.reject(new Error(errorData))
     },

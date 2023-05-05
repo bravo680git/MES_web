@@ -6,6 +6,7 @@ const initialState = {
         { description: "Ca sáng", startTime: "07:00:00", endTime: "12:00:00" },
         { description: "Ca chiều", startTime: "13:00:00", endTime: "18:00:00" },
     ],
+    oeeDuration: settingStorageService.get("oee-duration") ?? 10,
 }
 
 const settingSlice = createSlice({
@@ -17,8 +18,13 @@ const settingSlice = createSlice({
             settingStorageService.set("shifts", action.payload)
             return state
         },
+        setOeeDuration(state, action) {
+            state.oeeDuration = action.payload
+            settingStorageService.set("oee-duration", action.payload)
+            return state
+        },
     },
 })
 
 export default settingSlice.reducer
-export const { setShifts } = settingSlice.actions
+export const { setShifts, setOeeDuration } = settingSlice.actions
