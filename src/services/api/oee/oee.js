@@ -23,5 +23,6 @@ const OeeApi = {
         const url = `ShiftReports?DeviceId=${deviceId}&MouldSlot=${mouldSlot}&StartTime=${dayStart}&EndTime=${dayEnd}`
         return axiosClient.get(url)
     },
+    getAverage: (dayStart, dayEnd) => axiosClient.get(`/ShiftReports/average?StartTime=${dayStart}&EndTime=${dayEnd}`),
 }
 export default OeeApi

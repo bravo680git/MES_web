@@ -2,7 +2,7 @@ import Chart from "react-apexcharts"
 
 import { formatNumberValue } from "@/utils/functions"
 
-function Radialbar({ width = 300, value, color = "#4D7EB3", fontSize = 20 }) {
+function Radialbar({ width = 300, value, color = "#4D7EB3", fontSize = 20, format, rounded, fixed = 2 }) {
     const options = {
         chart: {
             type: "radialBar",
@@ -33,7 +33,7 @@ function Radialbar({ width = 300, value, color = "#4D7EB3", fontSize = 20 }) {
         colors: [color],
     }
 
-    const series = [formatNumberValue(value)]
+    const series = [formatNumberValue(value, format ?? rounded ?? fixed)]
 
     return (
         <div data-component="Radialbar">
