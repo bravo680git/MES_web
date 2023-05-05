@@ -1,15 +1,33 @@
-import { validateRequiredField, validateNumberField, validateDateInput } from "@/utils/functions"
+import {
+    validateRequiredField,
+    validateNumberField,
+    validateDateInput,
+    validateIdField,
+    validateDescField,
+} from "@/utils/functions"
 
 export const getProductionCommandMenuNav = (productList) => [
     {
-        id: "commandInfo",
+        id: "info",
         title: "Lệnh sản xuất mới",
         type: "form",
         items: [
             {
-                id: "product",
+                id: "workOrderId",
+                type: "text",
+                label: "ID lệnh sản xuất",
+                isError: validateIdField,
+            },
+            {
+                id: "description",
+                type: "text",
+                label: "Mô tả",
+                isError: validateDescField,
+            },
+            {
+                id: "materialDefinition",
                 type: "select",
-                label: "Sản phẩm",
+                label: "Chọn sản phẩm",
                 list: productList ?? [],
                 isError: validateRequiredField,
             },
@@ -20,14 +38,9 @@ export const getProductionCommandMenuNav = (productList) => [
                 isError: validateNumberField,
             },
             {
-                id: "manager",
+                id: "dueDate",
                 type: "text",
-                label: "Phụ trách",
-            },
-            {
-                id: "type",
-                type: "text",
-                label: "Dự kiến hoàn thành(dd/mm/yyyy)",
+                label: "Ngày đến hạn(dd/mm/yyyy)",
                 isError: validateDateInput,
             },
         ],

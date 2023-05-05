@@ -54,7 +54,7 @@ export const mutilSeriesRangeBarChartConfig = {
     plotOptions: {
         bar: {
             horizontal: true,
-            barHeight: "100%",
+            barHeight: "80%",
             rangeBarGroupRows: false,
         },
     },

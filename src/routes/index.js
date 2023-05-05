@@ -4,8 +4,8 @@ import * as Pages from "@/pages"
 const routes = [
     {
         path: paths.dashboard,
-        title: "Trang chủ",
-        component: "div",
+        title: "Dashboard",
+        component: Pages.Dashboard,
         layout: "main",
     },
     {
@@ -51,6 +51,12 @@ const routes = [
         layout: "main",
     },
     {
+        path: paths.scheduling,
+        title: "Điều độ sản xuất",
+        component: Pages.ProductScheduling,
+        layout: "main",
+    },
+    {
         path: paths.resource,
         title: "Quản lý nguồn lực",
         component: Pages.ResourcePage,
@@ -71,7 +77,7 @@ const routes = [
     {
         path: paths.setting,
         title: "Thiết lập",
-        component: "div",
+        component: Pages.Setting,
         layout: "main",
     },
     {

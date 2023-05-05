@@ -46,7 +46,7 @@ function Progressbar({
                             children
                         ) : (
                             <>
-                                <span className="flex font-bold">{percent}</span>
+                                <span className="flex font-bold">{unit === "%" ? percent : value}</span>
                                 <span className="flex font-semibold">{unit}</span>
                             </>
                         )}
@@ -59,7 +59,7 @@ function Progressbar({
                         children
                     ) : (
                         <>
-                            <span className="flex font-bold">{percent}</span>
+                            <span className="flex font-bold">{unit === "%" ? percent : value}</span>
                             <span className="flex font-semibold">{unit}</span>
                         </>
                     )}

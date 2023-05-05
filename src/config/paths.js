@@ -7,6 +7,7 @@ const paths = {
     command: "/work-order",
     newProduct: "/work-order/new-product",
     product: "/work-order/products/:productId",
+    scheduling: "/work-order/product-scheduling",
     schedule: "/production-schedule",
 
     resource: "/resource",

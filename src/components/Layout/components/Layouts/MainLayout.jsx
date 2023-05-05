@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { ToastContainer } from "react-toastify"
 import Loading from "../Loading"
@@ -6,6 +7,11 @@ import "react-toastify/dist/ReactToastify.css"
 import Sidebar from "../Sidebar"
 function MainLayout({ children, title }) {
     const { pageTitle, loading } = useSelector((state) => state.common)
+
+    useEffect(() => {
+        const documentTitle = (title ?? pageTitle) + " | Ứng dụng quản lý và giám sát năng suất máy"
+        document.title = documentTitle
+    }, [title, pageTitle])
 
     return (
         <div data-component="MainLayout" className="container flex h-screen overflow-hidden">

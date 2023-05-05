@@ -7,11 +7,10 @@ import Button from "@/components/Button"
 import { usePoperMenu } from "@/hooks"
 import { getMenuItemValue as getValue, getMenuTableData, cloneDeep } from "@/utils/functions"
 
-function TableMenu({ headers, subNav, value, setValue, path, canAddRecord = true }) {
+function TableMenu({ headers, subNav, value, setValue, path, canAddRecord = true, onDeleteRow }) {
     const { active, position, handleClose, handleOpen } = usePoperMenu()
     const [poperMenuHandler, setPoperMenuHandler] = useState()
     const tableBody = getMenuTableData(getValue(value, path), subNav[0].id)
-
     const handleAdding = (e) => {
         setPoperMenuHandler({
             handleClick(v) {
@@ -40,7 +39,7 @@ function TableMenu({ headers, subNav, value, setValue, path, canAddRecord = true
 
     return (
         <div data-component="TableMenu">
-            <Table headers={headers} body={tableBody} onEdit={handleEditing} />
+            <Table headers={headers} body={tableBody} onEdit={handleEditing} onDeleteRow={onDeleteRow} />
             {canAddRecord && (
                 <Button small className="mt-4 text-2xl" onClick={handleAdding}>
                     <AiOutlinePlus />

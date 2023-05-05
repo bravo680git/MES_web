@@ -1,9 +1,21 @@
 import { useState, useEffect } from "react"
 import { HiPencil } from "react-icons/hi"
 import { BiSortDown, BiSortUp } from "react-icons/bi"
+import { RiDeleteBin4Line } from "react-icons/ri"
 import cl from "classnames"
 
-function Table({ activable, onRowClick, onEdit, headers = [], body = [], className, primary, sticky, unActive }) {
+function Table({
+    activable,
+    onRowClick,
+    onEdit,
+    headers = [],
+    body = [],
+    className,
+    primary,
+    sticky,
+    unActive,
+    onDeleteRow,
+}) {
     const [activeIndex, setActiveIndex] = useState(null)
 
     const handleRowClick = (row, index) => {
@@ -95,6 +107,19 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                                         <HiPencil />
                                                     </i>
                                                 )}
+
+                                                {onDeleteRow && i === headers.length - 1 && (
+                                                    <i
+                                                        className={cl(
+                                                            "absolute right-8 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
+                                                            "flex items-center justify-center rounded-full text-warning-1",
+                                                            "heading-20-b invisible cursor-pointer hover:bg-hoverBg group-hover:visible",
+                                                        )}
+                                                        onClick={() => onDeleteRow(row, index)}
+                                                    >
+                                                        <RiDeleteBin4Line />
+                                                    </i>
+                                                )}
                                             </td>
                                         ))}
                                     </tr>
@@ -132,7 +157,7 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                         className={cl(" group rounded-md bg-neutron-4", {
                                             "cursor-pointer hover:bg-hoverBg": onRowClick,
                                         })}
-                                        onClick={() => handleRowClick(row)}
+                                        onClick={() => handleRowClick(row, index)}
                                         key={index}
                                     >
                                         {headers.map((column, i) => (
@@ -158,6 +183,19 @@ function Table({ activable, onRowClick, onEdit, headers = [], body = [], classNa
                                                         onClick={(e) => handleEdit(e, row, index)}
                                                     >
                                                         <HiPencil />
+                                                    </i>
+                                                )}
+
+                                                {onDeleteRow && i === headers.length - 1 && (
+                                                    <i
+                                                        className={cl(
+                                                            "absolute right-8 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
+                                                            "flex items-center justify-center rounded-full text-warning-1",
+                                                            "heading-20-b invisible cursor-pointer hover:bg-hoverBg group-hover:visible",
+                                                        )}
+                                                        onClick={() => onDeleteRow(row, index)}
+                                                    >
+                                                        <RiDeleteBin4Line />
                                                     </i>
                                                 )}
                                             </td>

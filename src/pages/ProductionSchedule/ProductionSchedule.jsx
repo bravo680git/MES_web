@@ -1,36 +1,72 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ApexChart from "react-apexcharts"
+
+import ToggleButtons from "@/components/ToggleButtons"
 import { mutilSeriesRangeBarChartConfig } from "@/config"
-import { handleScheduleDataByMachine, handleScheduleDataByProduct } from "@/utils/functions"
-import { PRODUCTION_SCHEDULE_MOCK_DATA } from "@/utils/mockData"
+import { useCallApi } from "@/hooks"
+import { workOrderApi } from "@/services/api"
+import { handleScheduleDataByMachine, handleScheduleDataByProduct, convertISOToLocaleDate } from "@/utils/functions"
+import { PRODUCTION_SCHEDULE_TABLE_COLUMNS } from "@/utils/tableColumns"
+import Table from "@/components/Table/Table"
 
 function ProductionSchedule() {
-    const [heightZoom, setHeightZoom] = useState(100)
+    const callApi = useCallApi()
+    const [productionSchedule, setProductionSchedule] = useState([])
+    const [chartData, setChartData] = useState([])
+    const [tableData, setTableData] = useState([])
+    const [actived, setActived] = useState(0)
+
+    const handleClick = (index) => {
+        setActived(index)
+    }
+
+    useEffect(() => {
+        switch (actived) {
+            case 0:
+                setChartData(handleScheduleDataByMachine(productionSchedule))
+                return
+            case 1:
+                setChartData(handleScheduleDataByProduct(productionSchedule))
+                return
+            case 2:
+                const data = productionSchedule.map((item) => ({
+                    ...item,
+                    scheduledStartDate: convertISOToLocaleDate(item.scheduledStartDate),
+                    scheduledEndDate: convertISOToLocaleDate(item.scheduledEndDate),
+                }))
+                setTableData(data)
+                return
+            default:
+        }
+    }, [actived, productionSchedule])
+
+    useEffect(() => {
+        callApi(workOrderApi.getWorkOrders, (res) => {
+            setProductionSchedule(res.items.filter((item) => item.isScheduled && !item.isClosed))
+        })
+    }, [callApi])
 
     return (
-        <div data-component="ProductionSchedule" className="" style={{ height: heightZoom + "%" }}>
-            <div className="fixed right-36 top-12 z-[9999999]">
-                <button
-                    className="rounded-full p-5 text-6xl hover:cursor-pointer"
-                    onClick={() => setHeightZoom(heightZoom + 50)}
-                >
-                    +
-                </button>
-                <button
-                    className="rounded-full p-5 text-6xl hover:cursor-pointer"
-                    onClick={() => setHeightZoom(heightZoom - 50)}
-                >
-                    -
-                </button>
-            </div>
-            {true && (
-                <ApexChart
-                    series={handleScheduleDataByMachine(PRODUCTION_SCHEDULE_MOCK_DATA)}
-                    options={mutilSeriesRangeBarChartConfig}
-                    type="rangeBar"
-                    height="100%"
+        <div data-component="ProductionSchedule" className="h-full">
+            <div>
+                <ToggleButtons
+                    titles={["Theo máy", "Theo sản phẩm", "Dạng bảng"]}
+                    active={actived}
+                    onClick={handleClick}
                 />
-            )}
+            </div>
+            <div className="h-[calc(100%-40px)]">
+                {actived === 2 ? (
+                    <Table headers={PRODUCTION_SCHEDULE_TABLE_COLUMNS} body={tableData} />
+                ) : (
+                    <ApexChart
+                        series={chartData}
+                        options={mutilSeriesRangeBarChartConfig}
+                        type="rangeBar"
+                        height="100%"
+                    />
+                )}
+            </div>
         </div>
     )
 }

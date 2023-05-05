@@ -17,6 +17,7 @@ function SelectInput({
     className,
     isError,
     setValidateRows,
+    canSearch = true,
 }) {
     const containerRef = useRef()
 
@@ -38,6 +39,7 @@ function SelectInput({
             setValue([v], id)
         }
         setSearchInput("")
+        setFocus(false)
     }
 
     const handleRemoveItem = (v) => {
@@ -73,6 +75,11 @@ function SelectInput({
         if (typeof isError === "function" && !isError(value)) {
             handleValidateSelectInput(value, isError, setError, setValidateRows, id)
         }
+
+        const handleBlur = () => setFocus(false)
+        document.addEventListener("click", handleBlur)
+
+        return () => document.removeEventListener("click", handleBlur)
     }, [])
 
     return (
@@ -90,6 +97,7 @@ function SelectInput({
                     },
                     className,
                 )}
+                onClick={(e) => e.stopPropagation()}
             >
                 <label
                     className={cl("absolute transition-all", {
@@ -102,7 +110,7 @@ function SelectInput({
                     {label}
                 </label>
                 <div className="flex min-h-[58px] items-end pt-6">
-                    <div className="ml-2 flex w-fit min-w-[100px] max-w-[200px] flex-wrap">
+                    <div className="ml-2 flex w-fit min-w-[100px] max-w-[300px] flex-wrap">
                         {list
                             .filter((item) => value.includes(item.value))
                             .map((item) => (
@@ -127,17 +135,19 @@ function SelectInput({
                                 </div>
                             ))}
                     </div>
-                    <input
-                        type="text"
-                        className="text-14 block h-5 grow pl-2 focus:outline-none"
-                        placeholder="Nhập để tìm kiếm..."
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                        value={searchInput}
-                    />
+                    {canSearch && (
+                        <input
+                            type="text"
+                            className="text-14 block h-5 grow pl-2 focus:outline-none"
+                            placeholder="Nhập để tìm kiếm..."
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={searchInput}
+                        />
+                    )}
                 </div>
-                <i className="absolute right-3 bottom-1">
+                <i className="absolute right-3 bottom-1" onClick={() => setFocus(!focus)}>
                     <MdOutlineKeyboardArrowDown className={cl("text-2xl transition-all", { "rotate-180": focus })} />
                 </i>
                 <div

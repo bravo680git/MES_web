@@ -107,6 +107,17 @@ export const productMapper = {
             }
         })
 
+        segments.push({
+            productSegmentId: "start-segment",
+            description: "Start",
+            duration: 0,
+            durationUnitOfMeasure: 1,
+            personnelSpecifications: [],
+            equipmentSpecifications: [],
+            materialSpecifications: [],
+            properties: [],
+        })
+
         const segmentRelationships =
             data.segmentRelationships?.map((item) => {
                 const segmentRelationship = item.info

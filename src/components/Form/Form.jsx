@@ -3,7 +3,7 @@ import FormMenu from "@/components/PoperMenu/FormMenu"
 import TableMenu from "@/components/PoperMenu/TableMenu"
 import { getUpdatedMenuValue as getNewValue } from "@/utils/functions"
 
-function Form({ menuNavigaton, basePath = [], setInvalid, value = {}, setValue, className }) {
+function Form({ menuNavigaton, basePath = [], setInvalid, value = {}, setValue, className, onDeleteRow }) {
     const handleSetValue = (itemValue, id) => {
         setValue((prevValue) => getNewValue(prevValue, itemValue, [menuNavigaton.id], id))
     }
@@ -29,6 +29,7 @@ function Form({ menuNavigaton, basePath = [], setInvalid, value = {}, setValue, 
                         subNav={menuNavigaton.subNav}
                         value={value}
                         setValue={handleSetValue}
+                        onDeleteRow={onDeleteRow}
                     />
                 )}
             </Card>
