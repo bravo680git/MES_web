@@ -46,10 +46,10 @@ function ProductionProgress() {
                 result = resData
                 break
             case 1:
-                result = resData.filter((item) => !item.actualStartDate)
+                result = resData.filter((item) => !item.isStarted)
                 break
             case 2:
-                result = resData.filter((item) => item.actualStartDate && !item.isClosed)
+                result = resData.filter((item) => item.isStarted && !item.isClosed)
                 break
             case 3:
                 result = resData.filter((item) => item.isClosed)
@@ -99,16 +99,12 @@ function ProductionProgress() {
                             </div>
                             <div
                                 className={cl("text-16-b  rounded-3xl px-5 py-2 text-neutron-4", {
-                                    "bg-primary-2": item.actualStartDate && !item.isClosed,
+                                    "bg-primary-2": item.isStarted && !item.isClosed,
                                     "bg-primary-1": item.isClosed,
-                                    "bg-accent-1": !item.actualStartDate,
+                                    "bg-accent-1": !item.isStarted,
                                 })}
                             >
-                                {item.isClosed
-                                    ? "Đã hoàn thành"
-                                    : item.actualStartDate
-                                    ? "Đang sản xuất"
-                                    : "Chưa sản xuất"}
+                                {item.isClosed ? "Đã hoàn thành" : item.isStarted ? "Đang sản xuất" : "Chưa sản xuất"}
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
@@ -145,26 +141,24 @@ function ProductionProgress() {
                                 </div>
                                 <div className="mb-1">
                                     <span className="text-16-b inline-block w-40">Tổng số</span>
-                                    <span>100</span>
+                                    <span>{item.quantity}</span>
                                 </div>
                                 <div className="mb-1">
                                     <span className="text-16-b inline-block w-40">Đã hoàn thành</span>
-                                    <span>20</span>
+                                    <span>{item.actualQuantity}</span>
                                 </div>
                             </div>
-                            <Radialbar value={20} width={280} fontSize={24} />
+                            <Radialbar value={item.progressPercentage} width={280} fontSize={24} />
                         </div>
 
                         <div className="flex gap-5">
-                            {!item.actualStartDate && (
+                            {!item.isStarted && (
                                 <Button onClick={() => handleStart(item.workOrderId)} small>
                                     Bắt đầu sản xuất
                                 </Button>
                             )}
-                            {!item.isClosed && (
-                                <Button onClick={() => handleClose(item.workOrderId)} small>
-                                    Hoàn thành đơn hàng
-                                </Button>
+                            {!item.isClosed && item.isStarted && (
+                                <Button onClick={() => handleClose(item.workOrderId)}>Hoàn thành đơn hàng</Button>
                             )}
                         </div>
                     </Card>

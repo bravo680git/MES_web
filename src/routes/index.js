@@ -16,7 +16,7 @@ const routes = [
     },
     {
         path: paths.oeeDetail,
-        title: "Chi tiết oee",
+        title: null,
         component: Pages.OeeDetailPage,
         layout: "main",
     },

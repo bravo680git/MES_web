@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 import { useCallApi } from "@/hooks"
 import Card from "@/components/Card"
@@ -7,14 +8,27 @@ import Radialbar from "@/components/Radialbar"
 import Progressbar from "@/components/Progressbar"
 import ValueItem from "@/components/ValueItem"
 import { paths } from "@/config"
-import { workOrderApi, resourceApi } from "@/services/api"
+import { workOrderApi, resourceApi, oeeApi } from "@/services/api"
 
 function Dashboard() {
     const navigate = useNavigate()
     const callApi = useCallApi()
-    const [data, setData] = useState({})
+    const [data, setData] = useState({
+        averageOee: {
+            oee: 0,
+            a: 0,
+            p: 0,
+            q: 0,
+        },
+    })
+    const { oeeDuration } = useSelector((state) => state.setting)
 
     useEffect(() => {
+        const dayEnd = new Date().toISOString().slice(0, 10)
+        const prevDate = new Date()
+        prevDate.setDate(new Date().getDate() - oeeDuration)
+        const dayStart = prevDate.toISOString().slice(0, 10)
+
         callApi(
             [
                 workOrderApi.getWorkOrders(),
@@ -22,6 +36,7 @@ function Dashboard() {
                 resourceApi.material.getMaterials(),
                 resourceApi.equipment.getEquipmentClasses(),
                 resourceApi.material.getMaterialClasses(),
+                oeeApi.getAverage(dayStart, dayEnd),
             ],
             (res) => {
                 const workOrders = res[0].items
@@ -41,7 +56,7 @@ function Dashboard() {
                     if (item.isClosed) {
                         quantity.isClosed++
                     } else {
-                        if (item.actualStartDate) {
+                        if (item.isStarted) {
                             quantity.isProducing++
                             isProducingWorkOrders.push(item)
                         } else {
@@ -66,19 +81,22 @@ function Dashboard() {
                     materialClassesCount: res[4].totalItems,
                     usedEquipment: Object.keys(equipment).length,
                     usedMaterial: Object.keys(material).length,
+                    averageOee: {
+                        ...res[5],
+                    },
                 })
             },
         )
-    }, [callApi])
+    }, [callApi, oeeDuration])
 
     return (
         <div data-component="Dashboard" className="container h-full">
             <div className="flex h-1/2 w-full gap-5">
                 <Card className="grow cursor-pointer hover:bg-hoverBg" onCLick={() => navigate(paths.oee)}>
-                    <h3>Chỉ số OEE trung bình 7 ngày qua</h3>
+                    <h3>Chỉ số OEE trung bình {oeeDuration} ngày qua</h3>
                     <div className="mt-5 flex w-full items-center">
                         <div className="flex flex-col items-center">
-                            <Radialbar value={60.02} width={360} color="#00cc00" />
+                            <Radialbar value={data.averageOee?.oee * 100} width={360} color="#00cc00" />
                             <span className="text-16-b">OEE</span>
                         </div>
                         <div className="flex grow flex-col gap-5">
@@ -86,46 +104,36 @@ function Dashboard() {
                                 <span className="text-16-b">A</span>
                                 <Progressbar
                                     height={36}
-                                    textLimit={20}
-                                    value={30}
+                                    textLimit={30}
+                                    value={data.averageOee?.a * 100}
                                     className="grow"
                                     unit="%"
                                     color="#3366ff"
+                                    fixed={2}
                                 />
                             </div>
                             <div className="flex w-full items-center gap-5">
                                 <span className="text-16-b">P</span>
                                 <Progressbar
                                     height={36}
-                                    textLimit={20}
-                                    value={26}
+                                    textLimit={30}
+                                    value={data.averageOee?.p * 100}
                                     className="grow"
                                     unit="%"
                                     color="#3333cc"
+                                    fixed={2}
                                 />
                             </div>
                             <div className="flex w-full items-center gap-5">
                                 <span className="text-16-b">Q</span>
                                 <Progressbar
                                     height={36}
-                                    textLimit={20}
-                                    value={68}
+                                    textLimit={30}
+                                    value={data.averageOee?.q * 100}
                                     className="grow"
                                     unit="%"
                                     color="#8600b3"
-                                />
-                            </div>
-                            <div className="flex w-full items-center gap-5">
-                                <span className="text-16-b">L</span>
-                                <Progressbar
-                                    height={36}
-                                    textLimit={20}
-                                    min={0}
-                                    max={1200}
-                                    value={245}
-                                    className="grow"
-                                    unit="s"
-                                    color="#ff884d"
+                                    fixed={2}
                                 />
                             </div>
                         </div>
@@ -190,9 +198,10 @@ function Dashboard() {
                         {data.isProducingWorkOrders?.map((item) => (
                             <div className="mb-3 flex items-center" key={item.workOrderId}>
                                 <span className="text-16-b w-20">{item.workOrderId}</span>
-                                <Progressbar value={30} textLimit={20} unit="%" />
+                                <Progressbar value={item.progressPercentage} textLimit={20} unit="%" />
                             </div>
                         ))}
+                        {!data.isProducingWorkOrders?.length && <div>Hiện không có đơn hàng nào đang sản xuất</div>}
                     </div>
                 </Card>
             </div>
