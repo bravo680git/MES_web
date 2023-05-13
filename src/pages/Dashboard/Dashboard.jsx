@@ -39,7 +39,7 @@ function Dashboard() {
                 oeeApi.getAverage(dayStart, dayEnd),
             ],
             (res) => {
-                const workOrders = res[0].items
+                const workOrders = res[0]?.items
                 const quantity = {
                     isScheduled: 0,
                     notScheduled: 0,
@@ -52,7 +52,7 @@ function Dashboard() {
                 const equipment = {}
                 const material = {}
 
-                workOrders.forEach((item) => {
+                workOrders?.forEach((item) => {
                     if (item.isClosed) {
                         quantity.isClosed++
                     } else {
@@ -75,10 +75,10 @@ function Dashboard() {
                 setData({
                     ...quantity,
                     isProducingWorkOrders,
-                    equipmentCount: res[1].totalItems,
-                    materialCount: res[2].totalItems,
-                    equipmentClassesCount: res[3].totalItems,
-                    materialClassesCount: res[4].totalItems,
+                    equipmentCount: res[1]?.totalItems,
+                    materialCount: res[2]?.totalItems,
+                    equipmentClassesCount: res[3]?.totalItems,
+                    materialClassesCount: res[4]?.totalItems,
                     usedEquipment: Object.keys(equipment).length,
                     usedMaterial: Object.keys(material).length,
                     averageOee: {
@@ -197,7 +197,7 @@ function Dashboard() {
                     <div className="mt-5">
                         {data.isProducingWorkOrders?.map((item) => (
                             <div className="mb-3 flex items-center" key={item.workOrderId}>
-                                <span className="text-16-b w-20">{item.workOrderId}</span>
+                                <span className="text-16-b w-40">{item.workOrderId}</span>
                                 <Progressbar value={item.progressPercentage} textLimit={20} unit="%" />
                             </div>
                         ))}

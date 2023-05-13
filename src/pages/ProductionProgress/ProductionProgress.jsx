@@ -9,6 +9,7 @@ import TextInput from "@/components/TextInput"
 
 import { useCallApi } from "@/hooks"
 import { workOrderApi } from "@/services/api"
+import { handleGetWorkOrderProgress } from "@/services/signalr"
 import { PRODUCT_SCHEDULE_STATUS_LIST } from "@/utils/constants"
 import { convertISOToLocaleDate } from "@/utils/functions"
 
@@ -18,10 +19,19 @@ function ProductionProgress() {
     const [searchInput, setSearchInput] = useState("")
     const [resData, setResData] = useState([])
     const [filterData, setFilterData] = useState([])
+    const [progressData, setProgressData] = useState({})
 
     const fetchData = useCallback(() => {
         callApi(workOrderApi.getWorkOrders, (res) => {
             setResData(res.items.filter((item) => item.isScheduled).reverse())
+            const _progressData = {}
+            res.items.forEach((item) => {
+                _progressData[item.workOrderId] = {
+                    actualQuantity: item.actualQuantity,
+                    progressPercentage: item.progressPercentage,
+                }
+            })
+            setProgressData(_progressData)
         })
     }, [callApi])
 
@@ -70,10 +80,21 @@ function ProductionProgress() {
 
     useEffect(() => {
         fetchData()
+        const connection = handleGetWorkOrderProgress(
+            (workOrderId, actualQuantity, progressPercentage) => {
+                setProgressData((prevData) => ({
+                    ...prevData,
+                    [workOrderId]: { actualQuantity, progressPercentage },
+                }))
+            },
+            (err) => console.log(err),
+        )
+
+        return connection.stop
     }, [fetchData])
 
     return (
-        <div data-component="ProductionProgress" className="container h-full">
+        <div data-component="ProductionProgress" className="container pb-2">
             <Card className="flex w-full items-center gap-10">
                 <SelectInput
                     label="Trạng thái"
@@ -89,81 +110,93 @@ function ProductionProgress() {
                 />
             </Card>
 
-            {filterData.map((item) => (
-                <div className="mt-5 flex gap-5" key={item.workOrderId}>
-                    <Card className="w-full">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h3>{item.workOrderId}</h3>
-                                <h4>{item.description}</h4>
+            {filterData.map((item) => {
+                return (
+                    <div className="mt-5 flex gap-5" key={item.workOrderId}>
+                        <Card className="w-full">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h3>{item.workOrderId}</h3>
+                                    <h4>{item.description}</h4>
+                                </div>
+                                <div
+                                    className={cl("text-16-b  rounded-3xl px-5 py-2 text-neutron-4", {
+                                        "bg-primary-2": item.isStarted && !item.isClosed,
+                                        "bg-primary-1": item.isClosed,
+                                        "bg-accent-1": !item.isStarted,
+                                    })}
+                                >
+                                    {item.isClosed
+                                        ? "Đã hoàn thành"
+                                        : item.isStarted
+                                        ? "Đang sản xuất"
+                                        : "Chưa sản xuất"}
+                                </div>
                             </div>
-                            <div
-                                className={cl("text-16-b  rounded-3xl px-5 py-2 text-neutron-4", {
-                                    "bg-primary-2": item.isStarted && !item.isClosed,
-                                    "bg-primary-1": item.isClosed,
-                                    "bg-accent-1": !item.isStarted,
-                                })}
-                            >
-                                {item.isClosed ? "Đã hoàn thành" : item.isStarted ? "Đang sản xuất" : "Chưa sản xuất"}
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="">
-                                <div className="mb-1">
-                                    <span className="text-16-b inline-block w-72">ID sản phẩm</span>
-                                    <span>{item.materialDefinition}</span>
-                                </div>
-                                <div className="mb-1">
-                                    <span className="text-16-b inline-block w-72">Ngày bắt đầu theo kế hoạch</span>
-                                    <span>{convertISOToLocaleDate(item.scheduledStartDate)}</span>
-                                </div>
-                                <div className="mb-1">
-                                    <span className="text-16-b inline-block w-72">Ngày hoàn thành theo kế hoạch</span>
-                                    <span>{convertISOToLocaleDate(item.scheduledEndDate)}</span>
-                                </div>
-                                {item.actualStartDate && (
+                            <div className="flex items-center justify-between">
+                                <div className="">
                                     <div className="mb-1">
-                                        <span className="text-16-b inline-block w-72">Ngày bắt đầu thực tế</span>
-                                        <span>{convertISOToLocaleDate(item.actualStartDate)}</span>
+                                        <span className="text-16-b inline-block w-72">ID sản phẩm</span>
+                                        <span>{item.materialDefinition}</span>
                                     </div>
-                                )}
-                                {item.actualEndDate && (
                                     <div className="mb-1">
-                                        <span className="text-16-b inline-block w-72">Ngày hoàn thành thực tế</span>
-                                        <span>{convertISOToLocaleDate(item.actualEndDate)}</span>
+                                        <span className="text-16-b inline-block w-72">Ngày bắt đầu theo kế hoạch</span>
+                                        <span>{convertISOToLocaleDate(item.scheduledStartDate)}</span>
                                     </div>
-                                )}
+                                    <div className="mb-1">
+                                        <span className="text-16-b inline-block w-72">
+                                            Ngày hoàn thành theo kế hoạch
+                                        </span>
+                                        <span>{convertISOToLocaleDate(item.scheduledEndDate)}</span>
+                                    </div>
+                                    {item.actualStartDate && (
+                                        <div className="mb-1">
+                                            <span className="text-16-b inline-block w-72">Ngày bắt đầu thực tế</span>
+                                            <span>{convertISOToLocaleDate(item.actualStartDate)}</span>
+                                        </div>
+                                    )}
+                                    {item.actualEndDate && (
+                                        <div className="mb-1">
+                                            <span className="text-16-b inline-block w-72">Ngày hoàn thành thực tế</span>
+                                            <span>{convertISOToLocaleDate(item.actualEndDate)}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    <div className="mb-1">
+                                        <span className="text-16-b inline-block w-40">ID thiết bị</span>
+                                        <span>{item.equipment}</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <span className="text-16-b inline-block w-40">Tổng số</span>
+                                        <span>{item.quantity}</span>
+                                    </div>
+                                    <div className="mb-1">
+                                        <span className="text-16-b inline-block w-40">Đã hoàn thành</span>
+                                        <span>{progressData[item.workOrderId].actualQuantity}</span>
+                                    </div>
+                                </div>
+                                <Radialbar
+                                    value={progressData[item.workOrderId].progressPercentage * 100}
+                                    width={280}
+                                    fontSize={24}
+                                />
                             </div>
-                            <div>
-                                <div className="mb-1">
-                                    <span className="text-16-b inline-block w-40">ID thiết bị</span>
-                                    <span>{item.equipment}</span>
-                                </div>
-                                <div className="mb-1">
-                                    <span className="text-16-b inline-block w-40">Tổng số</span>
-                                    <span>{item.quantity}</span>
-                                </div>
-                                <div className="mb-1">
-                                    <span className="text-16-b inline-block w-40">Đã hoàn thành</span>
-                                    <span>{item.actualQuantity}</span>
-                                </div>
-                            </div>
-                            <Radialbar value={item.progressPercentage} width={280} fontSize={24} />
-                        </div>
 
-                        <div className="flex gap-5">
-                            {!item.isStarted && (
-                                <Button onClick={() => handleStart(item.workOrderId)} small>
-                                    Bắt đầu sản xuất
-                                </Button>
-                            )}
-                            {!item.isClosed && item.isStarted && (
-                                <Button onClick={() => handleClose(item.workOrderId)}>Hoàn thành đơn hàng</Button>
-                            )}
-                        </div>
-                    </Card>
-                </div>
-            ))}
+                            <div className="flex gap-5">
+                                {!item.isStarted && (
+                                    <Button onClick={() => handleStart(item.workOrderId)} small>
+                                        Bắt đầu sản xuất
+                                    </Button>
+                                )}
+                                {!item.isClosed && item.isStarted && (
+                                    <Button onClick={() => handleClose(item.workOrderId)}>Hoàn thành đơn hàng</Button>
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+                )
+            })}
 
             {filterData.length === 0 && <div className="mt-5">Không có kết quả nào, vui lòng thử lại</div>}
         </div>

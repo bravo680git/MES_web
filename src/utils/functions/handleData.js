@@ -204,6 +204,32 @@ export const handleScheduleDataByMachine = (data) => {
     return result
 }
 
+export const handleSchedulingDataByMachine = (data) => {
+    const result = []
+    data.forEach((item) => {
+        const index = result.findIndex((_item) => _item.name === item.materialDefinition)
+        if (index >= 0) {
+            result[index].name = item.materialDefinition
+            result[index].data.push({
+                x: item.equipmentId?.[0],
+                y: [new Date(item.startDate).getTime(), new Date(item.endDate).getTime()],
+            })
+        } else {
+            result.push({
+                name: item.materialDefinition,
+                data: [
+                    {
+                        x: item.equipmentId?.[0],
+                        y: [new Date(item.startDate).getTime(), new Date(item.endDate).getTime()],
+                    },
+                ],
+            })
+        }
+    })
+
+    return result
+}
+
 export const handleScheduleDataByProduct = (data) => {
     const result = []
     data.forEach((item) => {
@@ -239,7 +265,7 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         const workOrderId = item.workOrderId
         const equipmentId = item.equipmentId
 
-        if (!item.equipmentId.length) {
+        if (!item.equipmentId?.length) {
             toast.error(`Thiết bị của đơn hàng ${workOrderId} không được bỏ trống`)
             valid = false
             return

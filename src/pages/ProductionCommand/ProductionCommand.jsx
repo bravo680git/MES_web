@@ -31,7 +31,7 @@ function ProductionCommand() {
         callApi([workOrderApi.getWorkOrders(), resourceApi.material.getMaterials()], ([workOrders, materials]) => {
             setWorkOrders(
                 workOrders.items.filter((item) => {
-                    item.dueDate = convertISOToLocaleDate(item.dueDate).slice(8)
+                    item.dueDate = new Date(item.dueDate + ".00z").toLocaleDateString("vi")
                     return !item.isScheduled
                 }),
             )
