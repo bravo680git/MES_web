@@ -6,6 +6,7 @@ import SelectInput from "@/components/SelectInput"
 import Button from "@/components/Button"
 import Radialbar from "@/components/Radialbar"
 import TextInput from "@/components/TextInput"
+import Confirm from "@/components/Confirm"
 
 import { useCallApi } from "@/hooks"
 import { workOrderApi } from "@/services/api"
@@ -20,6 +21,7 @@ function ProductionProgress() {
     const [resData, setResData] = useState([])
     const [filterData, setFilterData] = useState([])
     const [progressData, setProgressData] = useState({})
+    const [confirmData, setConfirmData] = useState({})
 
     const fetchData = useCallback(() => {
         callApi(workOrderApi.getWorkOrders, (res) => {
@@ -36,17 +38,25 @@ function ProductionProgress() {
     }, [callApi])
 
     const handleStart = (id) => {
-        const cf = window.confirm("Xác nhận bắt đầu lệnh sản xuất")
-        if (cf) {
-            callApi(() => workOrderApi.startWorkOrder(id), fetchData, "Bắt đầu lệnh sản xuất thành công")
-        }
+        setConfirmData({
+            title: "Xác nhận bắt đầu lệnh sản xuất",
+            content: "Bắt đầu lệnh sản xuất để theo dõi tiến độ sản xuất",
+            actived: true,
+            onConfirm() {
+                callApi(() => workOrderApi.startWorkOrder(id), fetchData, "Bắt đầu lệnh sản xuất thành công")
+            },
+        })
     }
 
     const handleClose = (id) => {
-        const cf = window.confirm("Xác nhận hoàn thành lệnh sản xuất")
-        if (cf) {
-            callApi(() => workOrderApi.closeWorkOrder(id), fetchData, "Hoàn thành lệnh sản xuất")
-        }
+        setConfirmData({
+            title: "Xác nhận hoàn thành lệnh sản xuất",
+            content: "Hoàn thành lệnh sản xuất sẽ dừng theo dõi tiến độ sản xuất",
+            actived: true,
+            onConfirm() {
+                callApi(() => workOrderApi.closeWorkOrder(id), fetchData, "Hoàn thành lệnh sản xuất")
+            },
+        })
     }
 
     useEffect(() => {
@@ -199,6 +209,15 @@ function ProductionProgress() {
             })}
 
             {filterData.length === 0 && <div className="mt-5">Không có kết quả nào, vui lòng thử lại</div>}
+
+            {confirmData.actived && (
+                <Confirm
+                    title={confirmData.title}
+                    content={confirmData.content}
+                    onConfirm={confirmData.onConfirm}
+                    onClose={() => setConfirmData({ actived: false })}
+                />
+            )}
         </div>
     )
 }

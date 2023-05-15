@@ -9,6 +9,7 @@ import { settingActions } from "@/store"
 import { validateNumberField } from "@/utils/functions"
 import { SHIFTS_SETTING_MENU_NAV } from "@/utils/menuNavigation"
 import Button from "@/components/Button/Button"
+import Confirm from "@/components/Confirm"
 
 function Setting() {
     const dispatch = useDispatch()
@@ -18,11 +19,20 @@ function Setting() {
         shiftInfo: shifts.map((item) => ({ info: { ...item } })),
     })
     const [oeeDuration, setOeeDuration] = useState(storeOeeDuration)
+    const [confirmData, setConfirmData] = useState({})
 
     const handleSaveSetting = () => {
-        dispatch(settingActions.setShifts(shiftsValue.shiftInfo.map((item) => ({ ...item.info }))))
-        dispatch(settingActions.setOeeDuration(oeeDuration))
-        toast.success("Lưu thiết đặt thành công")
+        setConfirmData({
+            actived: true,
+            title: "Xác nhận lưu lại các thiết đặt",
+            content:
+                "Việc thay đổi các cài đặt có thể khiến ứng dụng chạy không theo mong muốn, xác nhận các giá trị thiết đặt là chính xác",
+            onConfirm() {
+                dispatch(settingActions.setShifts(shiftsValue.shiftInfo.map((item) => ({ ...item.info }))))
+                dispatch(settingActions.setOeeDuration(oeeDuration))
+                toast.success("Lưu thiết đặt thành công")
+            },
+        })
     }
 
     const handleDeleteShift = (row, index) => {
@@ -56,6 +66,15 @@ function Setting() {
             <Button className="mt-5" onClick={handleSaveSetting}>
                 Lưu
             </Button>
+
+            {confirmData.actived && (
+                <Confirm
+                    title={confirmData.title}
+                    content={confirmData.content}
+                    onConfirm={confirmData.onConfirm}
+                    onClose={() => setConfirmData({ actived: false })}
+                />
+            )}
         </div>
     )
 }

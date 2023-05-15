@@ -1,11 +1,12 @@
 import cl from "classnames"
 
-function Button({ children, small, large, className, transparent, onClick, disabled, ...props }) {
+function Button({ children, small, large, className, transparent, onClick, disabled, bg, color, ...props }) {
     const childrenType = typeof children === "string" ? "string" : "icon"
 
     return (
         <button
             data-component="Button"
+            style={{ backgroundColor: bg, color }}
             className={cl(
                 "flex items-center justify-center border-none",
                 {
