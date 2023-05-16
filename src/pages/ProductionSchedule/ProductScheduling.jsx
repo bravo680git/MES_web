@@ -32,7 +32,7 @@ function ProductSScheduling() {
     }
 
     const handleSubmit = () => {
-        const { data, valid } = handleScheduledData(schedulingProducts, shifts)
+        const { data, valid } = handleScheduledData(schedulingProducts, shifts, true)
 
         if (valid) {
             const apis = data.map((item) => workOrderApi.schedulingWorkOrder(item, item.workOrderId))
@@ -48,7 +48,7 @@ function ProductSScheduling() {
     }
 
     useEffect(() => {
-        const { data } = handleScheduledData(schedulingProducts, shifts)
+        const { data } = handleScheduledData(schedulingProducts, shifts, false)
         setChartSeries(handleSchedulingDataByMachine(data))
     }, [schedulingProducts, shifts])
 
@@ -59,12 +59,13 @@ function ProductSScheduling() {
     return (
         <div data-component="ProductSScheduling" className="container h-full">
             {showChart && (
-                <div className="scroll-y max-h-[50%]">
+                <div className="scroll-y max-h-[50%] w-full">
                     <ApexChart
                         series={chartSeries}
                         options={mutilSeriesRangeBarChartConfig}
                         type="rangeBar"
                         height={chartSeries.length * 100}
+                        width="100%"
                     />
                 </div>
             )}
@@ -78,7 +79,7 @@ function ProductSScheduling() {
                 <div className="text-16-b w-[140px] pr-5">Ngày đến hạn</div>
             </div>
 
-            <div className="scroll-y max-h-[50%] pl-2">
+            <div>
                 {schedulingProducts.map((item, index) => (
                     <Card className="my-4" key={index}>
                         <div className="flex items-end gap-8">

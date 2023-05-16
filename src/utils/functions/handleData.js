@@ -256,7 +256,7 @@ export const handleScheduleDataByProduct = (data) => {
     return result
 }
 
-export const handleScheduledData = (schedulingProducts, shifts) => {
+export const handleScheduledData = (schedulingProducts, shifts, warning = true) => {
     const data = []
     const dataByEquipment = {}
     let dataValid = true
@@ -267,7 +267,7 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         const equipmentId = item.equipmentId
 
         if (!item.equipmentId?.length) {
-            toast.error(`Thiết bị của đơn hàng ${workOrderId} không được bỏ trống`)
+            warning && toast.error(`Thiết bị của đơn hàng ${workOrderId} không được bỏ trống`)
             rowValid = false
             return
         }
@@ -276,12 +276,12 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         const dueDate = new Date(year, month - 1, day)
 
         if (!item.startDate) {
-            toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
+            warning && toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
             rowValid = false
             return
         }
         if (!item.endDate) {
-            toast.error(`Ngày kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
+            warning && toast.error(`Ngày kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
             rowValid = false
             return
         }
@@ -290,12 +290,12 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         const endDate = new Date(item.endDate)
 
         if (!item.startShift?.length) {
-            toast.error(`Ca bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
+            warning && toast.error(`Ca bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
             rowValid = false
             return
         }
         if (!item.endShift?.length) {
-            toast.error(`Ca kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
+            warning && toast.error(`Ca kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
             rowValid = false
             return
         }
@@ -306,13 +306,19 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
         endDate.setHours(...endTime.split(":"))
 
         if (dueDate < endDate) {
-            toast.error(`Ngày hoàn thành của đơn hàng ${workOrderId} không được lớn hơn ngày đến hạn`)
+            warning && toast.error(`Ngày hoàn thành của đơn hàng ${workOrderId} không được sau ngày đến hạn`)
             rowValid = false
             return
         }
 
         if (startDate > endDate) {
-            toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được lớn hơn ngày hoàn thành`)
+            warning && toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được sau ngày hoàn thành`)
+            rowValid = false
+            return
+        }
+
+        if (startDate < new Date()) {
+            warning && toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được trước ngày hôm nay`)
             rowValid = false
             return
         }
@@ -341,7 +347,7 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
             const prevEndDate = new Date(item[i].endDate)
             const nextStartDate = new Date(item[i + 1].startDate)
             if (prevEndDate > nextStartDate) {
-                toast.error(`Các ngày hoạt động của máy ${key} không được chồng lấn lên nhau`)
+                warning && toast.error(`Các ngày hoạt động của máy ${key} không được chồng lấn lên nhau`)
                 dataValid = false
             }
         }

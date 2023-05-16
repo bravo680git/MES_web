@@ -48,13 +48,26 @@ export const singleRangBarChartConfig = {
 
 export const mutilSeriesRangeBarChartConfig = {
     chart: {
-        height: 450,
         type: "rangeBar",
+        zoom: {
+            enabled: true,
+            type: "xy",
+            resetIcon: {
+                offsetX: -10,
+                offsetY: 0,
+                fillColor: "#fff",
+                strokeColor: "#37474F",
+            },
+            selection: {
+                background: "#90CAF9",
+                border: "#0D47A1",
+            },
+        },
     },
     plotOptions: {
         bar: {
             horizontal: true,
-            barHeight: "80%",
+            barHeight: "100%",
             rangeBarGroupRows: false,
         },
     },

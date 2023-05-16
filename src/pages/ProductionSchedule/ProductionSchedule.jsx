@@ -47,7 +47,7 @@ function ProductionSchedule() {
     }, [callApi])
 
     return (
-        <div data-component="ProductionSchedule" className="h-full">
+        <div data-component="ProductionSchedule" className="h-full w-full">
             <div>
                 <ToggleButtons
                     titles={["Theo máy", "Theo sản phẩm", "Dạng bảng"]}
@@ -55,7 +55,7 @@ function ProductionSchedule() {
                     onClick={handleClick}
                 />
             </div>
-            <div className="h-[calc(100%-40px)]">
+            <div className="h-[calc(100%-40px)] w-full">
                 {actived === 2 ? (
                     <Table headers={PRODUCTION_SCHEDULE_TABLE_COLUMNS} body={tableData} />
                 ) : (
@@ -63,7 +63,8 @@ function ProductionSchedule() {
                         series={chartData}
                         options={mutilSeriesRangeBarChartConfig}
                         type="rangeBar"
-                        height="100%"
+                        height={chartData.length * 150}
+                        width="100%"
                     />
                 )}
             </div>
