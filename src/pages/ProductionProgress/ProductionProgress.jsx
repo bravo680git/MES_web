@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
+import { toast } from "react-toastify"
 import cl from "classnames"
 
 import Card from "@/components/Card"
@@ -10,7 +11,7 @@ import Confirm from "@/components/Confirm"
 
 import { useCallApi } from "@/hooks"
 import { workOrderApi } from "@/services/api"
-import { handleGetWorkOrderProgress } from "@/services/signalr"
+import { handleGetWorkOrderProgress, handleWorkOrderCompleted } from "@/services/signalr"
 import { PRODUCT_SCHEDULE_STATUS_LIST } from "@/utils/constants"
 import { convertISOToLocaleDate } from "@/utils/functions"
 
@@ -96,6 +97,14 @@ function ProductionProgress() {
                     ...prevData,
                     [workOrderId]: { actualQuantity, progressPercentage },
                 }))
+            },
+            (err) => console.log(err),
+        )
+
+        handleWorkOrderCompleted(
+            (workOrderId) => {
+                fetchData()
+                toast.info(`Đơn hàng ${workOrderId} đã được hoàn thành`)
             },
             (err) => console.log(err),
         )

@@ -110,14 +110,6 @@ function OeeDetailPage() {
                             textLimit={20}
                         />
                     </div>
-                    <div className="text-16-b mb-2">Sản lượng sản phẩm hiện tại</div>
-                    <Progressbar
-                        value={oeeDetailPageData.productCount}
-                        height={36}
-                        unit="sp"
-                        max={1000}
-                        textLimit={20}
-                    />
                 </Card>
             </div>
         </div>

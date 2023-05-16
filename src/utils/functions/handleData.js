@@ -211,16 +211,16 @@ export const handleSchedulingDataByMachine = (data) => {
         if (index >= 0) {
             result[index].name = item.materialDefinition
             result[index].data.push({
-                x: item.equipmentId?.[0],
-                y: [new Date(item.startDate).getTime(), new Date(item.endDate).getTime()],
+                x: item.equipment,
+                y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
             })
         } else {
             result.push({
                 name: item.materialDefinition,
                 data: [
                     {
-                        x: item.equipmentId?.[0],
-                        y: [new Date(item.startDate).getTime(), new Date(item.endDate).getTime()],
+                        x: item.equipment,
+                        y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
                     },
                 ],
             })
@@ -259,28 +259,30 @@ export const handleScheduleDataByProduct = (data) => {
 export const handleScheduledData = (schedulingProducts, shifts) => {
     const data = []
     const dataByEquipment = {}
-    let valid = true
+    let dataValid = true
 
     schedulingProducts.forEach((item) => {
+        let rowValid = true
         const workOrderId = item.workOrderId
         const equipmentId = item.equipmentId
 
         if (!item.equipmentId?.length) {
             toast.error(`Thiết bị của đơn hàng ${workOrderId} không được bỏ trống`)
-            valid = false
+            rowValid = false
             return
         }
 
-        const dueDate = new Date(item.dueDate)
+        const [day, month, year] = item.dueDate.split("/")
+        const dueDate = new Date(year, month - 1, day)
 
         if (!item.startDate) {
             toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
-            valid = false
+            rowValid = false
             return
         }
         if (!item.endDate) {
             toast.error(`Ngày kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
-            valid = false
+            rowValid = false
             return
         }
 
@@ -289,29 +291,29 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
 
         if (!item.startShift?.length) {
             toast.error(`Ca bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)
-            valid = false
+            rowValid = false
             return
         }
         if (!item.endShift?.length) {
             toast.error(`Ca kết thúc của đơn hàng ${workOrderId} không được bỏ trống`)
-            valid = false
+            rowValid = false
             return
         }
 
-        const startTime = shifts[item.startShift[0]].startTime
-        const endTime = shifts[item.endShift[0]].endTime
+        const startTime = shifts[item.startShift[0]]?.startTime
+        const endTime = shifts[item.endShift[0]]?.endTime
         startDate.setHours(...startTime.split(":"))
         endDate.setHours(...endTime.split(":"))
 
         if (dueDate < endDate) {
-            toast.error(`Ngày hoàn thành của đơn hàng ${workOrderId} không được nhỏ hơn ngày đến hạn`)
-            valid = false
+            toast.error(`Ngày hoàn thành của đơn hàng ${workOrderId} không được lớn hơn ngày đến hạn`)
+            rowValid = false
             return
         }
 
         if (startDate > endDate) {
             toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được lớn hơn ngày hoàn thành`)
-            valid = false
+            rowValid = false
             return
         }
 
@@ -321,12 +323,15 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
             dataByEquipment[equipmentId] = [{ startDate, endDate }]
         }
 
-        data.push({
-            scheduledStartDate: startDate.toISOString(),
-            scheduledEndDate: endDate.toISOString(),
-            equipment: item.equipmentId[0],
-            workOrderId: item.workOrderId,
-        })
+        if (rowValid) {
+            data.push({
+                scheduledStartDate: startDate.toISOString(),
+                scheduledEndDate: endDate.toISOString(),
+                equipment: item.equipmentId[0],
+                workOrderId: item.workOrderId,
+                materialDefinition: item.materialDefinition,
+            })
+        }
     })
 
     for (let key in dataByEquipment) {
@@ -337,13 +342,15 @@ export const handleScheduledData = (schedulingProducts, shifts) => {
             const nextStartDate = new Date(item[i + 1].startDate)
             if (prevEndDate > nextStartDate) {
                 toast.error(`Các ngày hoạt động của máy ${key} không được chồng lấn lên nhau`)
-                valid = false
-                return
+                dataValid = false
             }
         }
     }
 
-    return valid ? data : null
+    return {
+        data,
+        valid: dataValid && data.length === schedulingProducts.length,
+    }
 }
 
 export const convertISOToLocaleDate = (date) => {

@@ -11,4 +11,15 @@ const handleGetWorkOrderProgress = (resolve, reject) => {
     return connection
 }
 
-export { handleGetWorkOrderProgress }
+const handleWorkOrderCompleted = (resolve, reject) => {
+    connection
+        .start()
+        .then((conn) => {
+            conn.on("WorkOrderCompleted", resolve)
+        })
+        .catch(reject)
+
+    return connection
+}
+
+export { handleGetWorkOrderProgress, handleWorkOrderCompleted }
