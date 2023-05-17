@@ -63,12 +63,16 @@ function Dashboard() {
                             quantity.notProduced++
                         }
                     }
+
                     if (item.isScheduled) {
                         quantity.isScheduled++
-                        equipment[item.equipment] = true
-                        material[item.materialDefinition] = true
                     } else {
                         quantity.notScheduled++
+                    }
+
+                    if (item.isStarted && !item.isClosed) {
+                        equipment[item.equipment] = true
+                        material[item.materialDefinition] = true
                     }
                 })
 
@@ -198,7 +202,7 @@ function Dashboard() {
                         {data.isProducingWorkOrders?.map((item) => (
                             <div className="mb-3 flex items-center" key={item.workOrderId}>
                                 <span className="text-16-b w-40">{item.workOrderId}</span>
-                                <Progressbar value={item.progressPercentage} textLimit={20} unit="%" />
+                                <Progressbar value={item.progressPercentage * 100} textLimit={20} unit="%" />
                             </div>
                         ))}
                         {!data.isProducingWorkOrders?.length && <div>Hiện không có đơn hàng nào đang sản xuất</div>}

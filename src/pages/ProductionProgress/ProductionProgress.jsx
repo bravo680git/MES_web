@@ -39,9 +39,16 @@ function ProductionProgress() {
     }, [callApi])
 
     const handleStart = (id) => {
+        const workOrder = filterData.find((item) => item.workOrderId === id)
+        const toDay = new Date()
+        const startDate = new Date(workOrder.scheduledStartDate)
+        const duration = Math.round((startDate - toDay) / (24 * 3600 * 1000))
         setConfirmData({
             title: "Xác nhận bắt đầu lệnh sản xuất",
-            content: "Bắt đầu lệnh sản xuất để theo dõi tiến độ sản xuất",
+            content:
+                duration > 0
+                    ? `Lệnh sản xuất được bắt đầu sớm hơn kế hoạch ${duration} ngày`
+                    : "Bắt đầu lệnh sản xuất theo kế hoạch",
             actived: true,
             onConfirm() {
                 callApi(() => workOrderApi.startWorkOrder(id), fetchData, "Bắt đầu lệnh sản xuất thành công")
@@ -50,9 +57,13 @@ function ProductionProgress() {
     }
 
     const handleClose = (id) => {
+        const workOrder = filterData.find((item) => item.workOrderId === id)
         setConfirmData({
             title: "Xác nhận hoàn thành lệnh sản xuất",
-            content: "Hoàn thành lệnh sản xuất sẽ dừng theo dõi tiến độ sản xuất",
+            content:
+                workOrder.quantity > progressData[id].actualQuantity
+                    ? "Lệnh sản xuất chưa hoàn thành sản lượng theo kế hoạch, xác nhận muốn hoàn thành lệnh sản xuất"
+                    : "Hoàn thành lệnh sản xuất",
             actived: true,
             onConfirm() {
                 callApi(() => workOrderApi.closeWorkOrder(id), fetchData, "Hoàn thành lệnh sản xuất")
@@ -68,12 +79,20 @@ function ProductionProgress() {
                 break
             case 1:
                 result = resData.filter((item) => !item.isStarted)
+                result.sort((a, b) => (a.scheduledStartDate > b.scheduledStartDate ? 1 : -1))
+                result.forEach((item) => {
+                    if (new Date(item.scheduledStartDate) < new Date()) {
+                        toast.warning(`Lệnh sản xuất ${item.workOrderId} trễ kế hoạch`)
+                    }
+                })
                 break
             case 2:
                 result = resData.filter((item) => item.isStarted && !item.isClosed)
+                result.sort((a, b) => b.progressPercentage - a.progressPercentage)
                 break
             case 3:
                 result = resData.filter((item) => item.isClosed)
+                result.sort((a, b) => (a.actualEndDate > b.actualEndDate ? -1 : 1))
                 break
             default:
                 result = resData
