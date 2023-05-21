@@ -10,7 +10,7 @@ const useCallApi = () => {
         (api, resolve, message, reject) => {
             if (typeof api === "function") {
                 dispatch(commonStoreActions.setLoading(true))
-                api()
+                return api()
                     .then((res) => {
                         if (typeof resolve === "function") {
                             resolve(res)
@@ -18,6 +18,7 @@ const useCallApi = () => {
                         if (typeof message === "string") {
                             toast.success(message)
                         }
+                        return Promise.resolve(res)
                     })
                     .catch((err) => {
                         console.log(err)

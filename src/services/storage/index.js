@@ -2,7 +2,9 @@ const STORAGE_KEYS = {
     schedulingOrders: "scheduling-orders",
     setting: "setting",
     isLogin: "is-login",
+    username: "username",
     accessToken: "access-token",
+    notifications: "notifications",
 }
 
 export const productSchedulingStorageService = {
@@ -49,5 +51,21 @@ export const authStorageService = {
     },
     setAccessToken(token) {
         this.storage.setItem(STORAGE_KEYS.accessToken, token)
+    },
+    getUsername() {
+        return this.storage.getItem(STORAGE_KEYS.username) ?? ""
+    },
+    setUsername(name) {
+        this.storage.setItem(STORAGE_KEYS.username, name)
+    },
+}
+
+export const notificationsStorageService = {
+    get() {
+        const notifications = localStorage.getItem(STORAGE_KEYS.notifications) ?? "[]"
+        return JSON.parse(notifications)
+    },
+    set(data) {
+        localStorage.setItem(STORAGE_KEYS.notifications, JSON.stringify(data))
     },
 }

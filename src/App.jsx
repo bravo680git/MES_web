@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { useSelector } from "react-redux"
 import { Routes, Route, Navigate } from "react-router-dom"
 import Layout from "@/components/Layout"
@@ -15,12 +16,11 @@ function App() {
                 const protectedRoute = route.protected
 
                 return (
-                    <>
+                    <Fragment key={route.path}>
                         {protectedRoute && !isLogin ? (
                             <Route path="*" element={<Navigate to={paths.login} />} />
                         ) : (
                             <Route
-                                key={route.path}
                                 path={route.path}
                                 element={
                                     ComponentLayout ? (
@@ -33,7 +33,7 @@ function App() {
                                 }
                             />
                         )}
-                    </>
+                    </Fragment>
                 )
             })}
         </Routes>

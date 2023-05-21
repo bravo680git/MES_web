@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import { authStorageService } from "@/services/storage"
 
 const initialState = {
-    username: "",
+    username: authStorageService.getUsername(),
     isLogin: authStorageService.getLoginState(),
 }
 
@@ -17,10 +17,12 @@ const authSlice = createSlice({
         },
         setUsername(state, action) {
             state.username = action.payload
+            authStorageService.setUsername(action.payload)
             return state
         },
         setLoginState(state, action) {
             authStorageService.setLoginState(!!action.payload?.isLogin)
+            authStorageService.setUsername(action.payload.username)
             return {
                 ...action.payload,
             }

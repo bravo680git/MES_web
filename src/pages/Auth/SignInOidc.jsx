@@ -17,7 +17,7 @@ function SignInOidc() {
             dispatch(
                 authActions.setLoginState({
                     isLogin: true,
-                    usename: userData.profile.name,
+                    username: userData.profile.name,
                 }),
             )
             authStorageService.setAccessToken(userData.access_token)
