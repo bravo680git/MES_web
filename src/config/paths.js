@@ -15,6 +15,8 @@ const paths = {
     class: "/resource/:type/class",
 
     setting: "/setting",
+    login: "/login",
+    signInOidc: "/signin-oidc",
 }
 
 export default paths
