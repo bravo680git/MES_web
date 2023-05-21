@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import cl from "classnames"
 
@@ -12,11 +13,15 @@ import Confirm from "@/components/Confirm"
 import { useCallApi } from "@/hooks"
 import { workOrderApi } from "@/services/api"
 import { handleGetWorkOrderProgress, handleWorkOrderCompleted } from "@/services/signalr"
+import { paths } from "@/config"
 import { PRODUCT_SCHEDULE_STATUS_LIST } from "@/utils/constants"
+import { commonStoreActions } from "@/store"
 import { convertISOToLocaleDate } from "@/utils/functions"
 
 function ProductionProgress() {
+    const dispatch = useDispatch()
     const callApi = useCallApi()
+    const notifications = useSelector((state) => state.common.notifications)
     const [status, setStatus] = useState([2])
     const [searchInput, setSearchInput] = useState("")
     const [resData, setResData] = useState([])
@@ -25,7 +30,7 @@ function ProductionProgress() {
     const [confirmData, setConfirmData] = useState({})
 
     const fetchData = useCallback(() => {
-        callApi(workOrderApi.getWorkOrders, (res) => {
+        return callApi(workOrderApi.getWorkOrders, (res) => {
             setResData(res.items.filter((item) => item.isScheduled).reverse())
             const _progressData = {}
             res.items.forEach((item) => {
@@ -80,11 +85,6 @@ function ProductionProgress() {
             case 1:
                 result = resData.filter((item) => !item.isStarted)
                 result.sort((a, b) => (a.scheduledStartDate > b.scheduledStartDate ? 1 : -1))
-                result.forEach((item) => {
-                    if (new Date(item.scheduledStartDate) < new Date()) {
-                        toast.warning(`Lệnh sản xuất ${item.workOrderId} trễ kế hoạch`)
-                    }
-                })
                 break
             case 2:
                 result = resData.filter((item) => item.isStarted && !item.isClosed)
@@ -109,7 +109,34 @@ function ProductionProgress() {
     }, [status, resData, searchInput])
 
     useEffect(() => {
-        fetchData()
+        fetchData().then(({ items }) => {
+            const notOnTimeWorkOrders = []
+            const today = new Date()
+            items.forEach((item) => {
+                const startDate = new Date(item.scheduledStartDate)
+                if (item.isScheduled && !item.isStarted && startDate < today) {
+                    notOnTimeWorkOrders.push(item.workOrderId)
+                }
+            })
+            notOnTimeWorkOrders.length &&
+                toast.warning(`Đơn hàng ${notOnTimeWorkOrders.join(", ")} trễ kế hoạch sản xuất`)
+
+            notOnTimeWorkOrders.forEach((woId) => {
+                const pushedNoti = [...notifications].reverse().find((noti) => noti.dataId === woId)
+                if (
+                    !pushedNoti ||
+                    today.toLocaleDateString("vi") !== new Date(pushedNoti.dateTime).toLocaleDateString("vi")
+                ) {
+                    dispatch(
+                        commonStoreActions.pushNotification({
+                            content: `Đơn hàng ${woId} trễ kế hoạch sản xuất`,
+                            dataId: woId,
+                            to: paths.progress,
+                        }),
+                    )
+                }
+            })
+        })
         const connection = handleGetWorkOrderProgress(
             (workOrderId, actualQuantity, progressPercentage) => {
                 setProgressData((prevData) => ({
@@ -123,13 +150,16 @@ function ProductionProgress() {
         handleWorkOrderCompleted(
             (workOrderId) => {
                 fetchData()
-                toast.info(`Đơn hàng ${workOrderId} đã được hoàn thành`)
+                const content = `Đơn hàng ${workOrderId} đã được hoàn thành`
+                toast.info(content)
+                dispatch(commonStoreActions.pushNotification({ content, to: paths.progress }))
             },
             (err) => console.log(err),
         )
 
         return connection.stop
-    }, [fetchData])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchData, dispatch])
 
     return (
         <div data-component="ProductionProgress" className="container pb-2">
