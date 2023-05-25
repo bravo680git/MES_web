@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
+import { RiDeleteBin4Line } from "react-icons/ri"
 import cl from "classnames"
 
 import Card from "@/components/Card"
@@ -56,7 +57,16 @@ function ProductionProgress() {
                     : "Bắt đầu lệnh sản xuất theo kế hoạch",
             actived: true,
             onConfirm() {
-                callApi(() => workOrderApi.startWorkOrder(id), fetchData, "Bắt đầu lệnh sản xuất thành công")
+                callApi(
+                    () => workOrderApi.startWorkOrder(id),
+                    () => {
+                        commonStoreActions.pushNotification({
+                            content: `Lệnh sản xuất ${id} bắt đầu sản xuất`,
+                            to: paths.progress,
+                        })
+                    },
+                    "Bắt đầu lệnh sản xuất thành công",
+                )
             },
         })
     }
@@ -71,7 +81,40 @@ function ProductionProgress() {
                     : "Hoàn thành lệnh sản xuất",
             actived: true,
             onConfirm() {
-                callApi(() => workOrderApi.closeWorkOrder(id), fetchData, "Hoàn thành lệnh sản xuất")
+                callApi(
+                    () => workOrderApi.closeWorkOrder(id),
+                    () => {
+                        fetchData()
+                        commonStoreActions.pushNotification({
+                            content: `Lệnh sản xuất ${id} đã hoàn thành`,
+                            to: paths.progress,
+                        })
+                    },
+                    "Hoàn thành lệnh sản xuất",
+                )
+            },
+        })
+    }
+
+    const handleDeleteWorkOrder = (id) => {
+        setConfirmData({
+            title: "Xác nhận xóa lệnh sản xuất " + id,
+            content: "Lệnh sản xuất sẽ bị xóa vĩnh viễn và không được hiển thị trên trang này nữa",
+            actived: true,
+            onConfirm() {
+                callApi(
+                    () => workOrderApi.deleteWorkOrder(id),
+                    () => {
+                        fetchData()
+                        dispatch(
+                            commonStoreActions.pushNotification({
+                                content: `Lệnh sản xuất ${id} đã bị xóa`,
+                                to: paths.progress,
+                            }),
+                        )
+                    },
+                    "Xóa lệnh sản xuất thành công",
+                )
             },
         })
     }
@@ -119,7 +162,7 @@ function ProductionProgress() {
                 }
             })
             notOnTimeWorkOrders.length &&
-                toast.warning(`Đơn hàng ${notOnTimeWorkOrders.join(", ")} trễ kế hoạch sản xuất`)
+                toast.warning(`Lệnh sản xuất ${notOnTimeWorkOrders.join(", ")} trễ kế hoạch sản xuất`)
 
             notOnTimeWorkOrders.forEach((woId) => {
                 const pushedNoti = [...notifications].reverse().find((noti) => noti.dataId === woId)
@@ -129,7 +172,7 @@ function ProductionProgress() {
                 ) {
                     dispatch(
                         commonStoreActions.pushNotification({
-                            content: `Đơn hàng ${woId} trễ kế hoạch sản xuất`,
+                            content: `Lệnh sản xuất ${woId} trễ kế hoạch sản xuất`,
                             dataId: woId,
                             to: paths.progress,
                         }),
@@ -150,7 +193,7 @@ function ProductionProgress() {
         handleWorkOrderCompleted(
             (workOrderId) => {
                 fetchData()
-                const content = `Đơn hàng ${workOrderId} đã được hoàn thành`
+                const content = `Lệnh sản xuất ${workOrderId} đã được hoàn thành`
                 toast.info(content)
                 dispatch(commonStoreActions.pushNotification({ content, to: paths.progress }))
             },
@@ -181,7 +224,7 @@ function ProductionProgress() {
             {filterData.map((item) => {
                 return (
                     <div className="mt-5 flex gap-5" key={item.workOrderId}>
-                        <Card className="w-full">
+                        <Card className="group/container relative w-full">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <h3>{item.workOrderId}</h3>
@@ -241,11 +284,11 @@ function ProductionProgress() {
                                     </div>
                                     <div className="mb-1">
                                         <span className="text-16-b inline-block w-40">Đã hoàn thành</span>
-                                        <span>{progressData[item.workOrderId].actualQuantity}</span>
+                                        <span>{progressData[item.workOrderId]?.actualQuantity}</span>
                                     </div>
                                 </div>
                                 <Radialbar
-                                    value={progressData[item.workOrderId].progressPercentage * 100}
+                                    value={(progressData[item.workOrderId]?.progressPercentage ?? 0) * 100}
                                     width={280}
                                     fontSize={24}
                                 />
@@ -258,9 +301,22 @@ function ProductionProgress() {
                                     </Button>
                                 )}
                                 {!item.isClosed && item.isStarted && (
-                                    <Button onClick={() => handleClose(item.workOrderId)}>Hoàn thành đơn hàng</Button>
+                                    <Button onClick={() => handleClose(item.workOrderId)}>
+                                        Hoàn thành lệnh sản xuất
+                                    </Button>
                                 )}
                             </div>
+                            {!item.isStarted ||
+                                (item.isClosed && (
+                                    <RiDeleteBin4Line
+                                        className={cl(
+                                            "absolute bottom-5 right-5 h-10 w-10 rounded-full bg-warning-2",
+                                            "invisible cursor-pointer p-2 text-xl text-warning-1 transition-all",
+                                            "group-hover/container:visible",
+                                        )}
+                                        onClick={() => handleDeleteWorkOrder(item.workOrderId)}
+                                    />
+                                ))}
                         </Card>
                     </div>
                 )

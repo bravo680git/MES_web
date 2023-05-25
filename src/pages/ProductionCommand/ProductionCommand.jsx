@@ -8,6 +8,7 @@ import Card from "@/components/Card"
 import Button from "@/components/Button"
 import Table from "@/components/Table"
 import PoperMenu from "@/components/PoperMenu"
+import Confirm from "@/components/Confirm"
 
 import { usePoperMenu, useCallApi } from "@/hooks"
 import { schedulingActions } from "@/store"
@@ -25,6 +26,7 @@ function ProductionCommand() {
     const [workOrders, setWorkOrders] = useState([])
     const [materialList, setMaterialList] = useState([])
     const [schedulingOrders, setSchedulingOrders] = useState([])
+    const [deleteConfirm, setDeleteConfirm] = useState({})
 
     const fetchWorkOrders = useCallback(() => {
         callApi([workOrderApi.getWorkOrders(), resourceApi.material.getMaterials()], ([workOrders, materials]) => {
@@ -70,6 +72,22 @@ function ProductionCommand() {
         setSchedulingOrders(newValue)
     }
 
+    const handleDeleteRow = (row) => {
+        const workOrderId = row.workOrderId
+        setDeleteConfirm({
+            actived: true,
+            title: "Xác nhận xóa lệnh sản xuất " + workOrderId,
+            content: `Lệnh sản xuất ${workOrderId} sẽ bị xóa vĩnh viễn và không được hiển thị tại trang này nữa`,
+            onConfirm() {
+                callApi(
+                    () => workOrderApi.deleteWorkOrder(workOrderId),
+                    fetchWorkOrders,
+                    `Lệnh sản xuất ${workOrderId} được xóa thành công`,
+                )
+            },
+        })
+    }
+
     const handleScheduling = () => {
         dispatch(schedulingActions.setSchedulingProducts(schedulingOrders))
         navigate(paths.scheduling)
@@ -96,6 +114,7 @@ function ProductionCommand() {
                                 body={workOrders}
                                 sticky
                                 onRowClick={handleSelectOrder}
+                                onDeleteRow={handleDeleteRow}
                             />
                         ) : (
                             <div className="text-16-m">
@@ -144,6 +163,15 @@ function ProductionCommand() {
                     position={position}
                     onClose={handleClose}
                     onClick={handleSubmit}
+                />
+            )}
+
+            {deleteConfirm.actived && (
+                <Confirm
+                    title={deleteConfirm.title}
+                    content={deleteConfirm.content}
+                    onClose={() => setDeleteConfirm({ actived: false })}
+                    onConfirm={deleteConfirm.onConfirm}
                 />
             )}
         </div>

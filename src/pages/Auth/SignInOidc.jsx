@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "oidc-react"
 import { authActions } from "@/store"
 import { authStorageService } from "@/services/storage"
+import { paths } from "@/config"
 
 import Loading from "@/components/Layout/components/Loading"
 
@@ -21,7 +22,7 @@ function SignInOidc() {
                 }),
             )
             authStorageService.setAccessToken(userData.access_token)
-            navigate(-2)
+            navigate(paths.dashboard)
         }
     }, [userData, dispatch, navigate])
 

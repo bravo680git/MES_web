@@ -132,7 +132,7 @@ function ProductSScheduling() {
                 ))}
             </div>
 
-            <div className="mt-5 flex items-center gap-5">
+            <div className="mt-5 flex items-center gap-5 pb-5">
                 <Button onClick={handleSubmit}>Xác nhận</Button>
                 <Button onClick={() => setShowChart(!showChart)} transparent={!showChart}>
                     <BsBarChartSteps />

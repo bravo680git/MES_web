@@ -10,7 +10,7 @@ function Confirm({ title, content, onConfirm, onClose }) {
     }
 
     return createPortal(
-        <div data-component="Confirm" className="container fixed top-0 left-0 right-0 bottom-0 h-full bg-hoverBg">
+        <div data-component="Confirm" className="container fixed top-0 left-0 right-0 bottom-0 z-10 h-full bg-hoverBg">
             <Card className="absolute top-1/2 left-1/2 w-fit max-w-[40%] translate-x-[-50%] translate-y-[-50%]">
                 <div className="heading-20-b">{title}</div>
                 <p>{content}</p>

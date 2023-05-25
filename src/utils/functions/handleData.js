@@ -183,14 +183,14 @@ export const handleScheduleDataByMachine = (data) => {
     data.forEach((item) => {
         const index = result.findIndex((_item) => _item.name === item.materialDefinition)
         if (index >= 0) {
-            result[index].name = item.materialDefinition
+            result[index].name = `${item.workOrderId} [${item.materialDefinition}]`
             result[index].data.push({
                 x: item.equipment,
                 y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
             })
         } else {
             result.push({
-                name: item.materialDefinition,
+                name: `${item.workOrderId} [${item.materialDefinition}]`,
                 data: [
                     {
                         x: item.equipment,
@@ -209,14 +209,14 @@ export const handleSchedulingDataByMachine = (data) => {
     data.forEach((item) => {
         const index = result.findIndex((_item) => _item.name === item.materialDefinition)
         if (index >= 0) {
-            result[index].name = item.materialDefinition
+            result[index].name = `${item.workOrderId} [${item.materialDefinition}]`
             result[index].data.push({
                 x: item.equipment,
                 y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
             })
         } else {
             result.push({
-                name: item.materialDefinition,
+                name: `${item.workOrderId} [${item.materialDefinition}]`,
                 data: [
                     {
                         x: item.equipment,
@@ -235,14 +235,14 @@ export const handleScheduleDataByProduct = (data) => {
     data.forEach((item) => {
         const index = result.findIndex((_item) => _item.name === item.equipment)
         if (index >= 0) {
-            result[index].name = item.equipment
+            result[index].name = `${item.workOrderId} [${item.equipment}]`
             result[index].data.push({
                 x: item.materialDefinition,
                 y: [new Date(item.scheduledStartDate).getTime(), new Date(item.scheduledEndDate).getTime()],
             })
         } else {
             result.push({
-                name: item.equipment,
+                name: `${item.workOrderId} [${item.equipment}]`,
                 data: [
                     {
                         x: item.materialDefinition,
@@ -273,7 +273,7 @@ export const handleScheduledData = (schedulingProducts, shifts, warning = true) 
         }
 
         const [day, month, year] = item.dueDate.split("/")
-        const dueDate = new Date(year, month - 1, day)
+        const dueDate = new Date(year, month - 1, day, 23, 59, 59)
 
         if (!item.startDate) {
             warning && toast.error(`Ngày bắt đầu của đơn hàng ${workOrderId} không được bỏ trống`)

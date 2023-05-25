@@ -30,6 +30,11 @@ function Table({
         onEdit(e, row, index)
     }
 
+    const handleDeleteRow = (e, row, index) => {
+        e.stopPropagation()
+        onDeleteRow(row, index)
+    }
+
     useEffect(() => {
         if (unActive) {
             setActiveIndex(null)
@@ -113,9 +118,9 @@ function Table({
                                                         className={cl(
                                                             "absolute right-8 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
                                                             "flex items-center justify-center rounded-full text-warning-1",
-                                                            "heading-20-b invisible cursor-pointer hover:bg-hoverBg group-hover:visible",
+                                                            "heading-20-b invisible cursor-pointer hover:bg-warning-2 group-hover:visible",
                                                         )}
-                                                        onClick={() => onDeleteRow(row, index)}
+                                                        onClick={(e) => handleDeleteRow(e, row, index)}
                                                     >
                                                         <RiDeleteBin4Line />
                                                     </i>
@@ -191,9 +196,9 @@ function Table({
                                                         className={cl(
                                                             "absolute right-8 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
                                                             "flex items-center justify-center rounded-full text-warning-1",
-                                                            "heading-20-b invisible cursor-pointer hover:bg-hoverBg group-hover:visible",
+                                                            "heading-20-b invisible cursor-pointer hover:bg-warning-2 group-hover:visible",
                                                         )}
-                                                        onClick={() => onDeleteRow(row, index)}
+                                                        onClick={(e) => handleDeleteRow(e, row, index)}
                                                     >
                                                         <RiDeleteBin4Line />
                                                     </i>

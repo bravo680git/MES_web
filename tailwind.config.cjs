@@ -27,7 +27,7 @@ module.exports = {
                 3: "#F6F6F6",
                 4: "#FFFFFF",
             },
-            warning: { 1: "#D83704" },
+            warning: { 1: "#D83704", 2: "#FFCDD2" },
             hoverBg: "rgba(0,0,0,0.08)",
         },
         screens: {
