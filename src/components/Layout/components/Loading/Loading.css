@@ -1,45 +1,27 @@
-.dots-9 {
-    width: 15px;
-    aspect-ratio: 1;
-    position: relative;
-    animation: d9-0 0.8s infinite steps(2);
-}
-.dots-9::before,
-.dots-9::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
+.wobbling-4 {
+    width: 20px;
+    height: 20px;
     background: #fc8403;
+    box-shadow: 0 0 60px 30px #fc8403;
+    transform: translateX(-150px);
+    clip-path: inset(0);
+    animation: w4-1 0.5s ease-in-out infinite alternate, w4-2 1s ease-in-out infinite;
 }
-.dots-9::before {
-    box-shadow: 26px 0;
-    transform: translateX(-26px);
-    animation: d9-1 0.4s infinite linear alternate;
-}
-.dots-9::after {
-    transform: translateX(13px) rotate(0deg) translateX(13px);
-    animation: d9-2 0.4s infinite linear alternate;
-}
-@keyframes d9-0 {
-    0%,
-    49.9% {
-        transform: scale(1);
-    }
-    50%,
+
+@keyframes w4-1 {
     100% {
-        transform: scale(-1);
+        transform: translateX(150px);
     }
 }
-@keyframes d9-1 {
-    0% {
+
+@keyframes w4-2 {
+    33% {
+        clip-path: inset(0 0 0 -100px);
     }
-    100% {
-        box-shadow: 52px 0 #fc8403;
+    50% {
+        clip-path: inset(0 0 0 0);
     }
-}
-@keyframes d9-2 {
-    100% {
-        transform: translateX(13px) rotate(-180deg) translateX(13px);
+    83% {
+        clip-path: inset(0 -100px 0 0);
     }
 }

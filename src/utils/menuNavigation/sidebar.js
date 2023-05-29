@@ -1,12 +1,17 @@
-import { BsGear } from "react-icons/bs"
-import { OeeIcon, CommandIcon, QuantityIcon, ResourceIcon, ScheduleIcon } from "@/components/Icons"
+import { VscSettings } from "react-icons/vsc"
+import { OeeIcon, CommandIcon, QuantityIcon, ResourceIcon, ScheduleIcon, ProductivityIcon } from "@/components/Icons"
 import { paths } from "@/config"
 
 const SIDEBAR_ITEMS = [
     {
-        label: "Chỉ số OEE",
+        label: "Báo cáo OEE",
         icon: OeeIcon,
         route: paths.oee,
+    },
+    {
+        label: "Năng suất máy",
+        icon: ProductivityIcon,
+        route: paths.productivity,
     },
     {
         label: "Tiến độ sản xuất",
@@ -30,7 +35,7 @@ const SIDEBAR_ITEMS = [
     },
     {
         label: "Thiết lập",
-        icon: BsGear,
+        icon: VscSettings,
         route: paths.setting,
     },
 ]

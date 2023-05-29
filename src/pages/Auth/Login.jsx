@@ -13,7 +13,12 @@ function Login() {
         }
     }, [signIn, isLogin])
 
-    return <Loading />
+    return (
+        <div className="container">
+            <h2 className="translate-y-[52vh] text-center">Đang xác thực</h2>
+            <Loading />
+        </div>
+    )
 }
 
 export default Login

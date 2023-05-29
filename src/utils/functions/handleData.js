@@ -439,22 +439,22 @@ export const handleOeePageHeader = (mode) => {
             disableSortBy: false,
         },
         {
-            Header: "Availability(%)",
+            Header: "Độ hữu dụng A(%)",
             accessor: "a",
             disableSortBy: false,
         },
         {
-            Header: "Performance(%)",
+            Header: "Hiệu suất P(%)",
             accessor: "p",
             disableSortBy: false,
         },
         {
-            Header: "Quality(%)",
+            Header: "Chất lượng Q(%)",
             accessor: "q",
             disableSortBy: false,
         },
         {
-            Header: "Lost time(s)",
+            Header: "Thời gian chết L(s)",
             accessor: "l",
             disableSortBy: false,
         },
@@ -475,4 +475,52 @@ export const handleOeePageHeader = (mode) => {
         default:
             return []
     }
+}
+
+export const getWorkHoursPerDay = (shifts) => {
+    const hoursPerDay = shifts.reduce((acc, crr) => {
+        const [sH, sM, sS] = crr.startTime.split(":")
+        const [eH, eM, eS] = crr.endTime.split(":")
+        const duration = eH - sH + (eM - sM) / 60 + (eS - sS) / 3600
+        return acc + duration
+    }, 0)
+
+    return hoursPerDay
+}
+
+export const getEquipmentOutputs = (settingOutputs, workOrders, hoursPerDay) => {
+    const result = []
+
+    settingOutputs.forEach((item) => {
+        const materialId = item.materialDefinitionId
+        const _outputs = []
+        workOrders.forEach((w) => {
+            if (w.isClosed && w.materialDefinition === materialId) {
+                const start = new Date(w.actualStartDate)
+                const end = new Date(w.actualEndDate)
+                _outputs.push((end - start) / (3600 * 1000 * hoursPerDay))
+            }
+        })
+        const output = _outputs.reduce((acc, crr) => acc + crr, 0) / _outputs.length
+        result.push({
+            materialId,
+            setting: item.output,
+            actual: output ? output.toFixed(2) : "-",
+        })
+    })
+
+    return result
+}
+
+export const getChartSeriesFromOutputs = (outputs) => {
+    return [
+        {
+            name: "Tiêu chuẩn",
+            data: outputs.map((item) => item.setting),
+        },
+        {
+            name: "Thực tế",
+            data: outputs.map((item) => item.actual),
+        },
+    ]
 }
