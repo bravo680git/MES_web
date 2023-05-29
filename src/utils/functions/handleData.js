@@ -439,22 +439,22 @@ export const handleOeePageHeader = (mode) => {
             disableSortBy: false,
         },
         {
-            Header: "Availability(%)",
+            Header: "Độ hữu dụng A(%)",
             accessor: "a",
             disableSortBy: false,
         },
         {
-            Header: "Performance(%)",
+            Header: "Hiệu suất P(%)",
             accessor: "p",
             disableSortBy: false,
         },
         {
-            Header: "Quality(%)",
+            Header: "Chất lượng Q(%)",
             accessor: "q",
             disableSortBy: false,
         },
         {
-            Header: "Lost time(s)",
+            Header: "Thời gian chết L(s)",
             accessor: "l",
             disableSortBy: false,
         },

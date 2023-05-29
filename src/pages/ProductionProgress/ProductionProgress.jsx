@@ -60,10 +60,13 @@ function ProductionProgress() {
                 callApi(
                     () => workOrderApi.startWorkOrder(id),
                     () => {
-                        commonStoreActions.pushNotification({
-                            content: `Lệnh sản xuất ${id} bắt đầu sản xuất`,
-                            to: paths.progress,
-                        })
+                        fetchData()
+                        dispatch(
+                            commonStoreActions.pushNotification({
+                                content: `Lệnh sản xuất ${id} bắt đầu sản xuất`,
+                                to: paths.progress,
+                            }),
+                        )
                     },
                     "Bắt đầu lệnh sản xuất thành công",
                 )
@@ -85,10 +88,12 @@ function ProductionProgress() {
                     () => workOrderApi.closeWorkOrder(id),
                     () => {
                         fetchData()
-                        commonStoreActions.pushNotification({
-                            content: `Lệnh sản xuất ${id} đã hoàn thành`,
-                            to: paths.progress,
-                        })
+                        dispatch(
+                            commonStoreActions.pushNotification({
+                                content: `Lệnh sản xuất ${id} đã hoàn thành`,
+                                to: paths.progress,
+                            }),
+                        )
                     },
                     "Hoàn thành lệnh sản xuất",
                 )
@@ -180,7 +185,7 @@ function ProductionProgress() {
                 }
             })
         })
-        const connection = handleGetWorkOrderProgress(
+        handleGetWorkOrderProgress(
             (workOrderId, actualQuantity, progressPercentage) => {
                 setProgressData((prevData) => ({
                     ...prevData,

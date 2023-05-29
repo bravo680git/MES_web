@@ -60,6 +60,11 @@ function SelectInput({
         handleValidateSelectInput(value, isError, setError, setValidateRows, id)
     }
 
+    const handleContainerClick = (e) => {
+        e.stopPropagation()
+        setFocus(true)
+    }
+
     useEffect(() => {
         let newOpList
         if (debounce.length === 0) {
@@ -88,7 +93,7 @@ function SelectInput({
                 ref={containerRef}
                 data-component="SelectInput"
                 className={cl(
-                    "relative min-h-[64px] border-b-2  bg-neutron-4 pb-1",
+                    "relative min-h-[64px] cursor-pointer border-b-2 bg-neutron-4 pb-1",
                     {
                         "border-primary-3": !focus,
                         "border-primary-2": focus,
@@ -97,7 +102,7 @@ function SelectInput({
                     },
                     className,
                 )}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => handleContainerClick(e)}
             >
                 <label
                     className={cl("absolute transition-all", {
@@ -147,7 +152,7 @@ function SelectInput({
                         />
                     )}
                 </div>
-                <i className="absolute right-3 bottom-1" onClick={() => setFocus(!focus)}>
+                <i className="absolute right-3 bottom-1">
                     <MdOutlineKeyboardArrowDown className={cl("text-2xl transition-all", { "rotate-180": focus })} />
                 </i>
                 <div

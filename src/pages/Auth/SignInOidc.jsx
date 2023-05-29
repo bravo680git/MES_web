@@ -26,7 +26,12 @@ function SignInOidc() {
         }
     }, [userData, dispatch, navigate])
 
-    return <Loading />
+    return (
+        <div className="container">
+            <h2 className="translate-y-[52vh] text-center">Xác thực thành công</h2>
+            <Loading />
+        </div>
+    )
 }
 
 export default SignInOidc
