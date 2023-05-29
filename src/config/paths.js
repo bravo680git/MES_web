@@ -9,6 +9,8 @@ const paths = {
     product: "/work-order/products/:productId",
     scheduling: "/work-order/product-scheduling",
     schedule: "/production-schedule",
+    productivity: "/productivity",
+    detailProductivity: "/productivity/:devideId",
 
     resource: "/resource",
     resourceType: "/resource/:type",

@@ -17,6 +17,20 @@ const routes = [
         protected: true,
     },
     {
+        path: paths.productivity,
+        title: "Năng suất tiêu chuẩn thiết bị",
+        component: Pages.Productivity,
+        layout: "main",
+        protected: true,
+    },
+    {
+        path: paths.detailProductivity,
+        title: null,
+        component: Pages.DetailProductivity,
+        layout: "main",
+        protected: true,
+    },
+    {
         path: paths.oeeDetail,
         title: null,
         component: Pages.OeeDetailPage,

@@ -92,7 +92,7 @@ h4 {
     }
 
     .scroll-x {
-        @apply hover:overlay-x overflow-x-hidden pr-1;
+        @apply hover:overlay-x overflow-x-hidden pb-1;
     }
     .scroll-y {
         @apply hover:overlay-y overflow-y-hidden pr-1;

@@ -95,3 +95,42 @@ export const mutilSeriesRangeBarChartConfig = {
         horizontalAlign: "left",
     },
 }
+
+export const outputsBarChartConfig = {
+    chart: {
+        type: "bar",
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: "48%",
+            endingShape: "rounded",
+        },
+    },
+    dataLabels: {
+        enabled: false,
+    },
+    stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"],
+    },
+    xaxis: {
+        categories: [],
+    },
+    yaxis: {
+        title: {
+            text: "Năng suất(sp / giờ)",
+        },
+    },
+    fill: {
+        opacity: 1,
+    },
+    tooltip: {
+        y: {
+            formatter: function (val) {
+                return val + " sp/giờ"
+            },
+        },
+    },
+}

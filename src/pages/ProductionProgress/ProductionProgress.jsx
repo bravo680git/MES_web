@@ -200,7 +200,6 @@ function ProductionProgress() {
             (err) => console.log(err),
         )
 
-        return connection.stop
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchData, dispatch])
 

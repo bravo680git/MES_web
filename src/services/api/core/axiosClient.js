@@ -23,7 +23,7 @@ axiosClient.interceptors.response.use(
     async (error) => {
         const errorData = error.response?.data || "Error!"
 
-        return Promise.reject(new Error(errorData))
+        return Promise.reject(errorData)
     },
 )
 
