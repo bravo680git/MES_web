@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import ApexChart from "react-apexcharts"
@@ -8,7 +8,7 @@ import { schedulingActions } from "@/store"
 import { paths, mutilSeriesRangeBarChartConfig } from "@/config"
 import { resourceApi, workOrderApi } from "@/services/api"
 import { useCallApi } from "@/hooks"
-import { handleScheduledData, handleSchedulingDataByMachine } from "@/utils/functions"
+import { getWorkHoursPerDay, handleScheduledData, handleSchedulingDataByMachine } from "@/utils/functions"
 
 import SelectInput from "@/components/SelectInput"
 import Button from "@/components/Button"
@@ -25,6 +25,8 @@ function ProductSScheduling() {
     const [equipments, setEquipments] = useState([])
     const [showChart, setShowChart] = useState(false)
     const [chartSeries, setChartSeries] = useState([])
+    const [rowOutputs, setRowOutputs] = useState([])
+    const outputs = useRef([])
 
     const handleSetValue = (value, index, key) => {
         const newValue = schedulingProducts.map((item, _index) => (index !== _index ? item : { ...item, [key]: value }))
@@ -50,10 +52,36 @@ function ProductSScheduling() {
     useEffect(() => {
         const { data } = handleScheduledData(schedulingProducts, shifts, false)
         setChartSeries(handleSchedulingDataByMachine(data))
+        const hoursPerDay = getWorkHoursPerDay(shifts)
+        const _rowOutputs = []
+        schedulingProducts.forEach((item, index) => {
+            if (item.equipmentId.length) {
+                const itemOutput = outputs.current.find(
+                    (o) => o.equipmentId === item.equipmentId[0] && o.materialDefinitionId === item.materialDefinition,
+                )
+
+                if (itemOutput) {
+                    const quantity = item.quantity
+                    _rowOutputs[index] = {
+                        output: itemOutput.output,
+                        duration: ((itemOutput.output * hoursPerDay) / quantity).toFixed(1),
+                    }
+                } else {
+                    _rowOutputs[index] = {
+                        output: "-",
+                        duration: "-",
+                    }
+                }
+            }
+        })
+        setRowOutputs(_rowOutputs)
     }, [schedulingProducts, shifts])
 
     useEffect(() => {
         callApi(resourceApi.equipment.getEquipments, (res) => setEquipments(res.items))
+        callApi(resourceApi.equipment.getAllEquipmentOutputs, (res) => {
+            outputs.current = res
+        })
     }, [callApi])
 
     return (
@@ -74,6 +102,8 @@ function ProductSScheduling() {
                 <div className="text-16-b w-28">ID sản phẩm</div>
                 <div className="text-16-b w-18">Số lượng</div>
                 <div className="text-16-b grow">Chọn thiết bị</div>
+                <div className="text-16-b w-[50px]">(sp/ngày)</div>
+                <div className="text-16-b w-[50px]">(ngày)</div>
                 <div className="text-16-b w-[280px]">Ca bắt đầu</div>
                 <div className="text-16-b w-[280px]">Ca kết thúc</div>
                 <div className="text-16-b w-[140px] pr-5">Ngày đến hạn</div>
@@ -94,6 +124,8 @@ function ProductSScheduling() {
                                     setValue={(value) => handleSetValue(value, index, "equipmentId")}
                                 />
                             </div>
+                            <div className="flex w-[50px] items-end">{rowOutputs[index]?.output}</div>
+                            <div className="flex w-[50px] items-end">{rowOutputs[index]?.duration}</div>
                             <div className="flex w-[280px] items-end">
                                 <SelectInput
                                     className="grow"

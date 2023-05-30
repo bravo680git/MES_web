@@ -22,6 +22,8 @@ const resourceApi = {
         createEquipment: async (data) => await axiosClient.post("/equipments", data),
         updateEquipment: async (data, workerId) => await axiosClient.put(`/equipments/${workerId}`, data),
         deleteEquipment: async (workerId) => await axiosClient.delete(`/equipments/${workerId}`),
+
+        getAllEquipmentOutputs: async () => await axiosClient.get("/equipments/outputs"),
         createEquipmentOuput: async (id, data) => axiosClient.post(`/equipments/${id}/outputs`, data),
         getEquipmentOutputs: async (id) => axiosClient.get(`/equipments/${id}/outputs`),
         updateEquipmentOutput: async (equipmentId, materialId, data) =>
