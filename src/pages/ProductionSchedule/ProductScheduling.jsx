@@ -55,7 +55,7 @@ function ProductSScheduling() {
         const hoursPerDay = getWorkHoursPerDay(shifts)
         const _rowOutputs = []
         schedulingProducts.forEach((item, index) => {
-            if (item.equipmentId.length) {
+            if (item.equipmentId?.length) {
                 const itemOutput = outputs.current.find(
                     (o) => o.equipmentId === item.equipmentId[0] && o.materialDefinitionId === item.materialDefinition,
                 )
