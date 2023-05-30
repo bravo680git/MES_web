@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 import { BsPlus } from "react-icons/bs"
 
@@ -19,15 +19,25 @@ function Productivity() {
     const [materialList, setMaterialList] = useState([])
     const [menuData, setmenuData] = useState()
 
-    const fetchData = () => {
-        setItems([
-            {
-                devideId: "I1-1",
-                materialDefinitionId: "fetch-ball-large",
-                output: 12,
-            },
-        ])
-    }
+    const fetchData = useCallback(() => {
+        callApi([resourceApi.equipment.getAllEquipmentOutputs(), resourceApi.equipment.getEquipments()], (res) => {
+            const outputItems = res[0]
+            const equipmentItems = res[1].items
+            const result = equipmentItems.map((item) => {
+                const itemOutputs = []
+                outputItems.forEach((o) => {
+                    if (o.equipmentId === item.equipmentId) {
+                        itemOutputs.push(o)
+                    }
+                })
+                return {
+                    devideId: item.equipmentId,
+                    outputs: itemOutputs,
+                }
+            })
+            setItems(result)
+        })
+    }, [callApi])
 
     const handleCreateStandardOutput = (e, devideId) => {
         setmenuData({
@@ -77,7 +87,7 @@ function Productivity() {
             },
         )
         fetchData()
-    }, [callApi])
+    }, [callApi, fetchData])
 
     return (
         <div data-component="Productivity" className="container">
@@ -95,15 +105,18 @@ function Productivity() {
                             {item.devideId}
                         </div>
                         <div className="flex grow flex-wrap items-center gap-2">
-                            <div
-                                className="flex h-9 cursor-pointer items-center rounded-lg shadow-sub"
-                                onClick={(e) => handleEditStandardOutput(e, item)}
-                            >
-                                <div className="flex h-full grow items-center rounded-l-lg bg-primary-2 px-4 text-neutron-4">
-                                    {item.materialDefinitionId}
+                            {item.outputs.map((output) => (
+                                <div
+                                    className="flex h-9 cursor-pointer items-center rounded-lg shadow-sub"
+                                    onClick={(e) => handleEditStandardOutput(e, output)}
+                                    key={output.materialDefinitionId}
+                                >
+                                    <div className="flex h-full grow items-center rounded-l-lg bg-primary-2 px-4 text-neutron-4">
+                                        {output.materialDefinitionId}
+                                    </div>
+                                    <div className="ml-4 w-10 grow rounded-r-lg">{output.output}</div>
                                 </div>
-                                <div className="ml-4 w-10 grow rounded-r-lg">{item.output}</div>
-                            </div>
+                            ))}
 
                             <Button
                                 className="ml-auto"
