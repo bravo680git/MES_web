@@ -8,7 +8,12 @@ import { schedulingActions } from "@/store"
 import { paths, mutilSeriesRangeBarChartConfig } from "@/config"
 import { resourceApi, workOrderApi } from "@/services/api"
 import { useCallApi } from "@/hooks"
-import { getWorkHoursPerDay, handleScheduledData, handleSchedulingDataByMachine } from "@/utils/functions"
+import {
+    getWorkHoursPerDay,
+    handleScheduledData,
+    handleSchedulingDataByMachine,
+    getEquipmentListOfMaterial,
+} from "@/utils/functions"
 
 import SelectInput from "@/components/SelectInput"
 import Button from "@/components/Button"
@@ -119,7 +124,11 @@ function ProductSScheduling() {
                             <div className="grow">
                                 <SelectInput
                                     label=""
-                                    list={equipments.map((e) => ({ key: e.description, value: e.equipmentId }))}
+                                    list={getEquipmentListOfMaterial(
+                                        equipments,
+                                        outputs.current,
+                                        item.materialDefinition,
+                                    )}
                                     value={schedulingProducts[index]?.equipmentId}
                                     setValue={(value) => handleSetValue(value, index, "equipmentId")}
                                 />

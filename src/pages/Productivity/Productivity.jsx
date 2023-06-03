@@ -97,7 +97,7 @@ function Productivity() {
                     <div className="grow">Năng suất tiêu chuẩn(sp/giờ)</div>
                 </div>
                 {items.map((item) => (
-                    <div className="flex w-full items-center border-b-2 border-primary-3 py-3" key={item.devideId}>
+                    <div className="flex w-full items-center border-t-2 border-primary-3 py-3" key={item.devideId}>
                         <div
                             className="text-16-b w-48 cursor-pointer pl-2 text-primary-2 hover:text-primary-1 hover:underline"
                             onClick={() => navigate(`${paths.productivity}/${item.devideId}`)}

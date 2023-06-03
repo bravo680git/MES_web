@@ -524,3 +524,19 @@ export const getChartSeriesFromOutputs = (outputs) => {
         },
     ]
 }
+
+export const getEquipmentListOfMaterial = (equipmentList = [], outputList = [], materialId) => {
+    const result = []
+    const equipmentIds = outputList
+        .filter((item) => item.materialDefinitionId === materialId)
+        .map((item) => item.equipmentId)
+    equipmentList.forEach((item) => {
+        if (equipmentIds.includes(item.equipmentId)) {
+            result.push({
+                key: item.description,
+                value: item.equipmentId,
+            })
+        }
+    })
+    return result
+}

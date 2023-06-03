@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom"
 import Table from "@/components/Table"
 import Button from "@/components/Button"
 import PoperMenu from "@/components/PoperMenu"
+import Confirm from "@/components/Confirm"
 
 import { usePoperMenu, useCallApi } from "@/hooks"
 import { resourceApi } from "@/services/api"
@@ -72,6 +73,11 @@ const handler = {
         equipment: (data, item) => resourceApi.equipment.updateEquipment(data, item.equipmentId),
         material: (data, item) => resourceApi.material.updateMaterial(data, item.materialDefinitionId),
     },
+    delete: {
+        worker: (item) => resourceApi.worker.deleteWorker(item.personId),
+        equipment: (item) => resourceApi.equipment.deleteEquipment(item.equipmentId),
+        material: (item) => resourceApi.material.deleteMaterial(item.materialDefinitionId),
+    },
 }
 
 function ResourceType() {
@@ -79,19 +85,20 @@ function ResourceType() {
     const params = useParams()
     const resourceType = params.type
     const { active, position, handleClose, handleOpen } = usePoperMenu()
-    const callAPi = useCallApi()
+    const callApi = useCallApi()
 
     const [resData, setResData] = useState()
     const [activedItem, setActivedItem] = useState()
     const [classes, setClasses] = useState([])
     const [initValue, setInitValue] = useState()
+    const [deleteConfirm, setDeleteConfirm] = useState({})
 
     const fetchData = useCallback(() => {
-        callAPi(handler.fetchData[resourceType], (res) => {
+        callApi(handler.fetchData[resourceType], (res) => {
             setResData(res.items)
             setActivedItem(null)
         })
-    }, [resourceType, callAPi])
+    }, [resourceType, callApi])
 
     const handleRowClick = (row, index) => {
         const activedRow = resData[index]
@@ -108,19 +115,28 @@ function ResourceType() {
         handleOpen(e)
     }
 
+    const handleDelete = (item) => {
+        setDeleteConfirm({
+            show: true,
+            title: `Xác nhận xóa ${handler.label[resourceType]} ${item.description}`,
+            content: "",
+            onConfirm() {
+                callApi(() => handler.delete[resourceType](item), fetchData, `Xóa ${item.description} thành công`)
+            },
+        })
+    }
+
     const handleSubmit = (value) => {
         if (!initValue) {
-            //create new worker
             const data = value.info
-            callAPi(
+            callApi(
                 () => handler.create[resourceType](data),
                 fetchData,
                 `Tạo ${handler.label[resourceType]} mới thành công`,
             )
         } else {
-            //edit worker
             const data = resourceMapper.resource.clientToApi(value)
-            callAPi(
+            callApi(
                 () => handler.edit[resourceType](data, activedItem),
                 fetchData,
                 `Cập nhật ${handler.label[resourceType]} thành công`,
@@ -129,8 +145,8 @@ function ResourceType() {
     }
 
     useEffect(() => {
-        callAPi(handler.fetchClasses[resourceType], (res) => setClasses(handler.classesList[resourceType](res.items)))
-    }, [resourceType, callAPi])
+        callApi(handler.fetchClasses[resourceType], (res) => setClasses(handler.classesList[resourceType](res.items)))
+    }, [resourceType, callApi])
 
     useEffect(() => {
         fetchData()
@@ -153,6 +169,7 @@ function ResourceType() {
                             body={resData}
                             onRowClick={handleRowClick}
                             onEdit={handleEditWorker}
+                            onDeleteRow={handleDelete}
                             sticky
                             unActive={!activedItem}
                         />
@@ -178,6 +195,15 @@ function ResourceType() {
                         }
                         onClick={handleSubmit}
                         initValue={initValue ? initValue : undefined}
+                    />
+                )}
+
+                {deleteConfirm.show && (
+                    <Confirm
+                        title={deleteConfirm.title}
+                        content={deleteConfirm.content}
+                        onConfirm={deleteConfirm.onConfirm}
+                        onClose={() => setDeleteConfirm({ show: false })}
                     />
                 )}
             </div>

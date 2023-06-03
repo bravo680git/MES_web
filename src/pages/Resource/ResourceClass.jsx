@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import Table from "@/components/Table"
 import Button from "@/components/Button"
 import PoperMenu from "@/components/PoperMenu"
+import Confirm from "@/components/Confirm"
 
 import { resourceApi } from "@/services/api"
 import { usePoperMenu, useCallApi } from "@/hooks"
@@ -62,6 +63,7 @@ function ResourceClass() {
     const [resData, setResData] = useState()
     const [activedItem, setActivedItem] = useState(null)
     const [initValue, setInitValue] = useState()
+    const [deleteConfirm, setDeleteConfirm] = useState({})
 
     const fetchData = useCallback(() => {
         return callApi(handler.fetchData[resourceType], (res) => {
@@ -103,6 +105,17 @@ function ResourceClass() {
         }
     }
 
+    const handleDelete = (item) => {
+        setDeleteConfirm({
+            show: true,
+            title: `Xác nhận xóa loại ${handler.displayText[resourceType]} ${item.description}`,
+            content: "",
+            onConfirm() {
+                callApi(() => handler.delete[resourceType](item), fetchData, `Xóa ${item.description} thành công`)
+            },
+        })
+    }
+
     useEffect(() => {
         fetchData()
     }, [fetchData])
@@ -125,6 +138,7 @@ function ResourceClass() {
                             sticky
                             onRowClick={handleTableRowClick}
                             onEdit={handleEditClass}
+                            onDeleteRow={handleDelete}
                             unActive={!activedItem}
                         />
                     </div>
@@ -151,6 +165,15 @@ function ResourceClass() {
                         <Table activable headers={PROPERTIES_TABLE_COLUMNS} body={activedItem.properties} />
                     </div>
                 </div>
+            )}
+
+            {deleteConfirm.show && (
+                <Confirm
+                    title={deleteConfirm.title}
+                    content={deleteConfirm.content}
+                    onConfirm={deleteConfirm.onConfirm}
+                    onClose={() => setDeleteConfirm({ show: false })}
+                />
             )}
         </div>
     )

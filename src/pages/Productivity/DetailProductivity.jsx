@@ -5,6 +5,7 @@ import Chart from "react-apexcharts"
 
 import Table from "@/components/Table"
 import Button from "@/components/Button"
+import Confirm from "@/components/Confirm"
 
 import PoperMenu from "@/components/PoperMenu"
 import { usePoperMenu, useCallApi } from "@/hooks"
@@ -25,6 +26,7 @@ function DetailProductivity() {
     const [outputs, setOutputs] = useState([])
     const [materialList, setMaterialList] = useState([])
     const [menuData, setmenuData] = useState()
+    const [deleteConfirm, setDeleteConfirm] = useState({})
     const workOrders = useRef([])
     const hoursPerDay = useRef(1)
 
@@ -83,6 +85,22 @@ function DetailProductivity() {
         handleOpen(e)
     }
 
+    const handleDelete = (item) => {
+        const materialId = item.materialId
+        setDeleteConfirm({
+            show: true,
+            title: `Xác nhận xóa`,
+            content: `Năng suất tiêu chuẩn của thiết bị ${devideId} cho sản phẩm ${materialId} sẽ bị xóa`,
+            onConfirm() {
+                callApi(
+                    () => resourceApi.equipment.deleteEquipmentOutput(devideId, materialId),
+                    fetchData,
+                    `Xóa thành công`,
+                )
+            },
+        })
+    }
+
     useEffect(() => {
         dispatch(commonStoreActions.setPageTitle(`Báo cáo năng suất thiết bị ${devideId}`))
         hoursPerDay.current = getWorkHoursPerDay(shifts)
@@ -123,6 +141,7 @@ function DetailProductivity() {
                         body={outputs}
                         headers={DETAIL_PRODUCTIVITY_TABLE_COLUMNS}
                         onEdit={editOuput}
+                        onDeleteRow={handleDelete}
                     />
                     <Button onClick={handleCreateStandardOutput}>Thêm mới</Button>
                 </>
@@ -137,6 +156,14 @@ function DetailProductivity() {
                 />
             )}
             {!outputs.length && <div>Không có dữ liệu để hiển thị do thiết bị chưa thiết đặt năng suất tiêu chuẩn</div>}
+            {deleteConfirm.show && (
+                <Confirm
+                    title={deleteConfirm.title}
+                    content={deleteConfirm.content}
+                    onConfirm={deleteConfirm.onConfirm}
+                    onClose={() => setDeleteConfirm({ show: false })}
+                />
+            )}
         </div>
     )
 }
