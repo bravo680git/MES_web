@@ -42,7 +42,7 @@ function MainLayout({ children, title }) {
 
     return (
         <div data-component="MainLayout" className="container flex h-screen overflow-hidden">
-            <aside className="min-h-full">
+            <aside className="h-full">
                 <Sidebar />
             </aside>
             <div className="grow pt-5">

@@ -54,7 +54,7 @@ export const getResourceOptionsList = (items, key) => {
 
 export const formatNumberValue = (value, format) => {
     if (isNaN(value)) {
-        return value
+        return 0
     } else {
         value = Number(value)
     }
@@ -523,4 +523,20 @@ export const getChartSeriesFromOutputs = (outputs) => {
             data: outputs.map((item) => item.actual),
         },
     ]
+}
+
+export const getEquipmentListOfMaterial = (equipmentList = [], outputList = [], materialId) => {
+    const result = []
+    const equipmentIds = outputList
+        .filter((item) => item.materialDefinitionId === materialId)
+        .map((item) => item.equipmentId)
+    equipmentList.forEach((item) => {
+        if (equipmentIds.includes(item.equipmentId)) {
+            result.push({
+                key: item.description,
+                value: item.equipmentId,
+            })
+        }
+    })
+    return result
 }

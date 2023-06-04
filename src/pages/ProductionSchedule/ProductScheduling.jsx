@@ -8,7 +8,12 @@ import { schedulingActions } from "@/store"
 import { paths, mutilSeriesRangeBarChartConfig } from "@/config"
 import { resourceApi, workOrderApi } from "@/services/api"
 import { useCallApi } from "@/hooks"
-import { getWorkHoursPerDay, handleScheduledData, handleSchedulingDataByMachine } from "@/utils/functions"
+import {
+    getWorkHoursPerDay,
+    handleScheduledData,
+    handleSchedulingDataByMachine,
+    getEquipmentListOfMaterial,
+} from "@/utils/functions"
 
 import SelectInput from "@/components/SelectInput"
 import Button from "@/components/Button"
@@ -85,7 +90,10 @@ function ProductSScheduling() {
     }, [callApi])
 
     return (
-        <div data-component="ProductSScheduling" className="container h-full">
+        <div
+            data-component="ProductSScheduling"
+            className="3xl:scroll-x container h-full 3xl:w-[calc(100vw-120px)] 3xl:px-2"
+        >
             {showChart && (
                 <div className="scroll-y max-h-[50%] w-full">
                     <ApexChart
@@ -97,10 +105,10 @@ function ProductSScheduling() {
                     />
                 </div>
             )}
-            <div className="flex gap-8 pt-2">
+            <div className="flex w-full min-w-[1660px] gap-8 pt-2">
                 <div className="text-16-b w-32 pl-5">ID đơn hàng</div>
                 <div className="text-16-b w-28">ID sản phẩm</div>
-                <div className="text-16-b w-18">Số lượng</div>
+                <div className="text-16-b w-20">Số lượng</div>
                 <div className="text-16-b grow">Chọn thiết bị</div>
                 <div className="text-16-b w-[50px]">(sp/ngày)</div>
                 <div className="text-16-b w-[50px]">(ngày)</div>
@@ -109,17 +117,21 @@ function ProductSScheduling() {
                 <div className="text-16-b w-[140px] pr-5">Ngày đến hạn</div>
             </div>
 
-            <div>
+            <div className="w-full min-w-[1660px]">
                 {schedulingProducts.map((item, index) => (
-                    <Card className="my-4" key={index}>
+                    <Card className="my-4 w-full" key={index}>
                         <div className="flex items-end gap-8">
                             <h4 className="w-28">{item.workOrderId}</h4>
                             <h4 className="w-28">{item.materialDefinition}</h4>
-                            <div className="w-18">{item.quantity}</div>
+                            <div className="w-20">{item.quantity}</div>
                             <div className="grow">
                                 <SelectInput
                                     label=""
-                                    list={equipments.map((e) => ({ key: e.description, value: e.equipmentId }))}
+                                    list={getEquipmentListOfMaterial(
+                                        equipments,
+                                        outputs.current,
+                                        item.materialDefinition,
+                                    )}
                                     value={schedulingProducts[index]?.equipmentId}
                                     setValue={(value) => handleSetValue(value, index, "equipmentId")}
                                 />

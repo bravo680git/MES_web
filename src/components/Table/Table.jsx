@@ -113,10 +113,10 @@ function Table({
                                                     </i>
                                                 )}
 
-                                                {onDeleteRow && i === headers.length - 1 && (
+                                                {onDeleteRow && i === headers.length - 1 && activeIndex === index && (
                                                     <i
                                                         className={cl(
-                                                            "absolute right-8 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
+                                                            "absolute right-10 top-[50%] h-[30px] w-[30px] translate-y-[-50%]",
                                                             "flex items-center justify-center rounded-full text-warning-1",
                                                             "heading-20-b invisible cursor-pointer hover:bg-warning-2 group-hover:visible",
                                                         )}
