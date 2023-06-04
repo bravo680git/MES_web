@@ -54,7 +54,7 @@ export const getResourceOptionsList = (items, key) => {
 
 export const formatNumberValue = (value, format) => {
     if (isNaN(value)) {
-        return value
+        return 0
     } else {
         value = Number(value)
     }

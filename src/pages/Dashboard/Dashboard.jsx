@@ -95,12 +95,12 @@ function Dashboard() {
 
     return (
         <div data-component="Dashboard" className="container h-full">
-            <div className="flex h-1/2 w-full gap-5">
+            <div className="flex h-[340px] w-full gap-5">
                 <Card className="grow cursor-pointer hover:bg-hoverBg" onCLick={() => navigate(paths.oee)}>
                     <h3>Chỉ số OEE trung bình {oeeDuration} ngày qua</h3>
-                    <div className="mt-5 flex w-full items-center">
+                    <div className="mt-[-20px] flex w-full items-center">
                         <div className="flex flex-col items-center">
-                            <Radialbar value={data.averageOee?.oee * 100} width={360} color="#00cc00" />
+                            <Radialbar value={(data.averageOee?.oee ?? 0) * 100} width={360} color="#00cc00" />
                             <span className="text-16-b">OEE</span>
                         </div>
                         <div className="flex grow flex-col gap-5">
@@ -156,7 +156,7 @@ function Dashboard() {
                 </Card>
             </div>
 
-            <div className="flex h-1/2 w-full gap-5 pt-5">
+            <div className="flex h-[calc(100%-350px)] min-h-[300px] w-full gap-5 py-5">
                 <Card className="w-1/2 cursor-pointer hover:bg-hoverBg" onCLick={() => navigate(paths.resource)}>
                     <h3>Nguồn lực</h3>
                     <div className="flex h-[calc(100%-30px)]">

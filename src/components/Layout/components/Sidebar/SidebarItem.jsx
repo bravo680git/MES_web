@@ -13,9 +13,16 @@ function SidebarItem({ Icon, label, actived, isExpand, onClick }) {
             <div className="w-[46px] text-5xl">
                 <Icon />
             </div>
-            {isExpand && (
-                <h2 className={cl("ml-3 ", { "text-neutron-4": !actived, "text-primary-1": actived })}>{label}</h2>
-            )}
+            <h2
+                className={cl("ml-3 transition-all duration-200", {
+                    "text-neutron-4": !actived,
+                    "text-primary-1": actived,
+                    block: isExpand,
+                    hidden: !isExpand,
+                })}
+            >
+                {label}
+            </h2>
         </div>
     )
 }

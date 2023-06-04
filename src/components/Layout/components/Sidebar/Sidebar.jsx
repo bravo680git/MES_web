@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import cl from "classnames"
-import { BsArrowBarLeft, BsArrowBarRight } from "react-icons/bs"
+// import { BsArrowBarLeft, BsArrowBarRight } from "react-icons/bs"
 
 import { SIDEBAR_ITEMS } from "@/utils/menuNavigation"
 import SidebarItem from "./SidebarItem"
@@ -17,13 +17,23 @@ function Sidebar() {
         setCurrentPath(route)
     }
 
+    const handleCloseSidebar = () => {
+        setTimeout(() => setIsExpand(false), 200)
+    }
+
     return (
         <div
             data-component="Sidebar"
-            className={cl("relative h-full bg-primary-1 py-5 text-neutron-4 transition-all xl:overflow-y-scroll", {
-                "visible w-[340px] px-5 sm:w-screen": isExpand,
-                "w-[80px] px-2 sm:invisible sm:w-0": !isExpand,
-            })}
+            className={cl(
+                "transition-width relative h-full bg-primary-1 py-5 text-neutron-4 duration-200",
+                "scroll-y h-full",
+                {
+                    "visible w-[340px] px-5 sm:w-screen": isExpand,
+                    "w-[80px] px-2 sm:invisible sm:w-0": !isExpand,
+                },
+            )}
+            onMouseEnter={() => setIsExpand(true)}
+            onMouseLeave={handleCloseSidebar}
         >
             <div
                 className="mx-auto aspect-square w-full cursor-pointer rounded-xl bg-neutron-4 sm:w-1/2"
@@ -51,11 +61,11 @@ function Sidebar() {
                     },
                 )}
             >
-                {isExpand ? (
+                {/* {isExpand ? (
                     <BsArrowBarLeft onClick={() => setIsExpand(false)} />
                 ) : (
                     <BsArrowBarRight onClick={() => setIsExpand(true)} />
-                )}
+                )} */}
             </i>
         </div>
     )
