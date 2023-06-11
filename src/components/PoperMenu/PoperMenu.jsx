@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdOutlineCheck } from "react-icons/md"
 
@@ -34,7 +34,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
         setValue((prevValue) => getNewValue(prevValue, itemValue, [currentNavItem.id], id))
     }
 
-    const handleClick = () => {
+    const handleClick = useCallback(() => {
         if (navItems.length === menuNavigaton.length) {
             onClick(value)
             onClose()
@@ -42,7 +42,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
             setNavItems([...navItems, menuNavigaton[menuIndex + 1]])
             setMenuIndex(menuIndex + 1)
         }
-    }
+    }, [navItems, menuNavigaton, onClick, onClose, value, menuIndex])
 
     const handleBack = () => {
         if (menuIndex > 0) {
