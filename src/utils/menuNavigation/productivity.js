@@ -3,7 +3,7 @@ import { validateNumberField, validateRequiredField } from "../functions"
 export const getCreateProductivityMenuNav = (materialList) => [
     {
         id: "info",
-        title: "Tạo năng suất tiêu chuẩn",
+        title: "Thêm năng suất tiêu chuẩn",
         type: "form",
         items: [
             {

@@ -65,7 +65,8 @@ function Productivity() {
             handleClick(value) {
                 const data = { ...value.info, outputUnitOfMeasurement: "sp", timeUnit: 3 }
                 callApi(
-                    () => resourceApi.equipment.updateEquipmentOutput(item.devideId, item.materialDefinitionId, data),
+                    () =>
+                        resourceApi.equipment.updateEquipmentOutput(item.equipmentId, item.materialDefinitionId, data),
                     fetchData,
                     "Cập nhật năng suất tiêu chuẩn thành công",
                 )
