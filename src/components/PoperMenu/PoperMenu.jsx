@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdOutlineCheck } from "react-icons/md"
 
@@ -12,6 +12,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
     const [navItems, setNavItems] = useState([menuNavigaton[0]])
     const currentNavItem = navItems[navItems.length - 1]
 
+    const popupContainerRef = useRef()
     const [menuIndex, setMenuIndex] = useState(0)
     const [value, setValue] = useState(initValue)
     const [invalid, setInvalid] = useState(true)
@@ -33,7 +34,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
         setValue((prevValue) => getNewValue(prevValue, itemValue, [currentNavItem.id], id))
     }
 
-    const handleClick = () => {
+    const handleClick = useCallback(() => {
         if (navItems.length === menuNavigaton.length) {
             onClick(value)
             onClose()
@@ -41,7 +42,7 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
             setNavItems([...navItems, menuNavigaton[menuIndex + 1]])
             setMenuIndex(menuIndex + 1)
         }
-    }
+    }, [navItems, menuNavigaton, onClick, onClose, value, menuIndex])
 
     const handleBack = () => {
         if (menuIndex > 0) {
@@ -62,8 +63,25 @@ function PoperMenu({ menuNavigaton, onClick, width, onClose, position, basePath 
         }
     }, [validateRows.valid.length, validateRows.total])
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === "Enter" && !invalid) {
+                handleClick()
+            }
+        }
+
+        const element = popupContainerRef.current
+        element.addEventListener("keydown", handleKeyDown)
+
+        return () => element.removeEventListener("keydown", handleKeyDown)
+    }, [invalid, handleClick])
+
     return createPortal(
-        <div data-component="PoperMenu" className="fixed top-0 left-0 right-0 bottom-0 z-10 bg-hoverBg">
+        <div
+            data-component="PoperMenu"
+            className="fixed top-0 left-0 right-0 bottom-0 z-10 bg-hoverBg"
+            ref={popupContainerRef}
+        >
             <Card className="fixed" style={{ ...position, width, minWidth: "400px" }}>
                 <div className="flex items-center">
                     <Button small transparent onClick={handleBack}>

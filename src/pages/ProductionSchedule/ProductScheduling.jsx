@@ -69,7 +69,7 @@ function ProductSScheduling() {
                     const quantity = item.quantity
                     _rowOutputs[index] = {
                         output: itemOutput.output,
-                        duration: ((itemOutput.output * hoursPerDay) / quantity).toFixed(1),
+                        duration: (quantity / (itemOutput.output * hoursPerDay)).toFixed(1),
                     }
                 } else {
                     _rowOutputs[index] = {
@@ -110,7 +110,7 @@ function ProductSScheduling() {
                 <div className="text-16-b w-28">ID sản phẩm</div>
                 <div className="text-16-b w-20">Số lượng</div>
                 <div className="text-16-b grow">Chọn thiết bị</div>
-                <div className="text-16-b w-[50px]">(sp/ngày)</div>
+                <div className="text-16-b w-[50px]">(sp/giờ)</div>
                 <div className="text-16-b w-[50px]">(ngày)</div>
                 <div className="text-16-b w-[280px]">Ca bắt đầu</div>
                 <div className="text-16-b w-[280px]">Ca kết thúc</div>
