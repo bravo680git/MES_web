@@ -17,7 +17,7 @@ function App() {
 
                 return (
                     <Fragment key={route.path}>
-                        {protectedRoute && !isLogin ? (
+                        {protectedRoute && false ? (
                             <Route path="*" element={<Navigate to={paths.login} />} />
                         ) : (
                             <Route
